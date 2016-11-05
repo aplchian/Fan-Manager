@@ -7,6 +7,9 @@ import h from 'react-hyperscript'
 import Home from './home.js'
 import Fans from './fans.js'
 import StreetTeam from './streetTeam.js'
+import Fan from './fan.js'
+import AddFan from './addFan.js'
+
 
 
 render((
@@ -15,6 +18,8 @@ render((
       <IndexRoute component={Home}/>
       <Route path="/fans" component={Fans}/>
       <Route path="/streetteam" component={StreetTeam}/>
+      <Route path="/fan/:id" component={Fan}/>
+      <Route path="/addfan" component={AddFan}/>
     </Route>
   </Router>
 ),document.getElementById('root'))

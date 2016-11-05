@@ -5,14 +5,11 @@ const {
   hashHistory,
   Link
 } = require('react-router')
-const PouchDB = require('pouchdb')
-const db = new PouchDB('http://localhost:5984/slo/')
 const syncDB = require('./helpers/syncDB.js')
-
-
-
 const h = require('react-hyperscript')
 const Home = require('./home.js')
+const xhr = require('xhr')
+const NavLink = require('./components/NavLink.js')
 
 
 
@@ -39,9 +36,10 @@ module.exports = React.createClass({
         <h1 className="tc avenir">Fan DB</h1>
         <span className={this.state.syncClass} onClick={this.sync}>Sync DB</span>
         <ul className="bb b--light-gray w-90 db center pb2" role="nav">
-          <li className="dib mr2 no-underline" ><Link to="/">Home</Link></li>
-          <li className="dib mr2 no-underline" ><Link to="/fans">Fans</Link></li>
-          <li className="dib mr2 no-underline" ><Link to="/streetteam">Street Team</Link></li>
+          <NavLink title="Home" path="/"/>
+          <NavLink title="Fans" path="/fans"/>
+          <NavLink title="Street Team" path="/streetteam"/>
+          <NavLink title="Add Fan" path="/addfan"/>
 
         </ul>
         {this.props.children}

@@ -6,13 +6,18 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "form-serialize": "^0.7.1",
     "jquery": "^3.1.1",
     "pouchdb": "^6.0.7",
     "ramda": "^0.22.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-forms": "^1.0.0-rc6",
     "react-hyperscript": "^2.4.1",
-    "react-router": "^3.0.0"
+    "react-router": "^3.0.0",
+    "xhr": "^2.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
