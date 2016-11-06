@@ -25,13 +25,17 @@ var list = {
 }
 
 var fan = {
-  fname: 'alex',
-  lname: 'boquist',
-  state: 'AK',
-  city: 'Charleston',
-  streetteam: true,
+  "_id": "AK_alex.boquis23@gmail.com",
+  "_rev": "3-e8f69aadb0b0bb4be13411817f73a6bd",
+  "email": "alex.boquis23@gmail.com",
+  "f_name": "alexander",
+  "l_name": "boquist",
+  "state": "AK",
+  "city": "sds",
+  "join": "2016-11-06T03:06:47.042Z",
+  "streetteam": false
 }
 
-dal.listStreetTeam('streetteam',cb)
+dal.getFan('AK_enmoorejr@gmail.com',cb)
 
 // dal.createFan(list,cb)

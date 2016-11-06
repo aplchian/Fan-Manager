@@ -40,7 +40,6 @@ module.exports = React.createClass({
           <NavLink title="Fans" path="/fans"/>
           <NavLink title="Street Team" path="/streetteam"/>
           <NavLink title="Add Fan" path="/addfan"/>
-
         </ul>
         {this.props.children}
       </div>

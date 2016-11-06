@@ -66,5 +66,5 @@ function createFan(doc, cb) {
 }
 
 module.exports = {
-  createFan: createFan
+  fan: createFan
 }

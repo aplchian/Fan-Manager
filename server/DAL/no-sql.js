@@ -5,7 +5,13 @@ const {
     prop,
     forEach
 } = require('ramda')
-const createFan = require('./methods/createFan.js')
+const create = require('./methods/createFan.js')
+const update = require('./methods/update.js')
+const remove = require('./methods/remove.js')
+const getThe = require('./methods/get.js')
+
+
+
 
 
 function listFansByState(startToken, limit, cb) {
@@ -24,18 +30,6 @@ function listFansByState(startToken, limit, cb) {
     })
 }
 
-function getFan(doc, cb) {
-    db.get(doc, {
-        include_docs: true
-    }, function(err, res) {
-        if (err) {
-            return cb(console.log(err))
-        }
-        if (res) {
-            return cb(null, res)
-        }
-    })
-}
 
 function queryDB(view,cb){
   var options = {
@@ -54,10 +48,11 @@ function queryDB(view,cb){
 
 
 
-
 module.exports = {
     fansByState: listFansByState,
-    fan: getFan,
-    createFan: createFan.createFan,
-    listStreetTeam: queryDB
+    getFan: getThe.fan,
+    updateFan: update.fan,
+    removeFan: remove.fan,
+    createFan: create.fan,
+    listStreetTeam: queryDB,
 }
