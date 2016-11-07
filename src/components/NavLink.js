@@ -9,9 +9,10 @@ const h = require('react-hyperscript')
 
 
 module.exports = props => {
-  return h('li.dib.mr2.link',[
+  return h('li.dib.mr2.link.navlink',[
     h(Link,{
-      to: props.path
+      to: props.path,
+      className: "link"
     },props.title)
   ]
   )

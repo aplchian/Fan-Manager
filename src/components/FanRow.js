@@ -5,14 +5,11 @@ const {
 } = require('react-router')
 
 module.exports = props => {
-    return h('tr.bb.b--light-gray.w-90.db.center.pb2.pt2',{
-      key: props.data.id
-    },[
-      h('td.mr5.fw5',[
-        h(Link,{
-          to: `/fan/${props.data.id}`,
-        },props.data.doc.state)
-      ]),
-      h('td.fw2.pl5',props.data.doc.email),
-    ])
+    return <tr>
+      <td><Link to={`/fan/${props.data._id}`}>{props.data.state}</Link></td>
+      <td><Link to={`/fan/${props.data._id}`}>{props.data.city}</Link></td>
+      <td><Link to={`/fan/${props.data._id}`}>{props.data.email}</Link></td>
+      <td><Link to={`/fan/${props.data._id}`}>{props.data.f_name}</Link></td>
+      <td><Link to={`/fan/${props.data._id}`}>{props.data.l_name}</Link></td>
+    </tr>
 }

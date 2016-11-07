@@ -1,0 +1,266 @@
+header {
+  width: 100%;
+  height: 67px;
+  background-color: black;
+}
+
+body {
+  margin: 0;
+}
+.logo{
+  background: url(../images/logo.png) no-repeat center center;
+  height: 35px;
+  width: 35px;
+  background-size: 35px 35px;
+  margin: 0 0 0 27px;
+  position: relative;
+  top: 16px;
+  display: inline-block;
+}
+
+
+nav ul {
+  display: inline-block;
+  padding-left: 33px;
+  position: relative;
+  top: 6px;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  font-family: BebasNeueBold;
+  font-size: 18px;
+  color: #FFFFFF;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.sub-menu{
+  width: 100%;
+  height: 41px;
+  background: #CBC9CF;
+}
+
+.sub-menu ul {
+  margin: 0;
+  padding-left: 27px;
+  position: relative;
+  top: 11px;
+
+}
+
+.sub-menu ul li {
+  display: inline-block;
+  margin-right: 15px;
+  font-family: BebasNeueBold;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0.62px;
+  text-transform: uppercase;
+}
+.sub-menu ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sub-menu ul li a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.container {
+  width: 90%;
+  margin-top: 53px;
+  display: block;
+  margin: 0 auto;
+}
+
+.search-container, .header-container {
+  height: 66px;
+  width: 100%;
+  border-bottom: 2px solid #000;
+  margin-top: 53px;
+  position: relative;
+  margin-bottom: 45px;
+}
+
+.header-container{
+  height: 40px;
+}
+
+.search-container button {
+  float: right;
+  height: 47px;
+  width: 116px;
+  font-family: BebasNeueBold;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 1.27px;
+  background: none;
+  background-color: none;
+  border: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.search-container form {
+  width: 80%;
+  display: inline-block;
+}
+
+.header-container h1 {
+  font-family: BebasNeueBold;
+  font-size: 36px;
+  color: #000000;
+  letter-spacing: 1.59px;
+  margin: 0;
+}
+
+.search-input {
+  height: 64px;
+  width: 100%;
+  border: none;
+  font-family: Avenir-Heavy;
+  font-size: 48px;
+  color: #000000;
+  letter-spacing: 2.12px;
+  text-transform: uppercase;
+}
+
+.search-results {
+  width: 100%;
+}
+
+.search-results table, .container table {
+  table-layout: fixed;
+}
+
+.search-results table th, .container table th {
+  width: 156px;
+  text-align: left;
+  font-family: BebasNeueBold;
+  margin-bottom: 10px;
+  height: 36px;
+}
+
+#fans-in {
+  font-family: BebasNeueBold;
+  font-size: 16px;
+  color: green;
+}
+
+.search-results table td, .container table td {
+  width: 156px;
+  text-align: left;
+  font-family: Avenir;
+  font-weight: 500;
+  color: #878787;
+  font-size: 13px;
+  height: 30px;
+}
+
+.search-results table td a, .container table td a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.search-results table td a:hover, .container table td a:hover {
+  text-decoration: underline;
+}
+
+.search-results table tr {
+  border: 1px solid black;
+
+}
+
+.account-pair {
+  margin-bottom: 26px;
+}
+
+.account-pair .account-label {
+  font-family: Avenir-Heavy;
+  font-size: 13px;
+  color: #CBC9CF;
+  letter-spacing: 0.79px;
+  line-height: 10px;
+  margin: 0 0 8px 0;
+}
+
+.account-pair .account-data {
+  font-family: Avenir-Heavy;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.05px;
+  line-height: 10px;
+  margin: 0;
+}
+
+.edit-btn {
+  display: block;
+  height: 49px;
+  width: 149px;
+  font-family: BebasNeueBold;
+  font-size: 22px;
+  color: #FFFFFF;
+  letter-spacing: 1.27px;
+  background: #000000;
+  border: none;
+  text-decoration: none;
+  margin-bottom: 13px;
+}
+.edit-btn a {
+  text-decoration: none;
+}
+
+.delete-btn{
+  display: block;
+  height: 49px;
+  width: 149px;
+  font-family: BebasNeueBold;
+  font-size: 22px;
+  color: #FFFFFF;
+  letter-spacing: 1.27px;
+  background-color: #FF0000;
+  border: none;
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.95;
+  background: #FFFFFF;
+}
+
+.modal-container {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #000000;
+  font-family: BebasNeueBold;
+  font-size: 36px;
+  color: #FFFFFF;
+  letter-spacing: 2.09px;
+  text-align: center;
+}
+
+.modal-container .modal-exit {
+  background: url(../images/modal-exit.png) no-repeat center center;
+  position: absolute;
+  top: 15px;
+  right: 19px;
+  background-size: 16px 16px;
+  width: 16px;
+  height: 16px;
+}

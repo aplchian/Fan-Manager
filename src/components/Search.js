@@ -10,8 +10,8 @@ const {
   Link
 } = require('react-router')
 const h = require('react-hyperscript')
-const FanRow = require('./components/FanRow.js')
-const FanTable = require('./components/FanTable.js')
+const FanRow = require('./FanRow.js')
+const FanTable = require('./FanTable.js')
 
 export default React.createClass({
     getInitialState: function() {
@@ -26,7 +26,6 @@ export default React.createClass({
         })
     },
     stateSearch: function(e) {
-        console.log('ho')
         e.preventDefault()
         xhr({
             method: 'GET',
@@ -45,21 +44,31 @@ export default React.createClass({
         })
     },
     render: function() {
+      const tr = function(item){
+        return <FanRow data={item.doc}/>
+      }
+      if(this.state.data.length > 1){
+        var table = <div>
+        <span id="fans-in">Fans in {this.state.data[0].doc.state}: {this.state.data.length}</span>
+        <FanTable data={this.state.data} />
+        </div>
+      }
         return (
-            h("div", [
-                h("h3.tc", `Fans`),
-                h("form", {
-                    onSubmit: this.stateSearch
-                }, [
-                    h("input.center.db", {
-                        onChange: this.updateQuery,
-                        className: "center db"
-                    })
-                ]),
-                h(FanTable,{
-                  data: this.state.data
-                })
-            ])
+          <div className="container">
+            <div className="search-container">
+              <form onSubmit={this.stateSearch}>
+                <input
+                className="search-input"
+                placeholder="enter state.."
+                onChange={this.updateQuery}
+                />
+                <button onClick={this.stateSearch}>search</button>
+              </form>
+            </div>
+            <div className="search-results">
+              {table}
+            </div>
+          </div>
         )
     }
 })

@@ -7,16 +7,20 @@ const FanRow = require('./FanRow.js')
 const {map} = require('ramda')
 
 module.exports = props => {
-  const li = function(item){
-    return h(FanRow,{
-      data: item
-    })
+  console.log(props)
+  const tr = function(item){
+    return <FanRow data={item.doc} key={item.id}/>
   }
-  return h("table.center.db.w50",[
-    h('tr.bb.b--light-gray.w-90.db.center.pb2.pt2',[
-      h('th','State'),
-      h('th.right-3.relative','Email')
-    ]),
-    map(li,props.data)
-  ])
+  return <table>
+    <tbody>
+    <tr className="table-head">
+      <th>State</th>
+      <th>City</th>
+      <th>Email</th>
+      <th>First</th>
+      <th>Last</th>
+    </tr>
+    {map(tr,props.data)}
+    </tbody>
+  </table>
 }

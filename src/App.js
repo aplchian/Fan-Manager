@@ -33,15 +33,29 @@ module.exports = React.createClass({
   render: function(){
     return (
       <div>
-        <h1 className="tc avenir">Fan DB</h1>
-        <span className={this.state.syncClass} onClick={this.sync}>Sync DB</span>
-        <ul className="bb b--light-gray w-90 db center pb2" role="nav">
-          <NavLink title="Home" path="/"/>
-          <NavLink title="Fans" path="/fans"/>
-          <NavLink title="Street Team" path="/streetteam"/>
-          <NavLink title="Add Fan" path="/addfan"/>
+      <header>
+        <nav>
+          <div className="logo"/>
+          <ul className="bb b--light-gray w-90 db center pb2" role="nav">
+            <NavLink title="Fans" path="/"/>
+          </ul>
+        </nav>
+      </header>
+      <div className="sub-menu">
+        <ul>
+          <li>
+            <Link to="/search">Search</Link>
+          </li>
+          <li>
+            <Link to="/streetteam">Street Team</Link>
+          </li>
+          <li>
+            <Link to="/addfan">Add Fan</Link>
+          </li>
         </ul>
-        {this.props.children}
+      </div>
+      {this.props.children}
+      <footer/>
       </div>
     )
   }
