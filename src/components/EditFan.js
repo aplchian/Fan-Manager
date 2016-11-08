@@ -2,8 +2,11 @@ const React = require('react')
 const h = require('react-hyperscript')
 const xhr = require('xhr')
 const {
-  Link
+  Link,
+  browserHistory
 } = require('react-router')
+const FanDataEdit = require('./FanDataEdit.js')
+
 
 var EditFan = React.createClass({
   getInitialState: function(){
@@ -100,6 +103,8 @@ var EditFan = React.createClass({
                 return console.log(err.message)
               }
               if(res){
+                console.log(res)
+                browserHistory.push(`/fan/${res.body.id}`)
                 return console.log('Fan Edited!')
               }
             })
@@ -115,70 +120,30 @@ var EditFan = React.createClass({
           return console.log(err.message)
         }
         if(res){
-          return console.log('Fan Edited!')
+          browserHistory.push(`/fan/${res.body.id}`)
         }
       })
     }
   },
   render: function(){
-    console.log(this.state)
     return (
-      h('div',[
-        h('h3.tc',`Edit ${this.state.data.email}`),
-        h('form',[
-          h('input.db.center.mt2',{
-            placeholder: 'Email',
-            ref: 'email',
-            type: "text",
-            value: this.state.data.email,
-            onChange: this.changeEmail
-          }),
-          h('input.db.center.mt2',{
-            placeholder: 'First Name',
-            ref: 'fname',
-            type: "text",
-            value: this.state.data.f_name,
-            onChange: this.changeFName
-          }),
-          h('input.db.center.mt2',{
-            placeholder: 'Last Name',
-            ref: 'lname',
-            type: "text",
-            value: this.state.data.l_name,
-            onChange: this.changeLName
-          }),
-          h('input.db.center.mt2',{
-            placeholder: 'City',
-            ref: 'city',
-            type: "text",
-            value: this.state.data.city,
-            onChange: this.changeCity
-          }),
-          h('input.db.center.mt2',{
-            placeholder: 'State(2dig)',
-            ref: 'state',
-            type: "text",
-            value: this.state.data.state,
-            onChange: this.changeState
-          }),
-          h('div.db.center.w-20',[
-            h('input.dib.center.mt2#stcheck',{
-              type: 'checkbox',
-              ref: 'streetteam',
-              checked: this.state.data.streetteam ? true : false,
-              onChange: this.toggleStreetTeam
-            }),
-            h('label.dib.ml2',{
-              htmlFor:"stcheck"
-            },'Street Team'),
-            h('button.db',{
-              onClick: this.save
-            },'Save')
-          ])
-        ])
-      ])
+      <div className="container edit-container">
+        <div className="header-container">
+          <h1>{this.state.data.email}</h1>
+        </div>
+        <FanDataEdit label='email' change={this.changeEmail} data={this.state.data.email}/>
+        <FanDataEdit label='first name' change={this.changeFName} data={this.state.data.f_name}/>
+        <FanDataEdit label='last name' change={this.changeLName} data={this.state.data.l_name}/>
+        <FanDataEdit label='city' change={this.changeCity} data={this.state.data.city}/>
+        <FanDataEdit label='state' change={this.changeState} data={this.state.data.state}/>
+        <label htmlFor="stcheck">street team:</label>
+        <input type="checkbox" onChange={this.toggleStreetTeam} checked={this.state.data.streetteam ? true : false}/>
+        <button className="save-btn" onClick={this.save}>Save</button>
+      </div>
     )
   }
 })
+
+
 
 module.exports = EditFan

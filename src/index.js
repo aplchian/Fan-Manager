@@ -7,8 +7,8 @@ import Home from './home.js'
 import Search from './components/Search.js'
 import StreetTeam from './components/StreetTeam.js'
 import Fan from './components/Fan.js'
-import AddFan from './addFan.js'
-import EditFan from './editFan.js'
+import AddFan from './components/AddFan.js'
+import EditFan from './components/EditFan.js'
 
 
 

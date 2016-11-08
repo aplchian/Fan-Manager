@@ -184,7 +184,7 @@ nav ul li a {
   margin-bottom: 26px;
 }
 
-.account-pair .account-label {
+.account-pair .account-label, label {
   font-family: Avenir-Heavy;
   font-size: 13px;
   color: #CBC9CF;
@@ -202,7 +202,18 @@ nav ul li a {
   margin: 0;
 }
 
-.edit-btn {
+.edit-container input {
+  font-family: Avenir-Heavy;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.05px;
+  line-height: 10px;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+.edit-btn, .save-btn {
   display: block;
   height: 49px;
   width: 149px;
@@ -214,8 +225,9 @@ nav ul li a {
   border: none;
   text-decoration: none;
   margin-bottom: 13px;
+  margin-top: 13px;
 }
-.edit-btn a {
+.edit-btn a, .save-btn a {
   text-decoration: none;
 }
 
