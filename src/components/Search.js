@@ -29,7 +29,7 @@ export default React.createClass({
         e.preventDefault()
         xhr({
             method: 'GET',
-            url: `http://localhost:3039/fans/${this.state.q}`,
+            url: `http://alexboquist.com:3039/fans/${this.state.q}`,
             json: true
         }, (err, res) => {
             if (err) {

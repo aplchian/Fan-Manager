@@ -1,5 +1,7 @@
 const PouchDB = require('pouchdb')
-const db = new PouchDB('http://localhost:5984/slo-new/')
+var dotenv = require('dotenv');
+dotenv.load();
+const db = new PouchDB(process.env.DB_URL)
 const {
     prop,
     forEach

@@ -1,6 +1,8 @@
 const path = require('path')
 const PouchDB = require('pouchdb')
-const db = new PouchDB('http://localhost:5984/slo-new/')
+var dotenv = require('dotenv');
+dotenv.load();
+const db = new PouchDB(process.env.DB_URL)
 const {
     prop,
     forEach
@@ -16,8 +18,8 @@ const getThe = require('./methods/get.js')
 
 function listFansByState(startToken, limit, cb) {
     db.allDocs({
-        startkey: startToken,
-        endkey: `${startToken}\uffff`,
+        startkey: `fan_${startToken}`,
+        endkey: `fan_${startToken}\uffff`,
         limit: limit,
         include_docs: true
     }, function(err, res) {

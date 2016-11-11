@@ -63,6 +63,7 @@ app.put('/fan',function(req,res){
 })
 
 app.get('/streetteam',function(req,res){
+  console
   dal.listStreetTeam('streetteam',function(err,body){
     if(err){
       return console.log(err.message)

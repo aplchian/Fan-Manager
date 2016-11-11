@@ -32,7 +32,7 @@ const addFan = React.createClass({
     console.log(data)
     xhr({
       method: "POST",
-      url: "http://localhost:3039/fan",
+      url: "http://alexboquist.com:3039/fan",
       json: data
     },function(err,res){
       if(err){

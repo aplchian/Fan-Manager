@@ -16,7 +16,7 @@ var fanPage = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://localhost:3039/fan/${this.props.params.id}`,
+        url: `http://alexboquist.com:3039/fan/${this.props.params.id}`,
         json: true
     }, (err, res) => {
         if (err) {
@@ -34,7 +34,7 @@ var fanPage = React.createClass({
     console.log(this.state)
     xhr({
         method: 'DELETE',
-        url: `http://localhost:3039/fan/${this.state.data._id}`,
+        url: `http://alexboquist.com:3039/fan/${this.state.data._id}`,
     }, (err, res) => {
         if (err) {
             console.log(err.message)

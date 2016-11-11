@@ -20,7 +20,7 @@ module.exports = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://localhost:3039/streetteam`,
+        url: `http://alexboquist.com:3039/streetteam`,
         json: true
     }, (err, res) => {
         if (err) {

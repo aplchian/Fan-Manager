@@ -17,7 +17,7 @@ var EditFan = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://localhost:3039/fan/${this.props.params.id}`,
+        url: `http://alexboquist.com:3039/fan/${this.props.params.id}`,
         json: true
     }, (err, res) => {
         if (err) {
@@ -85,7 +85,7 @@ var EditFan = React.createClass({
     if (this.props.params.id !== this.state.data._id){
       xhr({
           method: 'DELETE',
-          url: `http://localhost:3039/fan/${this.props.params.id}`,
+          url: `http://alexboquist.com:3039/fan/${this.props.params.id}`,
       }, (err, res) => {
           if (err) {
               console.log(err.message)
@@ -96,7 +96,7 @@ var EditFan = React.createClass({
             delete data._id
             xhr({
               method: "POST",
-              url: "http://localhost:3039/fan",
+              url: "http://alexboquist.com:3039/fan",
               json: data
             },function(err,res){
               if(err){
@@ -113,7 +113,7 @@ var EditFan = React.createClass({
     }else{
       xhr({
         method: "PUT",
-        url: "http://localhost:3039/fan",
+        url: "http://alexboquist.com:3039/fan",
         json: this.state.data
       },function(err,res){
         if(err){
@@ -121,6 +121,7 @@ var EditFan = React.createClass({
         }
         if(res){
           browserHistory.push(`/fan/${res.body.id}`)
+          return console.log('Fan Edited!')
         }
       })
     }
