@@ -4,14 +4,11 @@ import App from './App';
 import {Router, Route, hashHistory, browserHistory, IndexRoute} from 'react-router'
 import h from 'react-hyperscript'
 import Home from './home.js'
-import Search from './components/Search.js'
-import StreetTeam from './components/StreetTeam.js'
-import Fan from './components/Fan.js'
-import AddFan from './components/AddFan.js'
-import EditFan from './components/EditFan.js'
-
-
-
+import Search from './resources/pages/Search'
+import StreetTeam from './resources/pages/StreetTeam'
+import Fan from './resources/pages/Fan'
+import AddFan from './resources/pages/AddFan'
+import EditFan from './resources/pages/EditFan'
 
 render((
   <Router history={browserHistory}>

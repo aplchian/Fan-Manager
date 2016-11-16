@@ -9,10 +9,9 @@ const {
   hashHistory,
   Link
 } = require('react-router')
-const h = require('react-hyperscript')
-const FanRow = require('./FanRow')
-const FanTable = require('./FanTable')
-const Xhr = require('./Xhr')
+const FanRow = require('../../components/FanRow')
+const FanTable = require('../../components/FanTable')
+const Xhr = require('../../components/Xhr')
 
 const Search = React.createClass({
     getInitialState: function() {

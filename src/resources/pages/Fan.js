@@ -4,8 +4,8 @@ const xhr = require('xhr')
 const {
   Link
 } = require('react-router')
-const FanData = require('./FanData.js')
-const Xhr = require('./Xhr')
+const FanData = require('../../components/FanData')
+const Xhr = require('../../components/Xhr')
 
 
 var fanPage = React.createClass({

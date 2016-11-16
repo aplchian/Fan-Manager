@@ -7,7 +7,7 @@ const {
   browserHistory
 } = require('react-router')
 const {findDOMNode} = require('react-dom')
-const Xhr = require('./Xhr')
+const Xhr = require('../../components/Xhr')
 
 
 const addFan = React.createClass({

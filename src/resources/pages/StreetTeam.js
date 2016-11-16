@@ -1,9 +1,9 @@
 import React from 'react'
 const h = require('react-hyperscript')
 const xhr = require('xhr')
-const FanTable = require('./FanTable.js')
+const FanTable = require('../../components/FanTable')
 const {filter,curry} = require('ramda')
-const Xhr = require('./Xhr')
+const Xhr = require('../../components/Xhr')
 
 const filterFans = function(state,item){
   return (item.doc.state === state)

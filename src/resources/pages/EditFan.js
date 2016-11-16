@@ -4,8 +4,8 @@ const {
   Link,
   browserHistory
 } = require('react-router')
-const FanDataEdit = require('./FanDataEdit.js')
-const Xhr = require('./Xhr')
+const FanDataEdit = require('../../components/FanDataEdit')
+const Xhr = require('../../components/Xhr')
 
 
 var EditFan = React.createClass({
