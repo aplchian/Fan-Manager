@@ -10,10 +10,11 @@ const {
   Link
 } = require('react-router')
 const h = require('react-hyperscript')
-const FanRow = require('./FanRow.js')
-const FanTable = require('./FanTable.js')
+const FanRow = require('./FanRow')
+const FanTable = require('./FanTable')
+const Xhr = require('./Xhr')
 
-export default React.createClass({
+const Search = React.createClass({
     getInitialState: function() {
         return ({
             q: '',
@@ -27,9 +28,10 @@ export default React.createClass({
     },
     stateSearch: function(e) {
         e.preventDefault()
+        console.log(this.props.xhrUrl)
         xhr({
             method: 'GET',
-            url: `http://alexboquist.com:3039/fans/${this.state.q}`,
+            url: `${this.props.xhrUrl}/fans/${this.state.q}`,
             json: true
         }, (err, res) => {
             if (err) {
@@ -72,3 +74,5 @@ export default React.createClass({
         )
     }
 })
+
+module.exports = Xhr(Search)

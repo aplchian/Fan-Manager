@@ -1,11 +1,11 @@
 const React = require('react')
-const h = require('react-hyperscript')
 const xhr = require('xhr')
 const {
   Link,
   browserHistory
 } = require('react-router')
 const FanDataEdit = require('./FanDataEdit.js')
+const Xhr = require('./Xhr')
 
 
 var EditFan = React.createClass({
@@ -17,7 +17,7 @@ var EditFan = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://alexboquist.com:3039/fan/${this.props.params.id}`,
+        url: `${this.props.xhrUrl}/fan/${this.props.params.id}`,
         json: true
     }, (err, res) => {
         if (err) {
@@ -147,4 +147,4 @@ var EditFan = React.createClass({
 
 
 
-module.exports = EditFan
+module.exports = Xhr(EditFan)

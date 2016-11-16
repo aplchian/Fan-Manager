@@ -4,15 +4,10 @@ const {
     map
 } = require('ramda')
 const {
-  Router,
-  Route,
-  hashHistory,
-  Link,
   browserHistory
 } = require('react-router')
-const h = require('react-hyperscript')
-const serialize = require('form-serialize')
 const {findDOMNode} = require('react-dom')
+const Xhr = require('./Xhr')
 
 
 const addFan = React.createClass({
@@ -32,7 +27,7 @@ const addFan = React.createClass({
     console.log(data)
     xhr({
       method: "POST",
-      url: "http://alexboquist.com:3039/fan",
+      url: `${this.props.xhrUrl}/fan`,
       json: data
     },function(err,res){
       if(err){
@@ -76,4 +71,4 @@ const addFan = React.createClass({
   }
 })
 
-module.exports = addFan
+module.exports = Xhr(addFan)

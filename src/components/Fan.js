@@ -5,6 +5,7 @@ const {
   Link
 } = require('react-router')
 const FanData = require('./FanData.js')
+const Xhr = require('./Xhr')
 
 
 var fanPage = React.createClass({
@@ -16,7 +17,7 @@ var fanPage = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://alexboquist.com:3039/fan/${this.props.params.id}`,
+        url: `${this.props.xhrUrl}/fan/${this.props.params.id}`,
         json: true
     }, (err, res) => {
         if (err) {
@@ -34,7 +35,7 @@ var fanPage = React.createClass({
     console.log(this.state)
     xhr({
         method: 'DELETE',
-        url: `http://alexboquist.com:3039/fan/${this.state.data._id}`,
+        url: `${this.props.xhrUrl}/fan/${this.state.data._id}`,
     }, (err, res) => {
         if (err) {
             console.log(err.message)
@@ -82,4 +83,4 @@ var fanPage = React.createClass({
 })
 
 
-module.exports = fanPage
+module.exports = Xhr(fanPage)

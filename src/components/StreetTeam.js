@@ -3,6 +3,7 @@ const h = require('react-hyperscript')
 const xhr = require('xhr')
 const FanTable = require('./FanTable.js')
 const {filter,curry} = require('ramda')
+const Xhr = require('./Xhr')
 
 const filterFans = function(state,item){
   return (item.doc.state === state)
@@ -10,8 +11,7 @@ const filterFans = function(state,item){
 
 const curryFilterFans = curry(filterFans)
 
-
-module.exports = React.createClass({
+const StreetTeam = React.createClass({
   getInitialState: function(){
     return ({
       data: []
@@ -20,7 +20,7 @@ module.exports = React.createClass({
   componentDidMount: function(){
     xhr({
         method: 'GET',
-        url: `http://alexboquist.com:3039/streetteam`,
+        url: `${this.props.xhrUrl}/streetteam`,
         json: true
     }, (err, res) => {
         if (err) {
@@ -85,3 +85,5 @@ module.exports = React.createClass({
     )
   }
 })
+
+module.exports = Xhr(StreetTeam)
