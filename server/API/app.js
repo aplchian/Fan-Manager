@@ -14,7 +14,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 
-app.get('/fans/:state',function(req,res){
+app.get('/fans/state/:state',function(req,res){
   dal.fansByState(req.params.state,1000,function(err,body){
     if(err){
       return console.log(err.message)
@@ -25,7 +25,7 @@ app.get('/fans/:state',function(req,res){
   })
 })
 
-app.get('/fan/:fan',function(req,res){
+app.get('/fans/:fan',function(req,res){
   var fan = req.params.fan
   dal.getFan(fan,function(err,body){
     if(err){
@@ -37,9 +37,8 @@ app.get('/fan/:fan',function(req,res){
   })
 })
 
-app.post('/fan',function(req,res){
+app.post('/fans',function(req,res){
   var doc = req.body
-  console.log(req.body)
   dal.createFan(doc,function(err,body){
     if(err){
       return console.log(err.message)
@@ -63,7 +62,6 @@ app.put('/fan',function(req,res){
 })
 
 app.get('/streetteam',function(req,res){
-  console
   dal.listStreetTeam('streetteam',function(err,body){
     if(err){
       return console.log(err.message)
