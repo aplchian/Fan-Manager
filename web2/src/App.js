@@ -7,6 +7,7 @@ const FanDashBoard = require('./pages/fans/dashboard')
 const AddFan = require('./pages/fans/add')
 const FanSearch = require('./pages/fans/search')
 const StreetTeam = require('./pages/fans/streetteam')
+const Service = require('./services/services')
 
 
 
@@ -22,9 +23,8 @@ const App = React.createClass({
         <div>
           <Match exactly pattern="/" component={Home}></Match>
           <Match exactly pattern="/fans" component={FanDashBoard}></Match>
-          <Match exactly pattern="/:type/fans" component={FanSearch}></Match>
-          <Match exactly pattern="/fans/add" component={AddFan}></Match>
-          <Match exactly pattern="/:type/fans" component={FanSearch}></Match>
+          <Match exactly pattern="/:type/fans" component={Service(FanSearch)}></Match>
+          <Match exactly pattern="/fans/add" component={Service(AddFan)}></Match>
 
         </div>
       </BrowserRouter>

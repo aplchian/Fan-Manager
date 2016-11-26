@@ -10,7 +10,8 @@ const asideStyle = style({
   width: 120,
   height: '100%',
   backgroundColor: 'white',
-  boxShadow: '0 0 1px 0 rgba(0,0,0,0.50)'
+  borderRight: '1px solid #f1f1f1',
+  zIndex: 4
 })
 
 const Aside = React.createClass({

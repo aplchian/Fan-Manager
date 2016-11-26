@@ -9,7 +9,7 @@ const pageStyle = style({
   position: 'absolute',
   marginLeft: 120,
   width: 'calc(100% - 120px)',
-  backgroundColor: '#f4f4f4'
+  backgroundColor: 'white'
 })
 
 const Page = React.createClass({

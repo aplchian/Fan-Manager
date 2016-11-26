@@ -29,8 +29,8 @@ const containerStyle = style({
 const Dashboard = React.createClass({
   getInitialState(){
     return({
-      fname: '',
-      lname: '',
+      f_name: '',
+      l_name: '',
       email: '',
       state: '',
       city: '',
@@ -44,6 +44,13 @@ const Dashboard = React.createClass({
       this.setState(current)
     }
   },
+  handleSubmit(e){
+    e.preventDefault()
+    this.props.addFan(this.state,(err,res) => {
+      if(err) return console.log('err',err)
+      return console.log('success',res)
+    })
+  },
   render(){
     return(
       <div>
@@ -51,9 +58,9 @@ const Dashboard = React.createClass({
             <div {...containerStyle}>
               <h1>Add fan</h1>
               <WarningBar text="Email Required"/>
-              <form>
-                <Input placeholder="First" onChange={this.handleChange('fname')} />
-                <Input placeholder="Last" onChange={this.handleChange('lname')} />
+              <form onSubmit={this.handleSubmit}>
+                <Input placeholder="First" onChange={this.handleChange('f_name')} />
+                <Input placeholder="Last" onChange={this.handleChange('l_name')} />
                 <Input placeholder="Email" onChange={this.handleChange('email')} />
                 <Input placeholder="City" onChange={this.handleChange('city')} />
                 <Input placeholder="State" onChange={this.handleChange('state')} />
@@ -66,9 +73,9 @@ const Dashboard = React.createClass({
                 <Button text="SUBMIT" />
               </form>
             </div>
-            {/* <pre>
+            <pre>
               {JSON.stringify(this.state,null,2)}
-            </pre> */}
+            </pre>
           </PageWrapper>
       </div>
    )
