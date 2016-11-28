@@ -5,6 +5,8 @@ const {style,insertRule,merge} = require('glamor')
 const Home = require('./pages/home')
 const FanDashBoard = require('./pages/fans/dashboard')
 const AddFan = require('./pages/fans/add')
+const EditFan = require('./pages/fans/add')
+const ShowFan = require('./pages/fans/show')
 const FanSearch = require('./pages/fans/search')
 const StreetTeam = require('./pages/fans/streetteam')
 const Service = require('./services/services')
@@ -22,10 +24,11 @@ const App = React.createClass({
       <BrowserRouter>
         <div>
           <Match exactly pattern="/" component={Home}></Match>
-          <Match exactly pattern="/fans" component={FanDashBoard}></Match>
+          <Match exactly pattern="/fans" component={Service(FanDashBoard)}></Match>
           <Match exactly pattern="/:type/fans" component={Service(FanSearch)}></Match>
           <Match exactly pattern="/fans/add" component={Service(AddFan)}></Match>
-
+          <Match exactly pattern="/fans/:id/show" component={Service(ShowFan)}></Match>
+          <Match exactly pattern="/fans/:id/edit" component={Service(AddFan)}></Match>
         </div>
       </BrowserRouter>
     )

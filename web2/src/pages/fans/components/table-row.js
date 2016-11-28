@@ -1,5 +1,6 @@
 const React = require('react')
 const {style} = require('glamor')
+const{Link} = require('react-router')
 
 const tableRowStyle = style({
   borderBottom: '1px solid rgb(218, 218, 218)',
@@ -7,11 +8,17 @@ const tableRowStyle = style({
 })
 
 
-module.exports = props =>
-  <tr {...tableRowStyle}>
-    <td>{props.state}</td>
-    <td>{props.city}</td>
-    <td>{props.fname}</td>
-    <td>{props.lname}</td>
-    <td>{props.email}</td>
-  </tr>
+
+
+module.exports = ({state,city,fname,lname,email,id}) => {
+  const addLink = text => <Link to={`/fans/${id}/show`}>{text}</Link>
+  return (
+    <tr {...tableRowStyle}>
+      <td><Link to={`/fans/${id}/show`}>{state}</Link></td>
+      <td><Link to={`/fans/${id}/show`}>{city}</Link></td>
+      <td><Link to={`/fans/${id}/show`}>{fname}</Link></td>
+      <td><Link to={`/fans/${id}/show`}>{lname}</Link></td>
+      <td><Link to={`/fans/${id}/show`}>{email}</Link></td>
+    </tr>
+  )
+}

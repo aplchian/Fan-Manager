@@ -14,5 +14,5 @@ const buttonStyle = style({
   float: 'right'
 })
 
-module.exports = props =>
-  <button {...buttonStyle}>{props.text}</button>
+module.exports = ({text, onClick}) =>
+  <button {...buttonStyle} onClick={onClick}>{text}</button>

@@ -8,13 +8,13 @@ const liStyle = style({
   margin: '0 17px 0 0',
   fontFamily: 'BebasNeueBold',
   fontSize: 14,
-  color: '#4D4D4D',
+  color: '#000000',
   letterSpacing: 0.81,
   display: 'inline-block'
 
 })
 const aStyle = style({
-  color: '#D8D8D8',
+  color: '#000000',
   textDecoration: 'none',
   lineHeight: '34px',
   ":hover": {

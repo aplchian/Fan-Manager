@@ -3,7 +3,7 @@ const {style} = require('glamor')
 
 const titleStyle = style({
   textAlign: 'center',
-  fontFamily: 'BebasNeueRegular',
+  fontFamily: 'Playfair Display, serif',
   fontSize: 26,
   color: '#4D4D4D',
   letterSpacing: '1.5',

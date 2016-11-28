@@ -4,6 +4,7 @@ const PageWrapper = require('../page-wrapper.js')
 const Input = require('../components/input-field')
 const WarningBar = require('../components/warning-bar')
 const Button = require('../components/submit-button.js')
+const PageTitle = require('../components/page-header.js')
 
 const checkboxContainer = style({
   display: 'block',
@@ -34,8 +35,16 @@ const Dashboard = React.createClass({
       email: '',
       state: '',
       city: '',
-      streetteam: ''
+      streetteam: false,
+      success: 'email is required'
     })
+  },
+  componentDidMount(){
+    if(this.props.params.id){
+      this.props.getFan(this.props.params.id, (err,res) => {
+        this.setState(res)
+      })
+    }
   },
   handleChange(path){
     return e => {
@@ -46,36 +55,50 @@ const Dashboard = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
-    this.props.addFan(this.state,(err,res) => {
-      if(err) return console.log('err',err)
-      return console.log('success',res)
+    if(this.state._id){
+      this.props.editFan(this.state,(err,res) => {
+        if(err) return console.log('err',err)
+        return console.log('success',res)
+      })
+    }else {
+      this.props.addFan(this.state,(err,res) => {
+        if(err) return console.log('err',err)
+        return console.log('success',res)
+      })
+    }
+  },
+  toggleStreetTeam(e){
+    this.setState({
+      streetteam: !this.state.streetteam
     })
   },
   render(){
+    console.log(this.state)
     return(
       <div>
           <PageWrapper>
             <div {...containerStyle}>
-              <h1>Add fan</h1>
-              <WarningBar text="Email Required"/>
+              <PageTitle text="Add Fan"/>
+              {/* <WarningBar text={this.state.success}/> */}
               <form onSubmit={this.handleSubmit}>
-                <Input placeholder="First" onChange={this.handleChange('f_name')} />
-                <Input placeholder="Last" onChange={this.handleChange('l_name')} />
-                <Input placeholder="Email" onChange={this.handleChange('email')} />
-                <Input placeholder="City" onChange={this.handleChange('city')} />
-                <Input placeholder="State" onChange={this.handleChange('state')} />
+                <Input placeholder="First" value={this.state.f_name} onChange={this.handleChange('f_name')} />
+                <Input placeholder="Last" value={this.state.l_name} onChange={this.handleChange('l_name')} />
+                <Input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
+                <Input placeholder="City" value={this.state.city} onChange={this.handleChange('city')} />
+                <Input placeholder="State" value={this.state.state} onChange={this.handleChange('state')} />
                 <div {...checkboxContainer}>
                   <div {...checkboxStyle}>
                     <label>Street Team</label>
-                    <input type="checkbox" onChange={this.handleChange('streetteam')} />
+                    <input type="checkbox" checked={this.state.streetteam} onChange={this.toggleStreetTeam} />
                   </div>
                 </div>
                 <Button text="SUBMIT" />
               </form>
+              <pre>
+                {JSON.stringify(this.state,null,2)}
+              </pre>
             </div>
-            <pre>
-              {JSON.stringify(this.state,null,2)}
-            </pre>
+
           </PageWrapper>
       </div>
    )

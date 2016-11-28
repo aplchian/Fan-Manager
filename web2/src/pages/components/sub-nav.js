@@ -6,7 +6,7 @@ const subNavStyle = style({
   width: '100%',
   height: 34,
   backgroundColor: 'white',
-  'boxShadow': '0 2px 2px -2px rgba(0,0,0,.15)'
+  // 'boxShadow': '0 2px 2px -2px rgba(0,0,0,.15)'
 })
 
 const ulStyle = style({

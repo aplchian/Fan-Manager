@@ -37,6 +37,17 @@ app.get('/fans/:fan',function(req,res){
   })
 })
 
+app.get('/fans',function(req,res){
+  dal.getAllFans('allfans',function(err,body){
+    if(err){
+      return console.log(err.message)
+    }
+    if(body){
+      res.send(body)
+    }
+  })
+})
+
 app.post('/fans',function(req,res){
   var doc = req.body
   dal.createFan(doc,function(err,body){
@@ -49,7 +60,7 @@ app.post('/fans',function(req,res){
   })
 })
 
-app.put('/fan',function(req,res){
+app.put('/fans',function(req,res){
   var doc = req.body
   dal.updateFan(doc,function(err,body){
     if(err){

@@ -14,5 +14,5 @@ const formStyle = style({
   paddingLeft: '15px',
 })
 
-module.exports = props =>
-  <input {...formStyle} placeholder={props.placeholder} onChange={props.onChange} type="text"/>
+module.exports = ({placeholder, value, onChange}) =>
+  <input {...formStyle} placeholder={placeholder} value={value} onChange={onChange} type="text"/>

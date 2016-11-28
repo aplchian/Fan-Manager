@@ -5,12 +5,13 @@ const nameStyle = style({
   position: 'absolute',
   right: 9,
   bottom: 6,
-  fontFamily: 'Oswald, sans-serif',
+  fontFamily: 'BebasNeueRegular',
   fontWeight: 300,
-  fontSize: 12,
+  fontSize: 15,
   color: '#D8D8D8',
   letterSpacing: 0.87,
   margin: 0,
+
 
 })
 

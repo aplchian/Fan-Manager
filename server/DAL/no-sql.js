@@ -53,6 +53,7 @@ function queryDB(view,cb){
 module.exports = {
     fansByState: listFansByState,
     getFan: getThe.fan,
+    getAllFans: queryDB,
     updateFan: update.fan,
     removeFan: remove.fan,
     createFan: create.fan,

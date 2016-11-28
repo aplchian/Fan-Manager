@@ -2,7 +2,10 @@ const React = require('react')
 const {style} = require('glamor')
 const PageWrapper = require('../page-wrapper.js')
 const TableRow = require('./components/table-row.js')
-const{ Scrollbars } = require('react-custom-scrollbars')
+const { Scrollbars } = require('react-custom-scrollbars')
+const Button = require('../components/submit-button')
+const PageTitle = require('../components/page-header.js')
+
 
 
 const inputStyle = style({
@@ -107,6 +110,21 @@ const Dashboard = React.createClass({
       this.setState({data: data})
     }
   },
+  syncMailChimp(e){
+    e.preventDefault()
+    const buildJson = function(item){
+      return {
+        "method": "POST",
+        "path": "lists/22bc951064/members/",
+        "body": "{\"email_address\":\"" + item.email + "\",\"status\":\"subscribed\",\"merge_fields\":{\"MMERGE3\":\"" + item.state + "\",\"MMERGE4\":\""+ item.city +"\"}}"
+      }
+    }
+    let data = this.state.data.map(buildJson)
+    this.props.syncMailChimp(data, (err,res) => {
+      if(err) return console.log(err)
+      return console.log(res)
+    })
+  },
   render(){
     console.log(this.state)
     const row = (item, i) => (
@@ -117,6 +135,7 @@ const Dashboard = React.createClass({
         fname={item.f_name}
         lname={item.l_name}
         email={item.email}
+        id={item._id}
       />
     )
     const searchType = this.props.params.type === 'search' ? 'Fan' : 'Street Team'
@@ -130,7 +149,7 @@ const Dashboard = React.createClass({
       <div>
           <PageWrapper>
             <div>
-              <h2>{searchType} Search</h2>
+              <PageTitle to="Search"/>
               <form>
                 <label>Search By</label>
                 <select onChange={this.handleChange('searchtype')}>
@@ -156,9 +175,10 @@ const Dashboard = React.createClass({
                   {this.state.data.map(row)}
                 </table>
 
+
               </Scrollbars>
 
-
+              <Button onClick={this.syncMailChimp} text="sync to mailchimp" />
             </div>
           </PageWrapper>
       </div>

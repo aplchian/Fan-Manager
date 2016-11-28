@@ -11,6 +11,6 @@ module.exports = fan => {
     "join": todayDate.toISOString(),
     "streetteam": pathOr(false,['streetteam'],fan)
   }
-  fan._id = fan.state + '_' + fan.email
+  fan._id = 'fan_' + fan.state + '_' + fan.email
   return fan
 }
