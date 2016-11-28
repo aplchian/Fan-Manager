@@ -47,7 +47,7 @@ const Service = Component => React.createClass({
       url: "https://us3.api.mailchimp.com/3.0/batches",
       headers: {
           "Content-Type": "application/json",
-          "Authorization": "apikey f517cf56d577b4ac23c81929c36353fc-us3"
+          "Authorization": ""
       }
     },(err, res) => {
       if(err) return cb(err)
