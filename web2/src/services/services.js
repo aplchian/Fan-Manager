@@ -1,45 +1,47 @@
 const React = require('react')
 const xhr = require('xhr')
+const fetch = require('isomorphic-fetch')
+const axios = require('axios')
 const url = process.env.REACT_APP_XHR
 const {pluck,map} = require('ramda')
 
 const Service = Component => React.createClass({
+  tap(item){
+    console.log(item)
+    return item
+  },
   fansByState(state,cb){
-    console.log('state',state)
-    xhr.get(`${url}fans/state/${state}`,{json: true},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,map(item => item.doc,body.rows))
-    })
+    axios.get(`${url}fans/state/${state}`)
+      .then(res => map(item => item.doc,res.rows))
+      .then(res => cb(null,res))
+      .catch(err => cb(err))
   },
   allFans(cb){
-    xhr.get(`${url}fans`,{json: true},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,map(item => item.doc,body))
-    })
+    axios.get(`${url}fans`)
+      .then(res => map(item => item.doc,res.data))
+      .then(res => cb(null,res))
+      .catch(err => cb(err))
   },
   streetTeam(cb){
-    xhr.get(`${url}streetteam`,{json: true},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,map(item => item.doc,body))
-    })
+    axios.get(`${url}streetteam`)
+      .then(res => map(item => item.doc,res.data))
+      .then(res => cb(null,res))
+      .catch(err => cb(err))
   },
   addFan(doc,cb){
-    xhr.post(`${url}fans`,{json: doc},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,body)
-    })
+    axios.post(`${url}fans`,doc)
+      .then(res => cb(null,res))
+      .catch(err => cb(err))
   },
   getFan(fanId,cb){
-    xhr.get(`${url}fans/${fanId}`,{json: true},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,body)
-    })
+    axios.get(`${url}fans/${fanId}`)
+      .then(res => cb(null,res.data))
+      .catch(err => cb(err))
   },
   editFan(doc,cb){
-    xhr.put(`${url}fans`,{json: doc},(err,res,body) => {
-      if(err) return cb(err)
-      return cb(null,body)
-    })
+    axios.put(`${url}fans`,doc)
+      .then(res => cb(null,res))
+      .catch(err => cb(err))
   },
   syncMailChimp(doc,cb){
     xhr({

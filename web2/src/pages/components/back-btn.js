@@ -13,7 +13,6 @@ const backBtn = style({
 
 module.exports = props => {
     const status = props.status === 'show' ? backBtn : {}
-    console.log('status',status)
     return(
       <Link to={props.path} {...status}></Link>
     )
