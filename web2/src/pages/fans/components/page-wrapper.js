@@ -1,18 +1,16 @@
 const React = require('react')
-const Home = require('./home')
-const Pages = require('./components/pages')
-const SubNav = require('./components/sub-nav')
+const Home = require('../../home')
+const SubNav = require('./sub-nav')
 const {style} = require('glamor')
+import {Row} from 'react-bootstrap'
 
 const wrapperStyle = style({
   display: 'block',
   margin: '50px auto 0 auto',
-  maxWidth: '700px',
-
 })
 
 const backgroundStyle = style({
-  backgroundColor: '#f4f4f4'
+  // backgroundColor: '#f4f4f4'
 })
 
 
@@ -22,15 +20,14 @@ const Dashboard = React.createClass({
       <div {...backgroundStyle}>
         <Home>
           <SubNav />
-          <div {...wrapperStyle}>
+          <Row {...wrapperStyle}>
             {this.props.children}
-          </div>
+          </Row>
         </Home>
       </div>
    )
   }
 })
-
 
 
 module.exports = Dashboard

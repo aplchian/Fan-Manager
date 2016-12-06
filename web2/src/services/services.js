@@ -44,17 +44,8 @@ const Service = Component => React.createClass({
       .catch(err => cb(err))
   },
   syncMailChimp(doc,cb){
-    xhr({
-      body: doc,
-      url: "https://us3.api.mailchimp.com/3.0/batches",
-      headers: {
-          "Content-Type": "application/json",
-          "Authorization": ""
-      }
-    },(err, res) => {
-      if(err) return cb(err)
-      return cb(null,res)
-    })
+    axios.post(`${url}mailchimp`,doc)
+      .then(res => res)
   },
   render(){
     return <Component

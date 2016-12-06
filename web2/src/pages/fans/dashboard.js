@@ -3,7 +3,7 @@ const Widget = require('./components/widget')
 const {style} = require('glamor')
 const States = require('./components/states')
 const Recent = require('./components/recent')
-const PageWrapper = require('../page-wrapper.js')
+const PageWrapper = require('./components/page-wrapper.js')
 const d3 = require('d3')
 import ReactFauxDOM from 'react-faux-dom'
 const {map,filter} = require('ramda')
@@ -101,14 +101,7 @@ const Dashboard = React.createClass({
   render(){
     return(
       <div>
-          <PageWrapper {...width}>
-            {/* <Widget float="left">
-              <States />
-            </Widget>
-            <Widget float="right">
-              <Recent />
-            </Widget>
-            <div {...clearFloat}></div> */}
+          <PageWrapper>
             <PageTitle text="Dashboard" />
             <Graph data={this.state}></Graph>
           </PageWrapper>

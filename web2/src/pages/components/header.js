@@ -28,7 +28,6 @@ const backBtn = style({
 const centerContainer = style({
   display: 'block',
   margin: '0 auto',
-  width: '80%',
   borderBottom: '1px solid rgba(215,215,215,0.25)',
   position: 'relative'
 })
@@ -40,10 +39,10 @@ const bandName = style({
 
 const Header = props =>
       <div {...headerStyle}>
-        <Link to="/" {...backBtn}></Link>
+        {/* <Link to="/" {...backBtn}></Link> */}
         <div {...centerContainer}>
-          <HeaderTitle text="Fan Dashboard" />
-          <HeaderSubTitle name="STOP LIGHT OBSERVATIONS" />
+          <HeaderTitle text={props.header} />
+          {/* <HeaderSubTitle name="STOP LIGHT OBSERVATIONS" /> */}
         </div>
       </div>
 

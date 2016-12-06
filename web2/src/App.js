@@ -10,8 +10,9 @@ const ShowFan = require('./pages/fans/show')
 const FanSearch = require('./pages/fans/search')
 const StreetTeam = require('./pages/fans/streetteam')
 const Service = require('./services/services')
-
-
+import Manage from './pages/manage'
+import DaySheets from './pages/manage/daysheets'
+import Events from './pages/manage/events'
 
 
 
@@ -29,6 +30,12 @@ const App = React.createClass({
           <Match exactly pattern="/fans/add" component={Service(AddFan)}></Match>
           <Match exactly pattern="/fans/:id/show" component={Service(ShowFan)}></Match>
           <Match exactly pattern="/fans/:id/edit" component={Service(AddFan)}></Match>
+
+          <Match exactly pattern="/manage" component={Service(Manage)}></Match>
+          <Match exactly pattern="/manage/events" component={Service(Events)}></Match>
+          <Match exactly pattern="/manage/daysheets" component={Service(DaySheets)}></Match>
+
+
         </div>
       </BrowserRouter>
     )

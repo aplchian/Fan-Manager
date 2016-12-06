@@ -3,6 +3,7 @@ const app = express()
 const dal = require('../DAL/no-sql.js')
 const cors = require('cors')
 var bodyParser = require('body-parser')
+const axios = require('axios')
 
 // app.use(function (req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -93,6 +94,23 @@ app.delete('/fan/:id',function(req,res){
     }
   })
 })
+
+app.post('/mailchimp',function(req,res){
+  var doc = req.body
+  axios({
+    method: 'post',
+    data: {
+          "operations": doc
+    },
+    url: "https://us3.api.mailchimp.com/3.0/batches",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "apikey f517cf56d577b4ac23c81929c36353fc-us3"
+    }
+  }).then(resp => console.log(resp))
+    .catch(err => console.log(err))
+})
+
 
 app.listen(3039,function(){
   console.log('listening on port 3039')

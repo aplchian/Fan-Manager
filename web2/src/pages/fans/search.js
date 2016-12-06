@@ -1,11 +1,12 @@
 const React = require('react')
 const {style} = require('glamor')
-const PageWrapper = require('../page-wrapper.js')
+const PageWrapper = require('./components/page-wrapper.js')
 const TableRow = require('./components/table-row.js')
-const { Scrollbars } = require('react-custom-scrollbars')
-const Button = require('../components/submit-button')
 const PageTitle = require('../components/page-header.js')
-
+import {Button,FormControl,FieldGroup,FormGroup,Form,Table} from 'react-bootstrap'
+import FanSearchBar from './components/fan-search-bar'
+import SearchResultsTable from './components/search-results-table'
+import {buildMailChimp} from './helpers/helpers'
 
 
 const inputStyle = style({
@@ -62,7 +63,6 @@ const Dashboard = React.createClass({
     }
   },
   componentWillReceiveProps(nextProps){
-    console.log(nextProps)
     if(nextProps.params.type === 'search'){
       this.props.allFans((err,res) => {
         if(err) return console.log(err)
@@ -112,75 +112,38 @@ const Dashboard = React.createClass({
   },
   syncMailChimp(e){
     e.preventDefault()
-    const buildJson = function(item){
-      return {
-        "method": "POST",
-        "path": "lists/22bc951064/members/",
-        "body": "{\"email_address\":\"" + item.email + "\",\"status\":\"subscribed\",\"merge_fields\":{\"MMERGE3\":\"" + item.state + "\",\"MMERGE4\":\""+ item.city +"\"}}"
-      }
-    }
-    let data = this.state.data.map(buildJson)
-    this.props.syncMailChimp(data, (err,res) => {
-      if(err) return console.log(err)
+    let data = buildMailChimp(this.state.data)
+    this.props.syncMailChimp(data,(err,res) => {
+      if(err) return console.log(err.message)
       return console.log(res)
     })
   },
   render(){
-    console.log(this.state)
-    const row = (item, i) => (
-      <TableRow
-        key={i}
-        state={item.state}
-        city={item.city}
-        fname={item.f_name}
-        lname={item.l_name}
-        email={item.email}
-        id={item._id}
-      />
-    )
+
     const searchType = this.props.params.type === 'search' ? 'Fan' : 'Street Team'
-    const tableHeader = this.state.data.length > 0
-      ? <tr><th>state</th><th>city</th><th>first</th><th>last</th><th>email</th></tr>
-      : null
     const resultCount = this.state.data.length > 0
     ? <tr><td>{this.state.data.length} Fans Found</td></tr>
     : null
+    const MailChimpButton = this.state.data.length > 0
+    ? <Button onClick={this.syncMailChimp}>Sync to Mailchimp</Button>
+    : null
+
     return(
       <div>
           <PageWrapper>
             <div>
               <PageTitle to="Search"/>
-              <form>
-                <label>Search By</label>
-                <select onChange={this.handleChange('searchtype')}>
-                  <option value="email">Email</option>
-                  <option value="state">State</option>
-                  <option value="city">City</option>
-                  <option value="l_name">Last Name</option>
-                </select>
-              </form>
-              <form onSubmit={this.handleSubmit}>
-                <input {...inputStyle} type="text" value={this.state.q} onChange={this.handleChange('q')}/>
-                <button {...buttonStyle}>Search</button>
-              </form>
+              <FanSearchBar
+                handleSubmit={this.handleSubmit}
+                handleChange={this.handleChange}
+                q={this.state.q}
+               />
               {resultCount}
-              <Scrollbars
-                autoHeight
-                autoHeightMin={100}
-                autoHeightMax={350}
-                style={{marginTop: 30, backgroundColor: 'white' }}>
-
-                <table {...tableStyle}>
-                  {tableHeader}
-                  {this.state.data.map(row)}
-                </table>
-
-
-              </Scrollbars>
-
-              <Button onClick={this.syncMailChimp} text="sync to mailchimp" />
+              <SearchResultsTable results={this.state.data} />
+              {MailChimpButton}
             </div>
           </PageWrapper>
+
       </div>
    )
   }

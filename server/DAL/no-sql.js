@@ -14,8 +14,6 @@ const getThe = require('./methods/get.js')
 
 
 
-
-
 function listFansByState(startToken, limit, cb) {
     db.allDocs({
         startkey: `fan_${startToken}`,

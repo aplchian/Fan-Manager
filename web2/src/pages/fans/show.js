@@ -1,9 +1,10 @@
 const React = require('react')
 const {style} = require('glamor')
-const PageWrapper = require('../page-wrapper.js')
-const Button = require('../components/submit-button.js')
+const PageWrapper = require('./components/page-wrapper.js')
 const FanItem = require('./components/fan-item.js')
 const {Redirect} = require('react-router')
+import {Button} from 'react-bootstrap'
+
 
 const headerStyle = style({
   width: '100%',
@@ -43,8 +44,7 @@ const Dashboard = React.createClass({
             <FanItem label='City' data={this.state.city} />
             <FanItem label='State' data={this.state.state} />
             <FanItem label='Join Date' data={this.state.join} />
-            <Button text="edit" onClick={this.edit} />
-
+            <Button onClick={this.edit}>EDIT</Button>
           </PageWrapper>
       </div>
    )

@@ -12,7 +12,8 @@ const linkStyle = style({
   fontSize: '13px',
   color: '#7A7A7A',
   letterSpacing: '0.69px',
-  textDecoration: 'none'
+  textDecoration: 'none',
+  textAlign: 'center'
 })
 
 

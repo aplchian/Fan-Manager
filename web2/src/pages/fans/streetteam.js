@@ -1,6 +1,6 @@
 const React = require('react')
 const {style} = require('glamor')
-const PageWrapper = require('../page-wrapper.js')
+const PageWrapper = require('./components/page-wrapper.js')
 
 
 

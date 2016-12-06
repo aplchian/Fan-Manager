@@ -3,23 +3,21 @@ const {style} = require('glamor')
 const Logo = require('./logo')
 const MenuItem = require('./menu-items.js')
 const Header = require('./header')
+import {Row,Grid} from 'react-bootstrap'
 
 const pageStyle = style({
   height: '100%',
-  position: 'absolute',
-  marginLeft: 120,
-  width: 'calc(100% - 120px)',
   backgroundColor: 'white'
 })
 
-const Page = React.createClass({
+const Content = React.createClass({
   render(){
     return(
-      <div {...pageStyle}>
+      <Grid {...pageStyle}>
         {this.props.children}
-      </div>
+      </Grid>
     )
   }
 })
 
-module.exports = Page
+module.exports = Content

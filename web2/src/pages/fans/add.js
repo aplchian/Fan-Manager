@@ -1,10 +1,11 @@
 const React = require('react')
 const {style} = require('glamor')
-const PageWrapper = require('../page-wrapper.js')
+const PageWrapper = require('./components/page-wrapper.js')
 const Input = require('../components/input-field')
 const WarningBar = require('../components/warning-bar')
 const Button = require('../components/submit-button.js')
 const PageTitle = require('../components/page-header.js')
+// import {Button,Modal} from 'react-bootstrap'
 
 const checkboxContainer = style({
   display: 'block',
@@ -94,11 +95,7 @@ const Dashboard = React.createClass({
                 </div>
                 <Button text="SUBMIT" />
               </form>
-              <pre>
-                {JSON.stringify(this.state,null,2)}
-              </pre>
             </div>
-
           </PageWrapper>
       </div>
    )
