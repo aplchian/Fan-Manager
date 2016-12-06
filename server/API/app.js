@@ -107,8 +107,9 @@ app.post('/mailchimp',function(req,res){
         "Content-Type": "application/json",
         "Authorization": "apikey f517cf56d577b4ac23c81929c36353fc-us3"
     }
-  }).then(resp => console.log(resp))
-    .catch(err => console.log(err))
+  })
+  .then(results => res.send({ok: true}))
+  .catch(err => console.log(err))
 })
 
 

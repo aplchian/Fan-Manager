@@ -113,10 +113,8 @@ const Dashboard = React.createClass({
   syncMailChimp(e){
     e.preventDefault()
     let data = buildMailChimp(this.state.data)
-    this.props.syncMailChimp(data,(err,res) => {
-      if(err) return console.log(err.message)
-      return console.log(res)
-    })
+    this.props.syncMailChimp(data)
+      .then(res => console.log(res))
   },
   render(){
 

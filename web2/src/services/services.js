@@ -43,9 +43,8 @@ const Service = Component => React.createClass({
       .then(res => cb(null,res))
       .catch(err => cb(err))
   },
-  syncMailChimp(doc,cb){
-    axios.post(`${url}mailchimp`,doc)
-      .then(res => res)
+  syncMailChimp(doc){
+    return axios.post(`${url}mailchimp`,doc)
   },
   render(){
     return <Component
