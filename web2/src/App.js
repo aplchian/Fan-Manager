@@ -1,7 +1,6 @@
 const React = require('react')
 const {Match,BrowserRouter} = require('react-router')
 const {style,insertRule,merge} = require('glamor')
-// const Fans = require('./pages/fans/')
 const Home = require('./pages/home')
 const FanDashBoard = require('./pages/fans/dashboard')
 const AddFan = require('./pages/fans/add')
@@ -15,6 +14,9 @@ import DaySheets from './pages/manage/daysheets'
 import AddEvent from './pages/manage/add-event'
 import AddDaySheet from './pages/manage/add-daysheet'
 import Events from './pages/manage/events'
+import Event from './pages/manage/show-event'
+import DaySheet from './pages/manage/show-daysheet'
+
 
 
 
@@ -39,6 +41,9 @@ const App = React.createClass({
 
           <Match exactly pattern="/manage/events/add" component={Service(AddEvent)}></Match>
           <Match exactly pattern="/manage/daysheets/add" component={Service(AddDaySheet)}></Match>
+
+          <Match exactly pattern="/manage/events/:id/show" component={Service(Event)}></Match>
+          <Match exactly pattern="/manage/daysheets/:id/show" component={Service(DaySheet)}></Match>
 
 
 

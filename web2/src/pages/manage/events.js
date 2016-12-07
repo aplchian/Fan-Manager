@@ -3,6 +3,7 @@ import PageWrapper from './components/page-wrapper'
 import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox,Nav,NavItem,Panel} from 'react-bootstrap'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
+import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
 import {filter} from 'ramda'
 
@@ -59,7 +60,7 @@ const ListEvents = React.createClass({
   render(){
     const results = (item,i) => {
       let date = item.doc.date.split('T')[0]
-      return <Panel key={i}>{item.doc.name} {date} {item.doc.city},{item.doc.state}</Panel>
+      return <Link to={`/manage/events/${item.doc._id}/show`}><Panel key={i}>{item.doc.name} {date} {item.doc.city},{item.doc.state}</Panel></Link>
     }
     return(
       <div>
@@ -72,6 +73,9 @@ const ListEvents = React.createClass({
                 <NavItem eventKey={'show'}>Shows</NavItem>
                 <NavItem eventKey={'press'} title="Item">Press</NavItem>
                 <NavItem eventKey={'other'}>Other</NavItem>
+              </Nav>
+              <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
+                <NavItem><Link to="/manage/events/add">Add Event</Link></NavItem>
               </Nav>
             </Col>
             <Col {...mainSectionStyle} xs={12} md={8}>

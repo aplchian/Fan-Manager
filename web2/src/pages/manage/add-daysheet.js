@@ -39,11 +39,13 @@ const AddEvent = React.createClass({
       notes: "",
       band: "slo",
       mileage: '',
+      destinationname: '',
       newevent: {
         id: uuid.v4(),
         event: '',
         timestart: '',
-        timeend: ''
+        timeend: '',
+        duration: ''
       }
     })
   },
@@ -78,7 +80,7 @@ const AddEvent = React.createClass({
   },
   handleDateChange(date){
     let incomingDate = date.format().split('T')[0]
-    let start = `event_date_${incomingDate}`
+    let start = `event_${incomingDate}`
     let end = `${start}\uffff`
     db.allDocs({
       include_docs: true,
@@ -86,6 +88,8 @@ const AddEvent = React.createClass({
       endkey: end
     }, (err,res) => {
       if (err) return console.log(err.message)
+      console.log('got',res)
+
       this.setState({
         events: res.rows
       })
@@ -206,6 +210,11 @@ const AddEvent = React.createClass({
                       placeholder="end time"
                       onChange={this.handleAddEvent('timeend')}
                     />
+                    <FormControl type="number"
+                      value={this.state.newevent.duration}
+                      placeholder="duration"
+                      onChange={this.handleAddEvent('duration')}
+                    />
                   </Form>
                   <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
                   {this.state.schedule.map(events)}
@@ -213,6 +222,11 @@ const AddEvent = React.createClass({
                   {this.state.events.map(listEvents)}
 
                   <ControlLabel>After Show Destination Address:</ControlLabel>
+                  <FormControl type="text"
+                    value={this.state.destinationname}
+                    placeholder="Destination Name"
+                    onChange={this.handleChange('destinationname')}
+                  />
                   <FormControl type="text"
                     value={this.state.streetone}
                     placeholder="Street Address 1"

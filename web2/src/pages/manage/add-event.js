@@ -41,7 +41,7 @@ const AddEvent = React.createClass({
         deal: "",
         notes: "",
         band: "slo",
-        active: true,
+        status: 'confirmed',
         newcontact: {
           id: uuid.v4(),
           type: '',
@@ -53,7 +53,8 @@ const AddEvent = React.createClass({
           id: uuid.v4(),
           event: '',
           timestart: '',
-          timeend: ''
+          timeend: '',
+          duration: ''
         }
     })
   },
@@ -243,6 +244,11 @@ const AddEvent = React.createClass({
                       value={this.state.newevent.timeend}
                       placeholder="end time"
                       onChange={this.handleAddEvent('timeend')}
+                    />
+                    <FormControl type="number"
+                      value={this.state.newevent.duration}
+                      placeholder="duration"
+                      onChange={this.handleAddEvent('duration')}
                     />
                   </Form>
                   <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>

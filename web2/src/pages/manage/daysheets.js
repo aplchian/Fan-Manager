@@ -3,6 +3,7 @@ import PageWrapper from './components/page-wrapper'
 import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox,Nav,NavItem,Panel} from 'react-bootstrap'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
+import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
 import {filter} from 'ramda'
 
@@ -54,7 +55,7 @@ const DaySheets = React.createClass({
   render(){
     const results = (item,i) => {
       let date = item.doc.date.split('T')[0]
-      return <Panel key={i}>{date} {item.doc.city},{item.doc.state}</Panel>
+      return <Link to={`/manage/daysheets/${item.doc._id}/show`}><Panel key={i}>{date} {item.doc.city},{item.doc.state}</Panel></Link>
     }
     return(
       <div>
@@ -65,8 +66,11 @@ const DaySheets = React.createClass({
               <h3>Filter</h3>
               <Nav bsStyle="pills" stacked activeKey={this.state.filter} onSelect={this.handleSelect}>
                 <NavItem eventKey={'all'}>All</NavItem>
-                {/* <NavItem eventKey={'press'} title="Item">Press</NavItem>
-                <NavItem eventKey={'other'}>Other</NavItem> */}
+                {/* <NavItem eventKey={'press'} title="Item">Press</NavItem> */}
+                {/* <NavItem eventKey={'other'}>Other</NavItem> */}
+              </Nav>
+              <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
+                <NavItem><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
               </Nav>
             </Col>
             <Col {...mainSectionStyle} xs={12} md={8}>
