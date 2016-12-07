@@ -59,9 +59,9 @@ const DaySheets = React.createClass({
     }
     return(
       <div>
-        <PageWrapper>
-          <h1>DaySheets</h1>
-          <Row {...container} className="show-grid">
+        <PageWrapper title="Browse Daysheets">
+          <div>fix this?</div>
+          <Row className="show-grid">
             <Col {...sideBarStyle} xs={12} md={4}>
               <h3>Filter</h3>
               <Nav bsStyle="pills" stacked activeKey={this.state.filter} onSelect={this.handleSelect}>

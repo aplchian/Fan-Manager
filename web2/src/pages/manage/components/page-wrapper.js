@@ -19,7 +19,7 @@ const Dashboard = React.createClass({
     return(
       <div {...backgroundStyle}>
         <Home>
-          <SubNav />
+          <SubNav title={this.props.title} />
           <Row {...wrapperStyle}>
             {this.props.children}
           </Row>

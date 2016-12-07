@@ -6,7 +6,9 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
 import {append,reject} from 'ramda'
+import TimePicker from 'rc-time-picker';
 import PouchDB from 'pouchdb'
+import 'rc-time-picker/assets/index.css';
 const db = new PouchDB('slo-dev')
 
 
@@ -31,9 +33,9 @@ const AddEvent = React.createClass({
         venue: "",
       	city: "",
       	state: "",
-      	streetone: "",
+      	addressone: "",
         schedule: [],
-        streettwo: "",
+        addresstwo: "",
       	zipcode: '',
         contact: [{id:'tbone',type: 'Production', name: 'alex boquist', email: "alex@aplchianmedia.com", phone: "8437493102" }],
         parking: "",
@@ -52,8 +54,8 @@ const AddEvent = React.createClass({
         newevent: {
           id: uuid.v4(),
           event: '',
-          timestart: '',
-          timeend: '',
+          starttime: '',
+          endtime: '',
           duration: ''
         }
     })
@@ -65,6 +67,8 @@ const AddEvent = React.createClass({
     let date = event.date.split('T')[0]
     event._id = `event_${date}_type_${this.state.type}_${this.state.name}`
     console.log('event',event)
+    delete event.newevent
+    delete event.newcontact
     db.put(event,(err,res) => {
       if(err) console.log(err)
       console.log(res)
@@ -155,6 +159,13 @@ const AddEvent = React.createClass({
       this.setState({schedule})
     }
   },
+  handleTimeChange(path){
+    return value => {
+      let newevent = this.state.newevent
+      newevent[path] = value.format('HH:mm')
+      this.setState({newevent})
+    }
+  },
   render(){
     const contacts = (item,i) => {
       return <FormControl.Static>
@@ -164,15 +175,14 @@ const AddEvent = React.createClass({
     }
     const events = (item,i) => {
       return <FormControl.Static>
-                {`(${item.event}): ${item.timestart} - ${item.timeend}`}
+                {`${item.event}: ${item.starttime} - ${item.endtime}`}
                 <Button onClick={this.removeEvent(item.id)}>remove</Button>
               </FormControl.Static>
             }
     return (
       <div>
-        <PageWrapper>
+        <PageWrapper title="Add Event">
           <Row {...container} className="show-grid">
-           <h1>Add Event</h1>
            <Col xs={12} md={12} {...style({width: '100%'})}>
              <form onSubmit={this.handleSubmit}>
                 <FormGroup
@@ -189,6 +199,12 @@ const AddEvent = React.createClass({
                     <option value="show">Show</option>
                     <option value="press">Press</option>
                     <option value="other">Other</option>
+                  </FormControl>
+                  <ControlLabel>Type</ControlLabel>
+                  <FormControl onChange={this.handleChange('status')} componentClass="select" placeholder="status">
+                    <option value="confirmed">Confirmed</option>
+                    <option value="onhold">On Hold</option>
+                    <option value="inactive">Inactive</option>
                   </FormControl>
                   <ControlLabel {...style({display: 'block'})} >Date</ControlLabel>
                   <DatePicker
@@ -232,19 +248,11 @@ const AddEvent = React.createClass({
                     <ControlLabel>Schedule</ControlLabel>
                     <FormControl type="text"
                       value={this.state.newevent.event}
-                      placeholder="Dinner"
+                      placeholder="Sound Check"
                       onChange={this.handleAddEvent('event')}
                     />
-                    <FormControl type="number"
-                      value={this.state.newevent.timestart}
-                      placeholder="start time"
-                      onChange={this.handleAddEvent('timestart')}
-                    />
-                    <FormControl type="number"
-                      value={this.state.newevent.timeend}
-                      placeholder="end time"
-                      onChange={this.handleAddEvent('timeend')}
-                    />
+                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
                     <FormControl type="number"
                       value={this.state.newevent.duration}
                       placeholder="duration"
@@ -257,12 +265,12 @@ const AddEvent = React.createClass({
                   <FormControl type="text"
                     value={this.state.streetone}
                     placeholder="Street Address 1"
-                    onChange={this.handleChange('streetone')}
+                    onChange={this.handleChange('addressone')}
                   />
                   <FormControl type="text"
                     value={this.state.streettwo}
                     placeholder="Street Address 2"
-                    onChange={this.handleChange('streettwo')}
+                    onChange={this.handleChange('addresstwo')}
                   />
                   <FormControl type="text"
                     value={this.state.city}
@@ -311,6 +319,9 @@ const AddEvent = React.createClass({
               </form>
            </Col>
           </Row>
+          <pre>
+            {JSON.stringify(this.state,null,2)}
+          </pre>
         </PageWrapper>
       </div>
     )

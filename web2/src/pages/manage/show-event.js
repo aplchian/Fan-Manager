@@ -28,7 +28,7 @@ const Event = React.createClass({
   },
   render(){
     const listSchedule = (item,i) => (
-      <ListGroupItem key={i}>{item.event} -- {item.timestart} - {item.timeend} -> {item.duration}min </ListGroupItem>
+      <ListGroupItem key={i}>{item.event} -- {item.starttime} - {item.endtime} -> {item.duration}min </ListGroupItem>
     )
     const listContacts = (item,i) => (
       <div {...style({marginBottom: 10})}>

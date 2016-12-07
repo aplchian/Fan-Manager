@@ -36,7 +36,7 @@ const SubNav = React.createClass({
     }
     return(
       <div>
-        <Header header="Manage" />
+        <Header header={this.props.title} />
         <div {...subNavStyle}>
           <Nav bsStyle="pills" activeKey={9} onSelect={handleSelect}>
             {this.state.links.map(li)}

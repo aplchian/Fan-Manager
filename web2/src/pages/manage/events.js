@@ -64,10 +64,10 @@ const ListEvents = React.createClass({
     }
     return(
       <div>
-        <PageWrapper>
-          <h1>Events</h1>
+        <PageWrapper title="Browse Events">
+          <div>fix this?</div>
           <Row {...container} className="show-grid">
-            <Col {...sideBarStyle} xs={12} md={4}>
+            <Col xs={12} md={4}>
               <h3>Filter</h3>
               <Nav bsStyle="pills" stacked activeKey={this.state.filter} onSelect={this.handleSelect}>
                 <NavItem eventKey={'show'}>Shows</NavItem>
@@ -78,7 +78,7 @@ const ListEvents = React.createClass({
                 <NavItem><Link to="/manage/events/add">Add Event</Link></NavItem>
               </Nav>
             </Col>
-            <Col {...mainSectionStyle} xs={12} md={8}>
+            <Col xs={12} md={8}>
               <h3>Results</h3>
               {this.state.results.map(results)}
             </Col>

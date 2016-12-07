@@ -8,6 +8,8 @@ import uuid from 'node-uuid'
 import {append,reject,filter,compose,head,path,map,equals,forEach} from 'ramda'
 import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
+import TimePicker from 'rc-time-picker'
+import 'rc-time-picker/assets/index.css'
 
 require('react-datepicker/dist/react-datepicker.css');
 
@@ -43,8 +45,8 @@ const AddEvent = React.createClass({
       newevent: {
         id: uuid.v4(),
         event: '',
-        timestart: '',
-        timeend: '',
+        starttime: '',
+        endtime: '',
         duration: ''
       }
     })
@@ -114,8 +116,8 @@ const AddEvent = React.createClass({
       newevent: {
         id: uuid.v4(),
         event: '',
-        timestart: '',
-        timeend: ''
+        starttime: '',
+        endtime: ''
       }
     })
   },
@@ -141,25 +143,31 @@ const AddEvent = React.createClass({
       this.setState({events})
     }
   },
+  handleTimeChange(path){
+    return value => {
+      let newevent = this.state.newevent
+      newevent[path] = value.format('HH:mm')
+      this.setState({newevent})
+    }
+  },
   render(){
     const events = (item,i) => {
       return <FormControl.Static>
-                {`(${item.event}): ${item.timestart} - ${item.timeend}`}
+                {`(${item.event}): ${item.starttime} - ${item.endtime}`}
                 <Button onClick={this.removeEvent(item.id)}>remove</Button>
               </FormControl.Static>
     }
     const listEvents = (item,i) => {
       let checkBox = item.doc.active
-                      ? <Checkbox checked onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
-                      : <Checkbox onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
+                      ? <Checkbox key={i} checked onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
+                      : <Checkbox key={i} onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
       return checkBox
     }
 
     return (
       <div>
-        <PageWrapper>
+        <PageWrapper title="Add Daysheet">
           <Row {...container} className="show-grid">
-           <h1>Add DaySheet</h1>
            <Col xs={12} md={12} {...style({width: '100%'})}>
              <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formBasicText">
@@ -200,16 +208,8 @@ const AddEvent = React.createClass({
                       placeholder="Dinner"
                       onChange={this.handleAddEvent('event')}
                     />
-                    <FormControl type="number"
-                      value={this.state.newevent.timestart}
-                      placeholder="start time"
-                      onChange={this.handleAddEvent('timestart')}
-                    />
-                    <FormControl type="number"
-                      value={this.state.newevent.timeend}
-                      placeholder="end time"
-                      onChange={this.handleAddEvent('timeend')}
-                    />
+                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
                     <FormControl type="number"
                       value={this.state.newevent.duration}
                       placeholder="duration"
