@@ -3,8 +3,10 @@ const {style} = require('glamor')
 const PageWrapper = require('./components/page-wrapper.js')
 const Input = require('../components/input-field')
 const WarningBar = require('../components/warning-bar')
-const Button = require('../components/submit-button.js')
+// const Button = require('../components/submit-button.js')
 const PageTitle = require('../components/page-header.js')
+import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox} from 'react-bootstrap'
+
 // import {Button,Modal} from 'react-bootstrap'
 
 const checkboxContainer = style({
@@ -77,25 +79,54 @@ const Dashboard = React.createClass({
     console.log(this.state)
     return(
       <div>
-          <PageWrapper>
-            <div {...containerStyle}>
-              <PageTitle text="Add Fan"/>
-              {/* <WarningBar text={this.state.success}/> */}
-              <form onSubmit={this.handleSubmit}>
-                <Input placeholder="First" value={this.state.f_name} onChange={this.handleChange('f_name')} />
-                <Input placeholder="Last" value={this.state.l_name} onChange={this.handleChange('l_name')} />
-                <Input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
-                <Input placeholder="City" value={this.state.city} onChange={this.handleChange('city')} />
-                <Input placeholder="State" value={this.state.state} onChange={this.handleChange('state')} />
-                <div {...checkboxContainer}>
-                  <div {...checkboxStyle}>
-                    <label>Street Team</label>
-                    <input type="checkbox" checked={this.state.streetteam} onChange={this.toggleStreetTeam} />
-                  </div>
-                </div>
-                <Button text="SUBMIT" />
-              </form>
-            </div>
+          <PageWrapper title="Add Fan">
+              <Row>
+                <Col>
+                  <form onSubmit={this.handleSubmit}>
+                    <ControlLabel>First Name</ControlLabel>
+                    <FormControl type="text"
+                      value={this.state.f_name}
+                      placeholder="First Name"
+                      onChange={this.handleChange('f_name')}
+                    />
+                    <ControlLabel>Last Name</ControlLabel>
+                    <FormControl type="text"
+                      value={this.state.l_name}
+                      placeholder="Last Name"
+                      onChange={this.handleChange('l_name')}
+                    />
+                    <ControlLabel>Email</ControlLabel>
+                    <FormControl type="text"
+                      value={this.state.email}
+                      placeholder="Email"
+                      onChange={this.handleChange('email')}
+                    />
+                    <ControlLabel>City</ControlLabel>
+                    <FormControl type="text"
+                      value={this.state.city}
+                      placeholder="City"
+                      onChange={this.handleChange('city')}
+                    />
+                    <ControlLabel>State</ControlLabel>
+                    <FormControl type="text"
+                      value={this.state.state}
+                      placeholder="State"
+                      onChange={this.handleChange('state')}
+                    />
+
+                    <div {...checkboxContainer}>
+                      <div {...checkboxStyle}>
+                        <label>Street Team</label>
+                        <input type="checkbox" checked={this.state.streetteam} onChange={this.toggleStreetTeam} />
+                      </div>
+                    </div>
+                    <Button type="submit">Submit</Button>
+                  </form>
+                </Col>
+              </Row>
+              <pre>
+                {JSON.stringify(this.state,null,2)}
+              </pre>
           </PageWrapper>
       </div>
    )

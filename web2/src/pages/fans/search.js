@@ -7,6 +7,7 @@ import {Button,FormControl,FieldGroup,FormGroup,Form,Table} from 'react-bootstra
 import FanSearchBar from './components/fan-search-bar'
 import SearchResultsTable from './components/search-results-table'
 import {buildMailChimp} from './helpers/helpers'
+import {Row, Col} from 'react-bootstrap'
 
 
 const inputStyle = style({
@@ -118,7 +119,7 @@ const Dashboard = React.createClass({
   },
   render(){
 
-    const searchType = this.props.params.type === 'search' ? 'Fan' : 'Street Team'
+    const searchType = this.props.params.type === 'search' ? 'Fans' : 'Street Team'
     const resultCount = this.state.data.length > 0
     ? <tr><td>{this.state.data.length} Fans Found</td></tr>
     : null
@@ -126,21 +127,26 @@ const Dashboard = React.createClass({
     ? <Button onClick={this.syncMailChimp}>Sync to Mailchimp</Button>
     : null
 
+
     return(
       <div>
-          <PageWrapper>
-            <div>
+        <PageWrapper title={`Search ${searchType}`}>
+          <Row>
+            <Col xs={12} md={4} >
               <PageTitle to="Search"/>
               <FanSearchBar
                 handleSubmit={this.handleSubmit}
                 handleChange={this.handleChange}
                 q={this.state.q}
                />
+            </Col>
+            <Col xs={12} md={8} >
               {resultCount}
               <SearchResultsTable results={this.state.data} />
               {MailChimpButton}
-            </div>
-          </PageWrapper>
+            </Col>
+          </Row>
+        </PageWrapper>
 
       </div>
    )

@@ -3,7 +3,10 @@ const {style} = require('glamor')
 const PageWrapper = require('./components/page-wrapper.js')
 const FanItem = require('./components/fan-item.js')
 const {Redirect} = require('react-router')
-import {Button} from 'react-bootstrap'
+// import {Button} from 'react-bootstrap'
+import moment from 'moment'
+import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox,Nav,NavItem,Panel,PageHeader,ListGroup,ListGroupItem} from 'react-bootstrap'
+
 
 
 const headerStyle = style({
@@ -34,16 +37,18 @@ const Dashboard = React.createClass({
     return(
       <div>
          {Edit}
-          <PageWrapper>
-            <div {...headerStyle}>
-              <h1 {...style({margin:'0 0 4px 0'})}>{this.state.email}</h1>
-            </div>
-            <FanItem label='First Name' data={this.state.f_name} />
-            <FanItem label='Last Name' data={this.state.l_name} />
-            <FanItem label='Email' data={this.state.email} />
-            <FanItem label='City' data={this.state.city} />
-            <FanItem label='State' data={this.state.state} />
-            <FanItem label='Join Date' data={this.state.join} />
+         <PageWrapper title="View Fan">
+           <Row>
+             <Col xs={12} md={12}>
+               <PageHeader>{this.state.email}</PageHeader>
+             </Col>
+           </Row>
+            <Panel header={`First Name`}>{this.state.f_name}</Panel>
+            <Panel header={`Last Name`}>{this.state.l_name}</Panel>
+            <Panel header={`Email`}>{this.state.email}</Panel>
+            <Panel header={`City`}>{this.state.city}</Panel>
+            <Panel header={`State`}>{this.state.state}</Panel>
+            <Panel header={`Join Date`}>{moment(this.state.join).format('MMM Do YYYY')}</Panel>
             <Button onClick={this.edit}>EDIT</Button>
           </PageWrapper>
       </div>

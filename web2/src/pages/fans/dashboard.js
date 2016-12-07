@@ -101,7 +101,7 @@ const Dashboard = React.createClass({
   render(){
     return(
       <div>
-          <PageWrapper>
+        <PageWrapper title="Fan Dashboard">
             <PageTitle text="Dashboard" />
             <Graph data={this.state}></Graph>
           </PageWrapper>

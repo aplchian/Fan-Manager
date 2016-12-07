@@ -4,7 +4,7 @@ import {Button,FormControl,FieldGroup,FormGroup,Form,Table} from 'react-bootstra
 
 
 const FanSearchBar = ({handleSubmit,handleChange,q}) => (
-  <Form inline onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit}>
     <label>Search By</label>
     <FormControl className="pullRight" componentClass="select" placeholder="select" onChange={handleChange('searchtype')}>
      <option value="email">Email</option>
