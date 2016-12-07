@@ -6,7 +6,7 @@ import {Row} from 'react-bootstrap'
 
 const wrapperStyle = style({
   display: 'block',
-  margin: '50px auto 0 auto',
+  // margin: '50px auto 0 auto',
 })
 
 const backgroundStyle = style({

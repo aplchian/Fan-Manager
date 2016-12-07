@@ -56,14 +56,14 @@ const AddEvent = React.createClass({
         console.log('updated!'.res)
       })
     }
-    let event = this.state
-    event.date = this.state.date.format()
-    event._id = `event_${this.state.type}_${this.state.name}`
+    let daysheet = this.state
+    daysheet.date = this.state.date.format()
+    let date = daysheet.date.split('T')[0]
+    daysheet._id = `daysheet_${date}_${this.state.band}`
     this.state.events.forEach(updateEvents)
-    delete event.events
-    delete event.newevent
-    console.log('event',event)
-    db.put(event,(err,res) => {
+    delete daysheet.events
+    delete daysheet.newevent
+    db.put(daysheet,(err,res) => {
       if(err) console.log(err)
       console.log(res)
     })

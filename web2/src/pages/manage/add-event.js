@@ -62,7 +62,7 @@ const AddEvent = React.createClass({
     let event = this.state
     event.date = this.state.date.format()
     let date = event.date.split('T')[0]
-    event._id = `event_date_${date}_type_${this.state.type}_${this.state.name}`
+    event._id = `event_${date}_type_${this.state.type}_${this.state.name}`
     console.log('event',event)
     db.put(event,(err,res) => {
       if(err) console.log(err)
