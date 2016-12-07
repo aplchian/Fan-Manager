@@ -112,6 +112,28 @@ app.post('/mailchimp',function(req,res){
   .catch(err => console.log(err))
 })
 
+app.post('/events',function(req,res){
+  var doc = req.body
+  dal.createEvent(doc,function(err,body){
+    if(err){
+      res.status(400)
+      return res.send({ok: false, err: err.message})
+    }
+    return res.send({ok: true})
+  })
+})
+
+app.get('/events/:id',function(req,res){
+  let event = req.params.id
+  dal.getEvent(event)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
+})
+
+
 
 app.listen(3039,function(){
   console.log('listening on port 3039')

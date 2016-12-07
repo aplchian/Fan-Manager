@@ -39,14 +39,13 @@ const App = React.createClass({
           <Match exactly pattern="/manage/events" component={Service(Events)}></Match>
           <Match exactly pattern="/manage/daysheets" component={Service(DaySheets)}></Match>
 
-          <Match exactly pattern="/manage/events/add" component={Service(AddEvent)}></Match>
+          <Match exactly pattern="/manage/daysheets/:id/edit" component={Service(AddDaySheet)}></Match>
+          <Match exactly pattern="/manage/daysheets/:id/show" component={Service(DaySheet)}></Match>
           <Match exactly pattern="/manage/daysheets/add" component={Service(AddDaySheet)}></Match>
 
+          <Match exactly pattern="/manage/events/add" component={Service(AddEvent)}></Match>
           <Match exactly pattern="/manage/events/:id/show" component={Service(Event)}></Match>
-          <Match exactly pattern="/manage/daysheets/:id/show" component={Service(DaySheet)}></Match>
-
-
-
+          <Match exactly pattern="/manage/events/:id/edit" component={Service(AddEvent)}></Match>
 
         </div>
       </BrowserRouter>

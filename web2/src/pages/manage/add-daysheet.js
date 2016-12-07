@@ -51,6 +51,11 @@ const AddEvent = React.createClass({
       }
     })
   },
+  componentDidMount(){
+    if(this.props.params.id){
+
+    }
+  },
   handleSubmit(e){
     e.preventDefault()
     const updateEvents = function(item){

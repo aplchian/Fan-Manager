@@ -7,7 +7,7 @@ const {
     prop,
     forEach
 } = require('ramda')
-const create = require('./methods/createFan.js')
+const create = require('./methods/create.js')
 const update = require('./methods/update.js')
 const remove = require('./methods/remove.js')
 const getThe = require('./methods/get.js')
@@ -51,9 +51,11 @@ function queryDB(view,cb){
 module.exports = {
     fansByState: listFansByState,
     getFan: getThe.fan,
+    getEvent: getThe.event,
     getAllFans: queryDB,
     updateFan: update.fan,
     removeFan: remove.fan,
     createFan: create.fan,
     listStreetTeam: queryDB,
+    createEvent: create.event
 }

@@ -60,19 +60,28 @@ const AddEvent = React.createClass({
         }
     })
   },
+  componentDidMount(){
+    if(this.props.params.id){
+      this.props.getEvent(this.props.params.id)
+        .then(res => console.log('resut',res.data))
+    }
+  },
   handleSubmit(e){
     e.preventDefault()
-    let event = this.state
-    event.date = this.state.date.format()
-    let date = event.date.split('T')[0]
-    event._id = `event_${date}_type_${this.state.type}_${this.state.name}`
-    console.log('event',event)
-    delete event.newevent
-    delete event.newcontact
-    db.put(event,(err,res) => {
-      if(err) console.log(err)
-      console.log(res)
-    })
+    // let event = this.state
+    // event.date = this.state.date.format()
+    // let date = event.date.split('T')[0]
+    // event._id = `event_${date}_type_${this.state.type}_${this.state.name}`
+    // console.log('event',event)
+    // delete event.newevent
+    // delete event.newcontact
+    // db.put(event,(err,res) => {
+    //   if(err) console.log(err)
+    //   console.log(res)
+    // })
+    this.props.addEvent(this.state)
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message))
   },
   handleChange(path){
     return e => {

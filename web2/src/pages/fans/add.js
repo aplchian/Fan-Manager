@@ -66,6 +66,7 @@ const Dashboard = React.createClass({
     }else {
       this.props.addFan(this.state,(err,res) => {
         if(err) return console.log('err',err)
+        res.status(400)
         return console.log('success',res)
       })
     }

@@ -17,10 +17,19 @@ function getDoc(doc, cb) {
     })
 }
 
+function getDocPromise(doc){
+  return db.get(doc)
+}
+
 function getFan(doc,cb){
   getDoc(doc,cb)
 }
 
+function getEvent(doc){
+  return getDocPromise(doc)
+}
+
 module.exports = {
-  fan: getFan
+  fan: getFan,
+  event: getEvent
 }

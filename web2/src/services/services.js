@@ -46,6 +46,12 @@ const Service = Component => React.createClass({
   syncMailChimp(doc){
     return axios.post(`${url}mailchimp`,doc)
   },
+  addEvent(doc,cb){
+    return axios.post(`${url}events`,doc)
+  },
+  getEvent(eventId){
+    return axios.get(`${url}events/${eventId}`)
+  },
   render(){
     return <Component
       {...this.props}
@@ -53,7 +59,9 @@ const Service = Component => React.createClass({
       allFans={this.allFans}
       streetTeam={this.streetTeam}
       addFan={this.addFan}
+      addEvent={this.addEvent}
       getFan={this.getFan}
+      getEvent={this.getEvent}
       editFan={this.editFan}
       syncMailChimp={this.syncMailChimp}
     />
