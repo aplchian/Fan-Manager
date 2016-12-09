@@ -27,7 +27,8 @@ const AddEvent = React.createClass({
   getInitialState(){
     return({
         name: '',
-        type: "show",
+        type: "event",
+        eventtype: "show",
         schedule: [],
         date: moment(),
         venue: "",
@@ -37,13 +38,13 @@ const AddEvent = React.createClass({
         schedule: [],
         addresstwo: "",
       	zipcode: '',
-        contact: [{id:'tbone',type: 'Production', name: 'alex boquist', email: "alex@aplchianmedia.com", phone: "8437493102" }],
+        contact: [],
         parking: "",
         capacity: '',
         deal: "",
         notes: "",
-        band: "slo",
-        status: 'confirmed',
+        band: "band_Stop_Light_Observations",
+        status: "confirmed",
         newcontact: {
           id: uuid.v4(),
           type: '',
@@ -63,25 +64,24 @@ const AddEvent = React.createClass({
   componentDidMount(){
     if(this.props.params.id){
       this.props.getEvent(this.props.params.id)
-        .then(res => console.log('resut',res.data))
+        .then(res => this.setState({
+          ...res.data,
+          date: moment(res.data.date)
+        }))
     }
   },
   handleSubmit(e){
     e.preventDefault()
-    // let event = this.state
-    // event.date = this.state.date.format()
-    // let date = event.date.split('T')[0]
-    // event._id = `event_${date}_type_${this.state.type}_${this.state.name}`
-    // console.log('event',event)
-    // delete event.newevent
-    // delete event.newcontact
-    // db.put(event,(err,res) => {
-    //   if(err) console.log(err)
-    //   console.log(res)
-    // })
-    this.props.addEvent(this.state)
-      .then(res => console.log(res))
-      .catch(err => console.log(err.message))
+    if(this.props.params.id){
+      this.props.updateEvent(this.state)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.message))
+    }else {
+      this.props.addEvent(this.state)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.message))
+    }
+
   },
   handleChange(path){
     return e => {
@@ -204,7 +204,7 @@ const AddEvent = React.createClass({
                     onChange={this.handleChange('name')}
                   />
                   <ControlLabel>Type</ControlLabel>
-                  <FormControl onChange={this.handleChange('type')} componentClass="select" placeholder="type">
+                  <FormControl onChange={this.handleChange('eventtype')} componentClass="select" placeholder="type">
                     <option value="show">Show</option>
                     <option value="press">Press</option>
                     <option value="other">Other</option>
@@ -212,8 +212,7 @@ const AddEvent = React.createClass({
                   <ControlLabel>Type</ControlLabel>
                   <FormControl onChange={this.handleChange('status')} componentClass="select" placeholder="status">
                     <option value="confirmed">Confirmed</option>
-                    <option value="onhold">On Hold</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="notconfirmed">Not Confirmed</option>
                   </FormControl>
                   <ControlLabel {...style({display: 'block'})} >Date</ControlLabel>
                   <DatePicker

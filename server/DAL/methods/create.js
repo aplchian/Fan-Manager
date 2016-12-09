@@ -105,7 +105,31 @@ function createEvent(doc, cb) {
     })
 }
 
+function createDaysheet(doc, cb) {
+    console.log('doc',doc)
+
+    if (prop('_rev')(doc)) {
+        return cb(new Error('400 _rev not allowed'))
+    }
+
+    if (prop('_id')(doc)) {
+        return cb(new Error('400 _id not allowed'))
+    }
+
+    // let date = doc.date.split('T')[0]
+    // doc.date = doc.date.format()
+    let date = doc.date.split('T')[0]
+    doc._id = `daysheet_${date}_${doc.band}`
+    delete doc.events
+    delete doc.newevent
+    db.put(doc, (err,res) => {
+      if(err) return cb(err)
+      return cb(null,res)
+    })
+}
+
 module.exports = {
   fan: createFan,
+  daysheet: createDaysheet,
   event: createEvent
 }

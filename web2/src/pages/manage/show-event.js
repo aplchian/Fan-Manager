@@ -3,6 +3,7 @@ import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Check
 import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
+import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
 
 const container = style({
@@ -22,11 +23,20 @@ const Event = React.createClass({
     })
   },
   componentDidMount(){
-    db.get(this.props.params.id)
-      .then(res => this.setState({event: res}))
+    this.props.getEvent(this.props.params.id)
+      .then(res => this.setState({event: res.data}))
       .catch(err => console.log(err.message))
   },
+  removeEvent(e){
+    e.preventDefault()
+    if(confirm('Are you sure you want to delete?')){
+      this.props.removeEvent(this.state.event._id)
+        .then(res => console.log('success',res))
+        .catch(err => console.log('error',err.message))
+    }
+  },
   render(){
+    console.log(this.state)
     const listSchedule = (item,i) => (
       <ListGroupItem key={i}>{item.event} -- {item.starttime} - {item.endtime} -> {item.duration}min </ListGroupItem>
     )
@@ -48,8 +58,8 @@ const Event = React.createClass({
               {this.state.event.name}
               <small>{this.state.event.date.split('T')[0]}</small>
               <small>{this.state.event.type}</small>
-              <Button>Edit</Button>
-              <Button>Delete</Button>
+              <Link to={`/manage/events/${this.props.params.id}/edit`}><Button>Edit</Button></Link>
+              <Button onClick={this.removeEvent} >Delete</Button>
             </PageHeader>
           </Col>
         </Row>

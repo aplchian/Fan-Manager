@@ -3,7 +3,6 @@ import PageWrapper from './components/page-wrapper.js'
 import PageTitle from '../components/page-title'
 
 export default () => (
-  <PageWrapper>
-    <PageTitle text="Home" />
+  <PageWrapper title="Home">
   </PageWrapper>
 )

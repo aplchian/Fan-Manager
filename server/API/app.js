@@ -5,12 +5,6 @@ const cors = require('cors')
 var bodyParser = require('body-parser')
 const axios = require('axios')
 
-// app.use(function (req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Methods", "GET", "PUT", "POST", "DELETE", "OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-//     next();
-// });
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -39,7 +33,11 @@ app.get('/fans/:fan',function(req,res){
 })
 
 app.get('/fans',function(req,res){
-  dal.getAllFans('allfans',function(err,body){
+  let options = {
+    include_docs: true
+  }
+  dal.getView('allfans',options,function(err,body){
+
     if(err){
       return console.log(err.message)
     }
@@ -74,7 +72,10 @@ app.put('/fans',function(req,res){
 })
 
 app.get('/streetteam',function(req,res){
-  dal.listStreetTeam('streetteam',function(err,body){
+  let options = {
+    include_docs: true
+  }
+  dal.listStreetTeam('streetteam',options,function(err,body){
     if(err){
       return console.log(err.message)
     }
@@ -123,6 +124,17 @@ app.post('/events',function(req,res){
   })
 })
 
+app.post('/daysheets',function(req,res){
+  var doc = req.body
+  dal.createDaySheet(doc,function(err,body){
+    if(err){
+      res.status(400)
+      return res.send({ok: false, err: err.message})
+    }
+    return res.send({ok: true})
+  })
+})
+
 app.get('/events/:id',function(req,res){
   let event = req.params.id
   dal.getEvent(event)
@@ -133,8 +145,91 @@ app.get('/events/:id',function(req,res){
     })
 })
 
+app.get('/daysheets/:id',function(req,res){
+  let id = req.params.id
+  dal.getDaySheet(id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
+})
+
+app.get('/events',function(req,res){
+  let options = {
+    include_docs: true
+  }
+  dal.getView('events',options,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
+})
+
+app.get('/daysheets',function(req,res){
+  let options = {
+    include_docs: true
+  }
+  dal.getView('daysheets',options,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
+})
+
+app.put('/events',function(req,res){
+  var doc = req.body
+  dal.updateEvent(doc,function(err,body){
+    if(err) return(console.log(err.message))
+      return res.send(body)
+  })
+})
+
+app.put('/daysheets',function(req,res){
+  var doc = req.body
+  dal.updateDaySheet(doc,function(err,body){
+    if(err) return(console.log(err.message))
+      return res.send(body)
+  })
+})
+
+app.delete('/events/:id',function(req,res){
+  dal.removeEvent(req.params.id,function(err,body){
+    if(err) return res.send(err.message)
+      return res.send(body)
+  })
+})
+
+app.delete('/daysheets/:id',function(req,res){
+  dal.removeDaySheet(req.params.id,function(err,body){
+    if(err) return res.send(err.message)
+      return res.send(body)
+  })
+})
+
+app.get('/events/artists/:artistid',function(req,res){
+  let data = {
+    startDate: req.query.startdate,
+    endDate: req.query.enddate,
+    artistID: req.params.artistid
+  }
+  dal.getArtistEvents(data,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
+})
+
+app.get('/daysheets/artists/:artistid',function(req,res){
+  let data = {
+    startDate: req.query.startdate,
+    endDate: req.query.enddate,
+    artistID: req.params.artistid
+  }
+  dal.getArtistDaySheets(data,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
+})
 
 
-app.listen(3039,function(){
+app.listen(3040,function(){
   console.log('listening on port 3039')
 })

@@ -28,6 +28,16 @@ function removeFan(doc,cb){
   remove(doc,cb)
 }
 
+function removeEvent(doc,cb){
+  remove(doc,cb)
+}
+
+function removeDaysheet(doc,cb){
+  remove(doc,cb)
+}
+
 module.exports = {
-  fan: removeFan
+  fan: removeFan,
+  event: removeEvent,
+  daysheet: removeDaysheet
 }

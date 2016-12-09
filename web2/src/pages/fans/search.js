@@ -118,6 +118,7 @@ const Dashboard = React.createClass({
       .then(res => console.log(res))
   },
   render(){
+    console.log(this.state)
 
     const searchType = this.props.params.type === 'search' ? 'Fans' : 'Street Team'
     const resultCount = this.state.data.length > 0

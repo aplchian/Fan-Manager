@@ -5,7 +5,9 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
-import {filter} from 'ramda'
+import {filter, pluck} from 'ramda'
+import moment from 'moment'
+import DatePicker from 'react-datepicker'
 
 
 const container = style({
@@ -34,15 +36,23 @@ const DaySheets = React.createClass({
       filter: '',
       filterkey: 0,
       data: [],
-      results: []
+      results: [],
+      endDate: moment().add(1, 'months'),
+      startDate: moment(),
+      band: "band_Stop_Light_Observations"
+
     })
   },
   componentDidMount(){
-    db.allDocs({
-      include_docs: true,
-      startkey: 'daysheet_',
-      endkey: 'daysheet_\uffff'
-    }).then(data => this.setState({data: data.rows}))
+    let data = {
+      artistId: this.state.band,
+      startdate: this.state.startDate.format(),
+      enddate: this.state.endDate.format()
+    }
+    this.props.getArtistDaySheets(data)
+      .then(res => this.setState({
+        results: pluck('doc',res.data)
+      }))
       .catch(err => console.log(err.message))
   },
   handleSelect(type){
@@ -52,10 +62,29 @@ const DaySheets = React.createClass({
       results
      })
   },
+  handleDateChange(path){
+    return date => {
+      let currentState = this.state
+      currentState[path] = date
+      this.setState(currentState)
+    }
+  },
+  handleSearch(){
+    let data = {
+      artistId: this.state.band,
+      startdate: this.state.startDate.format(),
+      enddate: this.state.endDate.format()
+    }
+    this.props.getArtistDaySheets(data)
+      .then(res => this.setState({
+        results: pluck('doc',res.data)
+      }))
+      .catch(err => console.log(err.message))
+  },
   render(){
     const results = (item,i) => {
-      let date = item.doc.date.split('T')[0]
-      return <Link to={`/manage/daysheets/${item.doc._id}/show`}><Panel key={i}>{date} {item.doc.city},{item.doc.state}</Panel></Link>
+      let date = item.date.split('T')[0]
+      return <Link to={`/manage/daysheets/${item._id}/show`}><Panel key={i}>{date} {item.city},{item.state}</Panel></Link>
     }
     return(
       <div>
@@ -69,6 +98,17 @@ const DaySheets = React.createClass({
                 {/* <NavItem eventKey={'press'} title="Item">Press</NavItem> */}
                 {/* <NavItem eventKey={'other'}>Other</NavItem> */}
               </Nav>
+              <DatePicker
+                selected={this.state.startDate}
+                selectsStart  startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleDateChange('startDate')} />
+              <DatePicker
+                selected={this.state.endDate}
+                selectsEnd  startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleDateChange('endDate')} />
+                <Button {...style({display: 'block'})} onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
                 <NavItem><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
               </Nav>

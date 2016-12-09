@@ -4,7 +4,7 @@ import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
-import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck} from 'ramda'
+import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split} from 'ramda'
 const db = new PouchDB('slo-dev')
 
 const container = style({
@@ -27,34 +27,53 @@ const DaySheet = React.createClass({
     let date = this.props.params.id.split('_')[1]
     let start = `event_${date}`
     let end = `${start}\uffff`
-
     const getEvents = compose(
       flatten,
       reject(isEmpty),
       map(item => item.schedule),
       pluck('doc')
     )
-
-    const concatEvents = data => {
-      let concatData = getEvents(data).concat(this.state.daysheet.schedule)
-      let sorted = sort((a,b) => a.timestart - b.timestart,concatData)
-      return sorted
+    const removeColon = item => {
+      let arr = item.split(":")
+      return concat(arr[0],arr[1])
     }
-
-    db.get(this.props.params.id)
-      .then(res => this.setState({daysheet: res}))
+    const getDate = () => {
+      let date = this.state.daysheet.date
+      let data = {
+        artistId: this.state.daysheet.band,
+        startdate: date,
+        enddate: date
+      }
+      const concatEvents = data => {
+        let concatData = getEvents(data).concat(this.state.daysheet.schedule)
+        let sorted = sort((a,b) => removeColon(a.starttime) - removeColon(b.starttime),concatData)
+        return sorted
+      }
+      this.props.getArtistEvents(data)
+        .then(res => {
+          this.setState({
+            schedule: concatEvents(res.data),
+            events: pluck('doc',res.data),
+            date: date
+          }, () => {console.log('afterState',this.state)})
+        })
+    }
+    this.props.getDaySheet(this.props.params.id)
+      .then(res => this.setState({daysheet: res.data}, () => getDate()))
       .catch(err => console.log(err.message))
 
-    db.allDocs({include_docs: true, startkey: start, endkey: end})
-      .then(res => this.setState({
-        schedule: concatEvents(res.rows),
-        events: pluck('doc',res.rows)
-      }))
-      .catch(err => console.log(err.message))
+  },
+  removeDaySheet(e){
+    e.preventDefault()
+    if(confirm('Are you sure you want to delete this daysheet?')){
+      this.props.removeDaySheet(this.state.daysheet._id)
+        .then(res => console.log('deleted!',res))
+        .catch(err => console.log('error!',err.message))
+    }
   },
   render(){
     const listSchedule = (item,i) => (
-      <Panel header={<h3>{item.event}: {item.timestart}-{item.timeend}</h3>}>duration:{item.duration}</Panel>
+      <Panel header={<h3>{item.event}: {item.starttime}-{item.starttime}</h3>}>duration:{item.duration}</Panel>
     )
     const listEvents = (item,i) => (
       <Link to={`/manage/events/${item._id}/show`}>
@@ -67,8 +86,8 @@ const DaySheet = React.createClass({
           <Col xs={12} md={12}>
             <PageHeader>
               {this.state.daysheet.date.split('T')[0]}
-              <Button>Edit</Button>
-              <Button>Delete</Button>
+              <Link to={`/manage/daysheets/${this.state.daysheet._id}/edit`}><Button>Edit</Button></Link>
+              <Button onClick={this.removeDaySheet}>Delete</Button>
             </PageHeader>
           </Col>
         </Row>

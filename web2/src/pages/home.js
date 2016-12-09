@@ -10,12 +10,16 @@ import MainNavBar from './components/main-nav'
 
 const appStyle = insertRule("body {height: 100%}")
 const appStyle2 = insertRule("body {width: 100%}")
+const appStyle3 = insertRule("body {color: 'red'}")
+
+
+
 
 
 const Home = React.createClass({
   render(){
     return(
-      <div {...merge(appStyle,appStyle2)}>
+      <div {...merge(appStyle,appStyle2,appStyle3)}>
         <MainNavBar />
         <Content>
           {this.props.children}

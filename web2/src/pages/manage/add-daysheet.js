@@ -5,7 +5,7 @@ import {style} from 'glamor'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
-import {append,reject,filter,compose,head,path,map,equals,forEach} from 'ramda'
+import {append,reject,filter,compose,head,path,map,equals,forEach,pluck} from 'ramda'
 import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
@@ -26,6 +26,7 @@ const AddEvent = React.createClass({
   getInitialState(){
     return({
       currentcity: '',
+      type: 'daysheet',
       currentstate: '',
       destinationcity: '',
       destinationstate: '',
@@ -39,7 +40,7 @@ const AddEvent = React.createClass({
       zipcode: '',
       mileage: '',
       notes: "",
-      band: "slo",
+      band: "band_Stop_Light_Observations",
       mileage: '',
       destinationname: '',
       newevent: {
@@ -53,29 +54,35 @@ const AddEvent = React.createClass({
   },
   componentDidMount(){
     if(this.props.params.id){
-
+      this.props.getDaySheet(this.props.params.id)
+        .then(res => this.setState({
+          ...res.data,
+          date: moment(res.data.date)
+        }))
     }
+    this.handleDateChange()
   },
   handleSubmit(e){
     e.preventDefault()
-    const updateEvents = function(item){
-      console.log('item',item)
-      db.put(item.doc,(err,res) => {
-        if(err) console.log(err)
-        console.log('updated!'.res)
-      })
+    const updateEvents = item => {
+
+      this.props.updateEvent(this.state)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.message))
     }
-    let daysheet = this.state
-    daysheet.date = this.state.date.format()
-    let date = daysheet.date.split('T')[0]
-    daysheet._id = `daysheet_${date}_${this.state.band}`
     this.state.events.forEach(updateEvents)
-    delete daysheet.events
-    delete daysheet.newevent
-    db.put(daysheet,(err,res) => {
-      if(err) console.log(err)
-      console.log(res)
-    })
+    if(this.props.params.id){
+      let doc = this.state
+      delete doc.newevent
+      this.props.updateDaySheet(doc)
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message))
+    }else{
+      this.props.addDaySheet(this.state)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.message))
+     }
+
 
   },
   handleChange(path){
@@ -86,24 +93,18 @@ const AddEvent = React.createClass({
     }
   },
   handleDateChange(date){
-    let incomingDate = date.format().split('T')[0]
-    let start = `event_${incomingDate}`
-    let end = `${start}\uffff`
-    db.allDocs({
-      include_docs: true,
-      startkey: start,
-      endkey: end
-    }, (err,res) => {
-      if (err) return console.log(err.message)
-      console.log('got',res)
-
-      this.setState({
-        events: res.rows
+    let data = {
+      artistId: this.state.band,
+      enddate: date.format(),
+      startdate: date.format()
+    }
+    this.props.getArtistEvents(data)
+      .then(res => {
+        this.setState({
+          events: pluck('doc',res.data),
+          date: date
+        })
       })
-    })
-    this.setState({
-      date: date
-    })
   },
   handleAddEvent(path){
     return e => {
@@ -137,7 +138,7 @@ const AddEvent = React.createClass({
   eventToggle(id){
     const toggle = item => {
       if(item.id === id){
-        item.doc.active = !item.doc.active
+        item.status = item.status === 'confirmed' ? 'notconfirmed' : 'confirmed'
         return item
       }
       return item
@@ -163,9 +164,9 @@ const AddEvent = React.createClass({
               </FormControl.Static>
     }
     const listEvents = (item,i) => {
-      let checkBox = item.doc.active
-                      ? <Checkbox key={i} checked onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
-                      : <Checkbox key={i} onChange={this.eventToggle(item.id)}>{item.doc.name}</Checkbox>
+      let checkBox = item.status === 'confirmed'
+                      ? <Checkbox key={i} checked onChange={this.eventToggle(item.id)}>{item.name}</Checkbox>
+                      : <Checkbox key={i} onChange={this.eventToggle(item.id)}>{item.name}</Checkbox>
       return checkBox
     }
 

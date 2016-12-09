@@ -23,11 +23,20 @@ function update(doc, cb) {
 }
 
 function updateFan(doc,cb){
-  console.log(doc)
+  update(doc,cb)
+}
+
+function updateEvent(doc,cb){
+  update(doc,cb)
+}
+
+function updateDaySheet(doc,cb){
   update(doc,cb)
 }
 
 
 module.exports = {
-  fan: updateFan
+  fan: updateFan,
+  event: updateEvent,
+  daysheet: updateDaySheet
 }

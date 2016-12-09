@@ -31,10 +31,7 @@ function listFansByState(startToken, limit, cb) {
 }
 
 
-function queryDB(view,cb){
-  var options = {
-    include_docs: true
-  }
+function queryDB(view,options,cb){
   db.query(view,options,function(err,body){
     if(err){
       return cb(err)
@@ -45,6 +42,40 @@ function queryDB(view,cb){
   })
 }
 
+function getArtistEvents({startDate,endDate,artistID},cb){
+  startDate = new Date(startDate)
+  endDate = new Date(endDate)
+  let startYear = startDate.getUTCFullYear()
+  let startMonth = startDate.getUTCMonth() + 1
+  let startDay = startDate.getUTCDate()
+  let endYear = endDate.getUTCFullYear()
+  let endMonth = endDate.getUTCMonth() + 1
+  let endDay = endDate.getUTCDate()
+  let options = {
+    include_docs: true,
+    startkey: [artistID,startYear,startMonth,startDay,0,0],
+    endkey: [artistID,endYear,endMonth,endDay,23,59]
+  }
+  queryDB('artistevents',options,cb)
+}
+
+function getArtistDaySheets({startDate,endDate,artistID},cb){
+  startDate = new Date(startDate)
+  endDate = new Date(endDate)
+  let startYear = startDate.getUTCFullYear()
+  let startMonth = startDate.getUTCMonth() + 1
+  let startDay = startDate.getUTCDate()
+  let endYear = endDate.getUTCFullYear()
+  let endMonth = endDate.getUTCMonth() + 1
+  let endDay = endDate.getUTCDate()
+  let options = {
+    include_docs: true,
+    startkey: [artistID,startYear,startMonth,startDay,0,0],
+    endkey: [artistID,endYear,endMonth,endDay,23,59]
+  }
+  queryDB('artistdaysheets',options,cb)
+}
+
 
 
 
@@ -52,10 +83,18 @@ module.exports = {
     fansByState: listFansByState,
     getFan: getThe.fan,
     getEvent: getThe.event,
-    getAllFans: queryDB,
+    getDaySheet: getThe.daysheet,
+    getView: queryDB,
+    getArtistEvents: getArtistEvents,
+    getArtistDaySheets: getArtistDaySheets,
     updateFan: update.fan,
+    updateEvent: update.event,
+    updateDaySheet: update.event,
     removeFan: remove.fan,
+    removeEvent: remove.event,
+    removeDaySheet: remove.daysheet,
     createFan: create.fan,
     listStreetTeam: queryDB,
-    createEvent: create.event
+    createEvent: create.event,
+    createDaySheet: create.daysheet
 }
