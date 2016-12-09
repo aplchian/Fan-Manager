@@ -77,6 +77,24 @@ function getArtistDaySheets({startDate,endDate,artistID},cb){
   queryDB('artistdaysheets',options,cb)
 }
 
+function getArtistTodos({startDate,endDate,artistID},cb){
+  startDate = new Date(startDate)
+  endDate = new Date(endDate)
+  let startYear = startDate.getUTCFullYear()
+  let startMonth = startDate.getUTCMonth() + 1
+  let startDay = startDate.getUTCDate()
+  let endYear = endDate.getUTCFullYear()
+  let endMonth = endDate.getUTCMonth() + 1
+  let endDay = endDate.getUTCDate()
+  let options = {
+    include_docs: true,
+    startkey: [artistID,startYear,startMonth,startDay,0,0],
+    endkey: [artistID,endYear,endMonth,endDay,23,59]
+  }
+  queryDB('artisttodos',options,cb)
+}
+
+
 
 
 
@@ -85,17 +103,23 @@ module.exports = {
     getFan: getThe.fan,
     getEvent: getThe.event,
     getDaySheet: getThe.daysheet,
+    getTodo: getThe.todo,
     getView: queryDB,
     getArtistEvents: getArtistEvents,
     getArtistDaySheets: getArtistDaySheets,
+    getArtistTodos: getArtistTodos,
     updateFan: update.fan,
     updateEvent: update.event,
     updateDaySheet: update.event,
+    updateTodo: update.todo,
     removeFan: remove.fan,
     removeEvent: remove.event,
     removeDaySheet: remove.daysheet,
+    removeTodo: remove.todo,
     createFan: create.fan,
     listStreetTeam: queryDB,
     createEvent: create.event,
-    createDaySheet: create.daysheet
+    createDaySheet: create.daysheet,
+    createTodo: create.todo
+
 }

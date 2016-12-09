@@ -128,8 +128,29 @@ function createDaysheet(doc, cb) {
     })
 }
 
+function createTodo(doc, cb) {
+    console.log('doc',doc)
+
+    if (prop('_rev')(doc)) {
+        return cb(new Error('400 _rev not allowed'))
+    }
+
+    if (prop('_id')(doc)) {
+        return cb(new Error('400 _id not allowed'))
+    }
+
+    let date = doc.duedate.split('T')[0]
+    doc._id = `todo_${doc.band}_${date}*_${doc.id}`
+    delete doc.id
+    db.put(doc, (err,res) => {
+      if(err) return cb(err)
+      return cb(null,res)
+    })
+}
+
 module.exports = {
   fan: createFan,
   daysheet: createDaysheet,
-  event: createEvent
+  event: createEvent,
+  todo: createTodo
 }

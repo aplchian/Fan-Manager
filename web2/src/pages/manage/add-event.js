@@ -204,13 +204,13 @@ const AddEvent = React.createClass({
                     onChange={this.handleChange('name')}
                   />
                   <ControlLabel>Type</ControlLabel>
-                  <FormControl onChange={this.handleChange('eventtype')} componentClass="select" placeholder="type">
+                  <FormControl value={this.state.eventtype} onChange={this.handleChange('eventtype')} componentClass="select" placeholder="type">
                     <option value="show">Show</option>
                     <option value="press">Press</option>
                     <option value="other">Other</option>
                   </FormControl>
                   <ControlLabel>Type</ControlLabel>
-                  <FormControl onChange={this.handleChange('status')} componentClass="select" placeholder="status">
+                  <FormControl value={this.state.status} onChange={this.handleChange('status')} componentClass="select" placeholder="status">
                     <option value="confirmed">Confirmed</option>
                     <option value="notconfirmed">Not Confirmed</option>
                   </FormControl>

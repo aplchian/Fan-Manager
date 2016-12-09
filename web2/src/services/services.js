@@ -49,6 +49,9 @@ const Service = Component => React.createClass({
   updateDaySheet(doc){
     return axios.put(`${url}daysheets`,doc)
   },
+  updateTodo(doc){
+    return axios.put(`${url}todos`,doc)
+  },
   syncMailChimp(doc){
     return axios.post(`${url}mailchimp`,doc)
   },
@@ -58,11 +61,17 @@ const Service = Component => React.createClass({
   addDaySheet(doc){
     return axios.post(`${url}daysheets`,doc)
   },
+  addTodo(doc){
+    return axios.post(`${url}todos`,doc)
+  },
   getEvent(eventId){
     return axios.get(`${url}events/${eventId}`)
   },
   getDaySheet(id){
     return axios.get(`${url}daysheets/${id}`)
+  },
+  getTodo(id){
+    return axios.get(`${url}todos/${id}`)
   },
   getEvents(){
     return axios.get(`${url}events`)
@@ -80,8 +89,10 @@ const Service = Component => React.createClass({
     return axios.get(`${url}events/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
   getArtistDaySheets({artistId,startdate,enddate}){
-    console.log("url",`${url}daysheets/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
     return axios.get(`${url}daysheets/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
+  },
+  getArtistTodos({artistId,startdate,enddate}){
+    return axios.get(`${url}todos/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
 
   render(){
@@ -92,11 +103,14 @@ const Service = Component => React.createClass({
       streetTeam={this.streetTeam}
       addFan={this.addFan}
       addEvent={this.addEvent}
+      addTodo={this.addTodo}
       getFan={this.getFan}
       getEvent={this.getEvent}
+      getTodo={this.getTodo}
       editFan={this.editFan}
       updateEvent={this.updateEvent}
       updateDaySheet={this.updateDaySheet}
+      updateTodo={this.updateTodo}
       getEvents={this.getEvents}
       getDaySheets={this.getDaySheets}
       getDaySheet={this.getDaySheet}
@@ -106,6 +120,7 @@ const Service = Component => React.createClass({
       removeDaySheet={this.removeDaySheet}
       getArtistEvents={this.getArtistEvents}
       getArtistDaySheets={this.getArtistDaySheets}
+      getArtistTodos={this.getArtistTodos}
     />
   }
 })

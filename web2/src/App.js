@@ -12,10 +12,13 @@ const Service = require('./services/services')
 import Manage from './pages/manage'
 import DaySheets from './pages/manage/daysheets'
 import AddEvent from './pages/manage/add-event'
+import AddTodo from './pages/manage/add-todo'
 import AddDaySheet from './pages/manage/add-daysheet'
 import Events from './pages/manage/events'
 import Event from './pages/manage/show-event'
 import DaySheet from './pages/manage/show-daysheet'
+import Todos from './pages/manage/todos'
+
 
 
 
@@ -46,6 +49,11 @@ const App = React.createClass({
           <Match exactly pattern="/manage/events/add" component={Service(AddEvent)}></Match>
           <Match exactly pattern="/manage/events/:id/show" component={Service(Event)}></Match>
           <Match exactly pattern="/manage/events/:id/edit" component={Service(AddEvent)}></Match>
+
+          {/* <Match exactly pattern="/manage/daysheets/:id/edit" component={Service(AddDaySheet)}></Match> */}
+          <Match exactly pattern="/manage/todos" component={Service(Todos)}></Match>
+          <Match exactly pattern="/manage/todos/add" component={Service(AddTodo)}></Match>
+          <Match exactly pattern="/manage/todos/:id/edit" component={Service(AddTodo)}></Match>
 
         </div>
       </BrowserRouter>

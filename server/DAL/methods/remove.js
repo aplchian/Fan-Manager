@@ -36,8 +36,13 @@ function removeDaysheet(doc,cb){
   remove(doc,cb)
 }
 
+function removeTodo(doc,cb){
+  remove(doc,cb)
+}
+
 module.exports = {
   fan: removeFan,
   event: removeEvent,
-  daysheet: removeDaysheet
+  daysheet: removeDaysheet,
+  todo: removeTodo
 }

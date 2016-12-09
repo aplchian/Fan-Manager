@@ -196,6 +196,14 @@ app.put('/daysheets',function(req,res){
   })
 })
 
+app.put('/todos',function(req,res){
+  var doc = req.body
+  dal.updateTodo(doc,function(err,body){
+    if(err) return(console.log(err.message))
+      return res.send(body)
+  })
+})
+
 app.delete('/events/:id',function(req,res){
   dal.removeEvent(req.params.id,function(err,body){
     if(err) return res.send(err.message)
@@ -205,6 +213,13 @@ app.delete('/events/:id',function(req,res){
 
 app.delete('/daysheets/:id',function(req,res){
   dal.removeDaySheet(req.params.id,function(err,body){
+    if(err) return res.send(err.message)
+      return res.send(body)
+  })
+})
+
+app.delete('/todos/:id',function(req,res){
+  dal.removeTodo(req.params.id,function(err,body){
     if(err) return res.send(err.message)
       return res.send(body)
   })
@@ -232,6 +247,40 @@ app.get('/daysheets/artists/:artistid',function(req,res){
     if(err) return console.log(err.message)
       return res.send(body)
   })
+})
+
+app.get('/todos/artists/:artistid',function(req,res){
+  let data = {
+    startDate: req.query.startdate,
+    endDate: req.query.enddate,
+    artistID: req.params.artistid
+  }
+  console.log('data',data)
+  dal.getArtistTodos(data,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
+})
+
+app.post('/todos',function(req,res){
+  var doc = req.body
+  dal.createTodo(doc,function(err,body){
+    if(err){
+      res.status(400)
+      return res.send({ok: false, err: err.message})
+    }
+    return res.send({ok: true})
+  })
+})
+
+app.get('/todos/:id',function(req,res){
+  let id = req.params.id
+  dal.getTodo(id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 

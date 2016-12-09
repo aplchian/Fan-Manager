@@ -33,8 +33,13 @@ function getDaySheet(doc){
   return getDocPromise(doc)
 }
 
+function getTodo(doc){
+  return getDocPromise(doc)
+}
+
 module.exports = {
   fan: getFan,
   event: getEvent,
-  daysheet: getDaySheet
+  daysheet: getDaySheet,
+  todo: getTodo
 }

@@ -34,9 +34,15 @@ function updateDaySheet(doc,cb){
   update(doc,cb)
 }
 
+function updateTodo(doc,cb){
+  update(doc,cb)
+}
+
 
 module.exports = {
   fan: updateFan,
   event: updateEvent,
-  daysheet: updateDaySheet
+  daysheet: updateDaySheet,
+  todo: updateTodo
+
 }
