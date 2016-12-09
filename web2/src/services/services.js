@@ -15,14 +15,15 @@ const Service = Component => React.createClass({
       .then(res => cb(null,res))
       .catch(err => cb(err))
   },
-  allFans(cb){
-    axios.get(`${url}fans`)
+  allFans(artist,cb){
+    axios.get(`${url}fans?artist=${artist}`)
       .then(res => map(item => item.doc,res.data))
       .then(res => cb(null,res))
       .catch(err => cb(err))
   },
-  streetTeam(cb){
-    axios.get(`${url}streetteam`)
+  streetTeam(artist,cb){
+    console.log('artist',artist)
+    axios.get(`${url}fans?artist=${artist}&streetteam=true`)
       .then(res => map(item => item.doc,res.data))
       .then(res => cb(null,res))
       .catch(err => cb(err))
@@ -67,7 +68,7 @@ const Service = Component => React.createClass({
     return axios.get(`${url}events`)
   },
   getDaySheets(){
-    return axios.get(`${url}daysheets`)
+    return axios.get(`${url}daysheetsdsd`)
   },
   removeEvent(id){
     return axios.delete(`${url}events/${id}`)
@@ -79,7 +80,8 @@ const Service = Component => React.createClass({
     return axios.get(`${url}events/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
   getArtistDaySheets({artistId,startdate,enddate}){
-    return axios.get(`${url}events/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
+    console.log("url",`${url}daysheets/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
+    return axios.get(`${url}daysheets/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
 
   render(){

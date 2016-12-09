@@ -33,11 +33,16 @@ app.get('/fans/:fan',function(req,res){
 })
 
 app.get('/fans',function(req,res){
-  let options = {
-    include_docs: true
-  }
-  dal.getView('allfans',options,function(err,body){
 
+  let view = req.query.streetteam === "true"
+              ? "artiststreetteam"
+              : "artistfans"
+
+  let options = {
+    include_docs: true,
+    keys: [req.query.artist]
+  }
+  dal.getView(view,options,function(err,body){
     if(err){
       return console.log(err.message)
     }

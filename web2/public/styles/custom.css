@@ -1,0 +1,15 @@
+h3 {
+  font-family: AvenirNext-Regular, sans-serif;
+  font-size: 18px;
+}
+
+.sub-item {
+  font-family: AvenirNext-Regular, sans-serif;
+  font-size: 18;
+  color: #4D4D4D;
+}
+
+.search-result-header {
+  border-bottom: 1px solid rgb(189, 189, 189);
+  padding-bottom: 4px;
+}

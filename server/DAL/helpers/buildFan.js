@@ -9,7 +9,9 @@ module.exports = fan => {
     "state": pathOr('N/A',['state'],fan),
     "city": pathOr('N/A',['city'],fan),
     "join": todayDate.toISOString(),
-    "streetteam": pathOr(false,['streetteam'],fan)
+    "streetteam": pathOr(false,['streetteam'],fan),
+    "band": pathOr('N/A',['band'],fan),
+    "type": "fan"
   }
   fan._id = 'fan_' + fan.state + '_' + fan.email
   return fan

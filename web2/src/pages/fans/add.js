@@ -39,7 +39,8 @@ const Dashboard = React.createClass({
       state: '',
       city: '',
       streetteam: false,
-      success: 'email is required'
+      success: 'email is required',
+      band: "band_Stop_Light_Observations"
     })
   },
   componentDidMount(){
@@ -66,7 +67,6 @@ const Dashboard = React.createClass({
     }else {
       this.props.addFan(this.state,(err,res) => {
         if(err) return console.log('err',err)
-        res.status(400)
         return console.log('success',res)
       })
     }

@@ -15,19 +15,22 @@ const container = style({
   margin: "0 auto"
 })
 
-const sideBarStyle = style({
-  // border: '1px solid gray',
-  borderRadius: '4px',
+const sideBarHeaderStyle = style({
   textAlign: 'center',
-  paddingBottom: '40px'
+  fontFamily: 'AvenirNext-Regular, sans-serif',
+  fontSize: 18
 })
 
-const mainSectionStyle = style({
-  // textAlign: 'center',
-  // border: '1px solid gray',
-  paddingLeft: 30,
-  padding: '0 0 40px 0'
+const resultsHeaderStyle = style({
+  fontFamily: 'AvenirNext-Regular, sans-serif',
+  fontSize: 18
+})
 
+const sideBarStyle = style({
+  // borderRight: '1px solid rgb(221, 221, 221)',
+  borderRadius: '0px',
+  textAlign: 'center',
+  paddingBottom: '40px'
 })
 
 const DaySheets = React.createClass({
@@ -92,9 +95,9 @@ const DaySheets = React.createClass({
           <div>fix this?</div>
           <Row className="show-grid">
             <Col {...sideBarStyle} xs={12} md={4}>
-              <h3>Filter</h3>
+              <h3 {...style({textAlign: 'center'})}>Filter</h3>
               <Nav bsStyle="pills" stacked activeKey={this.state.filter} onSelect={this.handleSelect}>
-                <NavItem eventKey={'all'}>All</NavItem>
+                {/* <NavItem eventKey={'all'}>All</NavItem> */}
                 {/* <NavItem eventKey={'press'} title="Item">Press</NavItem> */}
                 {/* <NavItem eventKey={'other'}>Other</NavItem> */}
               </Nav>
@@ -113,8 +116,8 @@ const DaySheets = React.createClass({
                 <NavItem><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
               </Nav>
             </Col>
-            <Col {...mainSectionStyle} xs={12} md={8}>
-              <h3>Results</h3>
+            <Col xs={12} md={8}>
+              <h3 className="search-result-header">Results</h3>
               {this.state.results.map(results)}
             </Col>
           </Row>

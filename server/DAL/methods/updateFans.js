@@ -9,9 +9,9 @@ db.allDocs({
   endkey: 'fan_\uffff'
 })
   .then(res => pluck(('doc'),res.rows))
-  .then(res => reject(item => item.type,res))
+  .then(res => reject(item => item.band,res))
   .then(res => map(item => {
-    item.type = "fan"
+    item.band = "band_Stop_Light_Observations"
     return item
   },res))
   .then(res => {

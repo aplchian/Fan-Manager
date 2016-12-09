@@ -44,17 +44,18 @@ const Dashboard = React.createClass({
       searchtype: 'email',
       q: '',
       data: [],
-      allFans: []
+      allFans: [],
+      artist: "band_Stop_Light_Observations"
     })
   },
   componentDidMount(){
     if(this.props.params.type === 'search'){
-      this.props.allFans((err,res) => {
+      this.props.allFans(this.state.artist,(err,res) => {
         if(err) return console.log(err)
         return this.setState({allFans: res})
       })
     }else if(this.props.params.type === 'streetteam'){
-      this.props.streetTeam((err,res) => {
+      this.props.streetTeam(this.state.artist,(err,res) => {
         if(err) return console.log(err)
         return this.setState({
           allFans: res,

@@ -16,19 +16,16 @@ const container = style({
 })
 
 const sideBarStyle = style({
-  // border: '1px solid gray',
   borderRadius: '4px',
   textAlign: 'center',
   paddingBottom: '40px'
 })
 
 const mainSectionStyle = style({
-  // textAlign: 'center',
-  // border: '1px solid gray',
   paddingLeft: 30,
   padding: '0 0 40px 0'
-
 })
+
 
 const ListEvents = React.createClass({
   getInitialState(){
@@ -96,7 +93,7 @@ const ListEvents = React.createClass({
           <div>fix this?</div>
           <Row {...container} className="show-grid">
             <Col xs={12} md={4}>
-              <h3>Filter</h3>
+              <h3 {...style({textAlign: 'center'})}>Filter</h3>
                 <DatePicker
                   selected={this.state.startDate}
                   selectsStart  startDate={this.state.startDate}
@@ -113,7 +110,7 @@ const ListEvents = React.createClass({
               </Nav>
             </Col>
             <Col xs={12} md={8}>
-              <h3>Results</h3>
+              <h3 className="search-result-header">Results</h3>
               {this.state.results.map(results)}
             </Col>
           </Row>

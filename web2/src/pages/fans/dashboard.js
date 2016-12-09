@@ -63,14 +63,13 @@ const Graph = ({data}) => {
 const Dashboard = React.createClass({
   getInitialState(){
     return ({
-      data: []
+      data: [],
+      band: "band_Stop_Light_Observations"
     })
   },
   componentDidMount(){
-    this.props.allFans( (err,res) => {
+    this.props.allFans( this.state.band, (err,res) => {
       if (err) return console.log(err)
-
-      console.log(res)
 
       let states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
           "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
