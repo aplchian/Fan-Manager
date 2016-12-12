@@ -4,13 +4,37 @@ const dal = require('../DAL/no-sql.js')
 const cors = require('cors')
 var bodyParser = require('body-parser')
 const axios = require('axios')
+const jwt = require('express-jwt')
+require('dotenv').config()
 
 app.use(cors())
 app.use(bodyParser.json())
 
+//checks all urls for auth token
+// app.use(checkJwt)
+// app.use('/api',checkJwt)
+// app.use('/health',checkJwt) <--pingdom
 
-app.get('/fans/state/:state',function(req,res){
-  dal.fansByState(req.params.state,1000,function(err,body){
+
+
+const checkJwt = jwt({
+  secret: new Buffer(process.env.AUTH0_SECRET, 'base64')
+})
+
+app.get('/protected', checkJwt, function(req,res){
+  res.send({message: 'you are authorized!'})
+})
+
+
+
+app.get('/fans/state/:bandId',function(req,res){
+  let options = {
+    sortToken: req.query.sorttoken,
+    bandId: req.params.bandId,
+    limit: req.query.limit,
+    state: req.query.state
+  }
+  dal.fansByState(options,function(err,body){
     if(err){
       return console.log(err.message)
     }

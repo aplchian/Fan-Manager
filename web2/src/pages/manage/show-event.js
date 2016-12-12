@@ -106,9 +106,9 @@ const Event = React.createClass({
             </Panel>
           </Col>
         </Row>
-        <pre>
+        {/* <pre>
           {JSON.stringify(this.state,null,2)}
-        </pre>
+        </pre> */}
       </PageWrapper>
     )
   }

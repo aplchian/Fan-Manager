@@ -20,18 +20,12 @@ const SearchResultsTable = ({results}) => {
     />
   )
   return (
-    <Scrollbars
-        autoHeight
-        autoHeightMin={100}
-        autoHeightMax={350}
-        style={{marginTop: 30, backgroundColor: 'white' }}>
       <Table responsive striped bordered condensed hover >
         {tableHeader}
         <tbody>
         {results.map(row)}
         </tbody>
       </Table>
-    </Scrollbars>
   )
 }
 

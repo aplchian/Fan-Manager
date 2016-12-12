@@ -41,15 +41,22 @@ const ListEvents = React.createClass({
     })
   },
   componentDidMount(){
+    const tap = (item) => {
+      console.log('dattta',item)
+      return item
+    }
     let data = {
       artistId: this.state.band,
       startdate: this.state.startDate.format(),
       enddate: this.state.endDate.format()
     }
     this.props.getArtistTodos(data)
-      .then(res => this.setState({
-        results: pluck('doc',res.data)
-      }))
+      .then(res => {
+        console.log('res',res.data)
+        this.setState({
+          results: pluck('doc',res.data)
+        })
+      })
       .catch(err => console.log(err.message))
   },
   handleSelect(type){
@@ -91,6 +98,7 @@ const ListEvents = React.createClass({
     }
   },
   render(){
+    console.log(this.state)
     const results = (item,i) => {
       let date = item.duedate.split('T')[0]
       const assignedTo = item => {
@@ -98,7 +106,7 @@ const ListEvents = React.createClass({
           <span> {item} </span>
         )
       }
-      const panelClass = item.completed ? 'completed-todo' : 'null'
+      const panelClass = item.completed === "true" ? 'completed-todo' : 'null'
       return (
         <Panel className={panelClass} header={item.title} eventKey={i}>
           <div>
@@ -113,9 +121,9 @@ const ListEvents = React.createClass({
     var todos
 
     if(this.state.display === 'completed'){
-      todos = filter(item => item.completed,this.state.results)
+      todos = filter(item => item.completed === "true",this.state.results)
     }else if(this.state.display === 'active'){
-      todos = reject(item => item.completed,this.state.results)
+      todos = reject(item => item.completed === "true",this.state.results)
     }else{
       todos = this.state.results
     }
@@ -157,9 +165,9 @@ const ListEvents = React.createClass({
               </Accordion>
             </Col>
           </Row>
-          <pre>
+          {/* <pre>
             {JSON.stringify(this.state,null,2)}
-          </pre>
+          </pre> */}
         </PageWrapper>
       </div>
     )

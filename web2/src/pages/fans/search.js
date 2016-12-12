@@ -7,6 +7,7 @@ import {Button,FormControl,FieldGroup,FormGroup,Form,Table} from 'react-bootstra
 import FanSearchBar from './components/fan-search-bar'
 import SearchResultsTable from './components/search-results-table'
 import {buildMailChimp} from './helpers/helpers'
+import {pluck,last,prop,propEq,filter,propSatisfies,splitEvery,head,inc,dec,flatten} from 'ramda'
 import {Row, Col} from 'react-bootstrap'
 
 
@@ -44,19 +45,33 @@ const Dashboard = React.createClass({
       searchtype: 'email',
       q: '',
       data: [],
-      allFans: [],
-      artist: "band_Stop_Light_Observations"
+      results: [],
+      artist: "band_Stop_Light_Observations",
+      limit: 10,
+      sortToken: '',
+      sortPlace: 0
     })
   },
   componentDidMount(){
     if(this.props.params.type === 'search'){
-      this.props.allFans(this.state.artist,(err,res) => {
-        if(err) return console.log(err)
-        return this.setState({allFans: res})
-      })
+      let options = {
+        state: '',
+        bandID: this.state.artist,
+        sorttoken: '',
+        limit: ''
+      }
+      this.props.fansByState(options)
+        .then(res =>  {
+          this.setState({
+            data: res.data,
+            results: splitEvery(this.state.limit,res.data)
+          })
+        }
+      )
+      // console.log('props',this.props.data)
+      // this.setState({allFans: this.props.data})
     }else if(this.props.params.type === 'streetteam'){
       this.props.streetTeam(this.state.artist,(err,res) => {
-        if(err) return console.log(err)
         return this.setState({
           allFans: res,
           data: res
@@ -94,23 +109,10 @@ const Dashboard = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
-    if(this.state.searchtype === 'state'){
-      let q = this.state.q
-      let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.state.toUpperCase())
-      this.setState({data: data})
-    }else if(this.state.searchtype === 'email'){
-      let q = this.state.q
-      let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.email.toUpperCase())
-      this.setState({data: data})
-    }else if(this.state.searchtype === 'city'){
-      let q = this.state.q
-      let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.city.toUpperCase())
-      this.setState({data: data})
-    }else if(this.state.searchtype === 'l_name'){
-      let q = this.state.q
-      let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.l_name.toUpperCase())
-      this.setState({data: data})
-    }
+      let q = this.state.q.toUpperCase()
+      let data = filter(propSatisfies(x => x.toUpperCase() === q,this.state.searchtype),this.state.data)
+      console.log('data',data)
+      this.setState({results: splitEvery(this.state.limit,data)})
   },
   syncMailChimp(e){
     e.preventDefault()
@@ -118,14 +120,30 @@ const Dashboard = React.createClass({
     this.props.syncMailChimp(data)
       .then(res => console.log(res))
   },
+  pageForward(e){
+    e.preventDefault()
+    this.setState({
+      sortPlace: inc(this.state.sortPlace)
+    })
+  },
+  pageBackward(e){
+    e.preventDefault()
+    this.setState({
+      sortPlace: dec(this.state.sortPlace)
+    })
+  },
   render(){
     console.log(this.state)
+    let currentList = this.state.results.length > 0
+      ? this.state.results[this.state.sortPlace]
+      : []
+    console.log('currrentList',currentList)
 
     const searchType = this.props.params.type === 'search' ? 'Fans' : 'Street Team'
-    const resultCount = this.state.data.length > 0
-    ? <tr><td>{this.state.data.length} Fans Found</td></tr>
+    const resultCount = this.state.results.length > 0
+    ? <tr><td>{flatten(this.state.results).length} Fans Found -- {this.state.sortPlace} of {this.state.results.length}</td></tr>
     : null
-    const MailChimpButton = this.state.data.length > 0
+    const MailChimpButton = this.state.results.length > 0
     ? <Button onClick={this.syncMailChimp}>Sync to Mailchimp</Button>
     : null
 
@@ -137,7 +155,6 @@ const Dashboard = React.createClass({
             <Col xs={12} md={2} >
               <PageTitle to="Search"/>
               <FanSearchBar
-                className="sidebar-select"
                 handleSubmit={this.handleSubmit}
                 handleChange={this.handleChange}
                 q={this.state.q}
@@ -145,10 +162,13 @@ const Dashboard = React.createClass({
             </Col>
             <Col xs={12} md={10} >
               {resultCount}
-              <SearchResultsTable results={this.state.data} />
+              <SearchResultsTable results={currentList} />
+              <Button onClick={this.pageBackward}>Prev</Button>
+              <Button onClick={this.pageForward}>Next</Button>
               {MailChimpButton}
             </Col>
           </Row>
+          {/* {JSON.stringify(this.state,null,2)} */}
         </PageWrapper>
 
       </div>

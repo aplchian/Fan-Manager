@@ -9,11 +9,9 @@ const Service = Component => React.createClass({
     console.log(item)
     return item
   },
-  fansByState(state,cb){
-    axios.get(`${url}fans/state/${state}`)
-      .then(res => map(item => item.doc,res.rows))
-      .then(res => cb(null,res))
-      .catch(err => cb(err))
+  fansByState({bandID,sorttoken,limit,state}){
+    console.log(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`)
+    return axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`)
   },
   allFans(artist,cb){
     axios.get(`${url}fans?artist=${artist}`)

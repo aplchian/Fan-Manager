@@ -20,7 +20,7 @@ const AddTodo = React.createClass({
       id: uuid.v4(),
       createddate: moment(),
       duedate: moment(),
-      completed: false,
+      completed: "false",
       assignedto: [],
       band: "band_Stop_Light_Observations",
       type: "todo"
@@ -46,6 +46,7 @@ const AddTodo = React.createClass({
     return e => {
       let currentState = this.state
       currentState[path] = e.target.value
+      console.log('change',currentState)
       this.setState(currentState)
     }
   },
@@ -77,12 +78,13 @@ const AddTodo = React.createClass({
     })
   },
   render(){
+    console.log(this.state)
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/todos" /> : null}
         <PageWrapper title="Add Todo">
           <Row className="show-grid">
-           <Col xs={12} md={6} mdOffset={3} {...style({width: '100%'})}>
+           <Col xs={12} md={12}{...style({width: '100%'})}>
              <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formBasicText">
                   <ControlLabel>Due Date</ControlLabel>
@@ -121,9 +123,9 @@ const AddTodo = React.createClass({
               </form>
            </Col>
           </Row>
-          <pre>
+          {/* <pre>
             {JSON.stringify(this.state,null,2)}
-          </pre>
+          </pre> */}
         </PageWrapper>
       </div>
     )
