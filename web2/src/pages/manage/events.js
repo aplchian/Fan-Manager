@@ -84,32 +84,41 @@ const ListEvents = React.createClass({
   },
   render(){
     const results = (item,i) => {
-      let date = item.date.split('T')[0]
-      return <Link key={i} to={`/manage/events/${item._id}/show`}><Panel key={i}>{item.name} {date} {item.city},{item.state}</Panel></Link>
+      let date = moment(item.date).format('MMM DD')
+      return (
+        <Link key={i} to={`/manage/events/${item._id}/show`}>
+          <Panel key={i}>
+            <div className="panel-date">{date}</div>
+            <div className="panel-event-name">{item.name}</div>
+            <div className="panel-event-location">{item.city},{item.state}</div>
+          </Panel>
+         </Link>
+      )
     }
     return(
       <div>
-        <PageWrapper title="Browse Events">
+        <PageWrapper title="Events">
           <div>fix this?</div>
           <Row {...container} className="show-grid">
-            <Col xs={12} md={4}>
-              <h3 {...style({textAlign: 'center'})}>Filter</h3>
+            <Col xs={12} md={2}>
+              <h3 className="search-result-header">Filter</h3>
                 <DatePicker
                   selected={this.state.startDate}
                   selectsStart  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('startDate')} />
+                  <p className="sidebar-to">to</p>
                 <DatePicker
                   selected={this.state.endDate}
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('endDate')} />
-                  <Button {...style({display: 'block'})} onClick={this.handleSearch}>Search</Button>
+                  <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem><Link to="/manage/events/add">Add Event</Link></NavItem>
+                <NavItem className="add-btn"><Link to="/manage/events/add">Add Event</Link></NavItem>
               </Nav>
             </Col>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={10}>
               <h3 className="search-result-header">Results</h3>
               {this.state.results.map(results)}
             </Col>

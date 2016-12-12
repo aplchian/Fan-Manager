@@ -26,23 +26,12 @@ const inputStyle = style({
 const AddEvent = React.createClass({
   getInitialState(){
     return({
-        name: '',
         type: "event",
         eventtype: "show",
         schedule: [],
         date: moment(),
-        venue: "",
-      	city: "",
-      	state: "",
-      	addressone: "",
         schedule: [],
-        addresstwo: "",
-      	zipcode: '',
         contact: [],
-        parking: "",
-        capacity: '',
-        deal: "",
-        notes: "",
         band: "band_Stop_Light_Observations",
         status: "confirmed",
         newcontact: {
@@ -70,15 +59,21 @@ const AddEvent = React.createClass({
         }))
     }
   },
+
   handleSubmit(e){
     e.preventDefault()
+    // if editing PUT
     if(this.props.params.id){
       this.props.updateEvent(this.state)
-        .then(res => console.log(res))
+        .then(res => res => this.setState({
+          success: true
+        }))
         .catch(err => console.log(err.message))
     }else {
       this.props.addEvent(this.state)
-        .then(res => console.log(res))
+        .then(res => this.setState({
+          success: true
+        }))
         .catch(err => console.log(err.message))
     }
 
@@ -190,6 +185,7 @@ const AddEvent = React.createClass({
             }
     return (
       <div>
+        {this.state.success ? <Redirect to="/manage/events" /> : null}
         <PageWrapper title="Add Event">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>

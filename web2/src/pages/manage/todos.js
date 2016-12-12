@@ -98,13 +98,13 @@ const ListEvents = React.createClass({
           <span> {item} </span>
         )
       }
+      const panelClass = item.completed ? 'completed-todo' : 'null'
       return (
-        <Panel header={item.title} eventKey={i}>
+        <Panel className={panelClass} header={item.title} eventKey={i}>
           <div>
-            <div>Notes: {item.notes}</div>
-            <div>Complete: {item.completed ? 'True' : 'False'} </div>
-            <div><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>
-            <div>Assigned To: {item.assignedto.map(assignedTo)}</div>
+            <div className="todo-notes">{item.notes}</div>
+            <div className="todo-edit-btn"><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>
+            <div className="todo-assignedto">Assigned To: {item.assignedto.map(assignedTo)}</div>
           </div>
          </Panel>
       )
@@ -112,9 +112,9 @@ const ListEvents = React.createClass({
 
     var todos
 
-    if(this.state.display === 'active'){
+    if(this.state.display === 'completed'){
       todos = filter(item => item.completed,this.state.results)
-    }else if(this.state.display === 'completed'){
+    }else if(this.state.display === 'active'){
       todos = reject(item => item.completed,this.state.results)
     }else{
       todos = this.state.results
@@ -123,37 +123,43 @@ const ListEvents = React.createClass({
     return(
       <div>
         <PageWrapper title="Todos">
-          <div>fix this?</div>
+          <div className="results-header">
+            <div className="results-add-icon"></div>
+          </div>
           <Row {...container} className="show-grid">
-            <Col xs={12} md={4}>
-              <h3 {...style({textAlign: 'center'})}>Filter</h3>
+            <Col xs={12} md={2}>
+              <h3 className="search-result-header">Filter</h3>
                 <DatePicker
                   selected={this.state.startDate}
                   selectsStart  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('startDate')} />
+                  <p className="sidebar-to">to</p>
                 <DatePicker
                   selected={this.state.endDate}
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('endDate')} />
-                  <Button {...style({display: 'block'})} onClick={this.handleSearch}>Search</Button>
-                  <FormControl value={this.state.display} onChange={this.handleChange('display')} componentClass="select" placeholder="type">
+                  <FormControl className="sidebar-select" value={this.state.display} onChange={this.handleChange('display')} componentClass="select" placeholder="type">
                     <option value="all">All</option>
                     <option value="active">Not Completed</option>
                     <option value="completed">Completed</option>
                   </FormControl>
+                  <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem><Link to="/manage/todos/add">Add Todo</Link></NavItem>
+                <NavItem className="add-btn"><Link to="/manage/todos/add">Add Todo</Link></NavItem>
               </Nav>
             </Col>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={10}>
               <h3 className="search-result-header">Results</h3>
               <Accordion>
                 {todos.map(results)}
               </Accordion>
             </Col>
           </Row>
+          <pre>
+            {JSON.stringify(this.state,null,2)}
+          </pre>
         </PageWrapper>
       </div>
     )

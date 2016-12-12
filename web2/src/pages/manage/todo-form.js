@@ -9,25 +9,15 @@ import {append,reject,filter,compose,head,path,map,equals,forEach,pluck,tap} fro
 import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
+import {Redirect} from 'react-router'
 import 'rc-time-picker/assets/index.css'
-
 require('react-datepicker/dist/react-datepicker.css');
 
-const container = style({
-  display: 'block',
-  margin: "0 auto"
-})
-
-const inputStyle = style({
-  width: '100%'
-})
 
 const AddTodo = React.createClass({
   getInitialState(){
     return({
       id: uuid.v4(),
-      title: "",
-      notes: "",
       createddate: moment(),
       duedate: moment(),
       completed: false,
@@ -37,6 +27,7 @@ const AddTodo = React.createClass({
     })
   },
   componentDidMount(){
+    // if editing
     if(this.props.params.id){
       this.props.getTodo(this.props.params.id)
         .then(res => this.setState({
@@ -60,13 +51,18 @@ const AddTodo = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
+    // Update if editing
     if (this.props.params.id){
       this.props.updateTodo(this.state)
-        .then(res => console.log(res))
+        .then(res => this.setState({
+          success: true
+        }))
         .catch(err => console.log(err.message))
     }else {
       this.props.addTodo(this.state)
-        .then(res => console.log('success',res))
+        .then(res => this.setState({
+          success: true
+        }))
         .catch(err => console.log('error',err))
     }
   },
@@ -83,9 +79,10 @@ const AddTodo = React.createClass({
   render(){
     return (
       <div>
+        {this.state.success ? <Redirect to="/manage/todos" /> : null}
         <PageWrapper title="Add Todo">
-          <Row {...container} className="show-grid">
-           <Col xs={12} md={12} {...style({width: '100%'})}>
+          <Row className="show-grid">
+           <Col xs={12} md={6} mdOffset={3} {...style({width: '100%'})}>
              <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formBasicText">
                   <ControlLabel>Due Date</ControlLabel>

@@ -29,13 +29,16 @@ const Graph = ({data}) => {
 
   let dataset = data.data
 
-  console.log('dataset', dataset)
-
+  var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
 
   var svg = d3.select(node)
    .append('svg')
    .attr("width",w)
    .attr("height",h)
+
+   console.log(dataset)
 
    svg.selectAll('rect')
     .data(dataset)
@@ -45,15 +48,29 @@ const Graph = ({data}) => {
     .attr("y", (d => h - (d.count * 3)))
     .attr("width", w / dataset.length - 1)
     .attr("height", d => d.count * 3)
+    .on("mouseover", d => {
+            div.transition()
+                .style("opacity", .9)
+            div.html(`
+              <h4 class="tool-tip-header">${d.state}</h4>
+              <div>${d.count} fans</div>
+              `)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
+        .on("mouseout", function(d) {
+            div.transition()
+                .style("opacity", 0);
+        })
     .text(d => d.count)
 
-    svg.selectAll("text")
-     .data(dataset)
-     .enter()
-     .append("text")
-     .text(d => d.state)
-     .attr("x", (d,i) => i * (w / dataset.length))
-     .attr("y", (d => h - (d.count * 3)))
+    // svg.selectAll("text")
+    //  .data(dataset)
+    //  .enter()
+    //  .append("text")
+    //  .text(d => d.state)
+    //  .attr("x", (d,i) => i * (w / dataset.length))
+    //  .attr("y", (d => h - (d.count * 3)))
 
   return node.toReact()
 }
@@ -101,7 +118,7 @@ const Dashboard = React.createClass({
     return(
       <div>
         <PageWrapper title="Fan Dashboard">
-            <PageTitle text="Dashboard" />
+            <PageTitle text="Fans By State" />
             <Graph data={this.state}></Graph>
           </PageWrapper>
       </div>

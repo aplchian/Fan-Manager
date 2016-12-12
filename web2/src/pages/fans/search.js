@@ -134,15 +134,16 @@ const Dashboard = React.createClass({
       <div>
         <PageWrapper title={`Search ${searchType}`}>
           <Row>
-            <Col xs={12} md={4} >
+            <Col xs={12} md={2} >
               <PageTitle to="Search"/>
               <FanSearchBar
+                className="sidebar-select"
                 handleSubmit={this.handleSubmit}
                 handleChange={this.handleChange}
                 q={this.state.q}
                />
             </Col>
-            <Col xs={12} md={8} >
+            <Col xs={12} md={10} >
               {resultCount}
               <SearchResultsTable results={this.state.data} />
               {MailChimpButton}

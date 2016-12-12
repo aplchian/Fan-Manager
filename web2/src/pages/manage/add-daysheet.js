@@ -10,6 +10,7 @@ import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
+import {Redirect} from 'react-router'
 
 require('react-datepicker/dist/react-datepicker.css');
 
@@ -64,22 +65,28 @@ const AddEvent = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
-    const updateEvents = item => {
 
+    const updateEvents = item => {
       this.props.updateEvent(this.state)
         .then(res => console.log(res))
         .catch(err => console.log(err.message))
     }
+    // update all event status'
     this.state.events.forEach(updateEvents)
+    //UPDATE daysheet if editing
     if(this.props.params.id){
       let doc = this.state
       delete doc.newevent
       this.props.updateDaySheet(doc)
-      .then(res => console.log(res))
+      .then(res => this.setState({
+        success: true
+      }))
       .catch(err => console.log(err.message))
     }else{
       this.props.addDaySheet(this.state)
-        .then(res => console.log(res))
+        .then(res => this.setState({
+          success: true
+        }))
         .catch(err => console.log(err.message))
      }
 
@@ -172,6 +179,7 @@ const AddEvent = React.createClass({
 
     return (
       <div>
+        {this.state.success ? <Redirect to="/manage/daysheets" /> : null}
         <PageWrapper title="Add Daysheet">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>

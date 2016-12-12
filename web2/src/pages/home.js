@@ -17,7 +17,7 @@ const Home = React.createClass({
     return(
       <div {...merge(appStyle,appStyle2)}>
         <MainNavBar />
-        <Content>
+        <Content {...style({maxWidth: '800px'})}>
           {this.props.children}
         </Content>
       </div>

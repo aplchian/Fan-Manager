@@ -85,7 +85,7 @@ const DaySheet = React.createClass({
         <Row {...container} className="show-grid">
           <Col xs={12} md={12}>
             <PageHeader>
-              {this.state.daysheet.date.split('T')[0]}
+              <h1 className="daysheet-date">{this.state.daysheet.date.split('T')[0]}</h1>
               <Link to={`/manage/daysheets/${this.state.daysheet._id}/edit`}><Button>Edit</Button></Link>
               <Button onClick={this.removeDaySheet}>Delete</Button>
             </PageHeader>

@@ -91,32 +91,28 @@ const DaySheets = React.createClass({
     }
     return(
       <div>
-        <PageWrapper title="Browse Daysheets">
+        <PageWrapper title="Daysheets">
           <div>fix this?</div>
           <Row className="show-grid">
-            <Col {...sideBarStyle} xs={12} md={4}>
-              <h3 {...style({textAlign: 'center'})}>Filter</h3>
-              <Nav bsStyle="pills" stacked activeKey={this.state.filter} onSelect={this.handleSelect}>
-                {/* <NavItem eventKey={'all'}>All</NavItem> */}
-                {/* <NavItem eventKey={'press'} title="Item">Press</NavItem> */}
-                {/* <NavItem eventKey={'other'}>Other</NavItem> */}
-              </Nav>
+            <Col xs={12} md={2}>
+              <h3 className="search-result-header">Options</h3>
               <DatePicker
                 selected={this.state.startDate}
                 selectsStart  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('startDate')} />
+                <p className="sidebar-to">to</p>
               <DatePicker
                 selected={this.state.endDate}
                 selectsEnd  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('endDate')} />
-                <Button {...style({display: 'block'})} onClick={this.handleSearch}>Search</Button>
+                <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
+                <NavItem className="add-btn"><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
               </Nav>
             </Col>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={10}>
               <h3 className="search-result-header">Results</h3>
               {this.state.results.map(results)}
             </Col>

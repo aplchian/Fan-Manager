@@ -6,6 +6,7 @@ import {Row} from 'react-bootstrap'
 
 const wrapperStyle = style({
   display: 'block',
+  maxWidth: '800px'
   // margin: '50px auto 0 auto',
 })
 
@@ -16,7 +17,6 @@ const backgroundStyle = style({
 const h3Style = css($('$ h3',{
   color: 'red'
 }))
-
 
 const Dashboard = React.createClass({
   render(){

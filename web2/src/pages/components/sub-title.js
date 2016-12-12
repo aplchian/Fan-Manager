@@ -11,8 +11,6 @@ const nameStyle = style({
   color: '#D8D8D8',
   letterSpacing: 0.87,
   margin: 0,
-
-
 })
 
 

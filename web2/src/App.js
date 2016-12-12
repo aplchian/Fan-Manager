@@ -12,7 +12,7 @@ const Service = require('./services/services')
 import Manage from './pages/manage'
 import DaySheets from './pages/manage/daysheets'
 import AddEvent from './pages/manage/add-event'
-import AddTodo from './pages/manage/add-todo'
+import AddTodo from './pages/manage/todo-form'
 import AddDaySheet from './pages/manage/add-daysheet'
 import Events from './pages/manage/events'
 import Event from './pages/manage/show-event'

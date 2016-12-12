@@ -63,51 +63,52 @@ const Event = React.createClass({
             </PageHeader>
           </Col>
         </Row>
-        <Row>
-          <Col xs={12} md={5}>
+        <Row className="show-grid">
+          <Col xs={12} md={12}>
             <PageHeader><h3>Schedule</h3></PageHeader>
             <ListGroup>
               {this.state.event.schedule.map(listSchedule)}
             </ListGroup>
           </Col>
-          <Col xs={12} md={7}>
+        </Row>
+        <Row>
+          <Col xs={12} md={6}>
             <PageHeader><h3>Venue</h3></PageHeader>
-            <Panel header={<h3>Address</h3>}>
+            <Panel className="event-title" header={<h3>Address</h3>}>
               <div>{this.state.event.venue}</div>
-              <div>{this.state.event.streetone}</div>
-              <div>{this.state.event.streettwo}</div>
+              <div>{this.state.event.addressone}</div>
+              <div>{this.state.event.addresstwo}</div>
               <div>{this.state.event.city}</div>
               <div>{this.state.event.state}</div>
               <div>{this.state.event.zipcode}</div>
             </Panel>
-            <Panel header={<h3>Contact</h3>}>
+            <Panel className="event-title" header={<h3>Contact</h3>}>
               {this.state.event.contact.map(listContacts)}
             </Panel>
-            <Panel header={<h3>Parking</h3>}>
+            <Panel className="event-title" header={<h3>Parking</h3>}>
               {this.state.event.parking}
             </Panel>
-            <Panel header={<h3>Capacity</h3>}>
+            <Panel className="event-title" header={<h3>Capacity</h3>}>
               {this.state.event.capacity}
             </Panel>
-            <Panel header={<h3>Deal</h3>}>
+
+          </Col>
+          <Col xs={12} md={6}>
+            <PageHeader><h3>Other</h3></PageHeader>
+            <Panel className="event-title" header={<h3>Deal</h3>}>
               {this.state.event.deal}
             </Panel>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={12}>
-            <PageHeader><h3>Other</h3></PageHeader>
-            <Panel header={<h3>Status</h3>}>
-              {this.state.event.active ? 'Active' : 'Not Active'}
+            <Panel className="event-title" header={<h3>Status</h3>}>
+              {this.state.event.status === "confirmed" ? "Confirmed" : "Not Confirmed"}
             </Panel>
-            <Panel header={<h3>Notes</h3>}>
+            <Panel className="event-title" header={<h3>Notes</h3>}>
               {this.state.event.notes}
             </Panel>
           </Col>
         </Row>
-        {/* <pre>
+        <pre>
           {JSON.stringify(this.state,null,2)}
-        </pre> */}
+        </pre>
       </PageWrapper>
     )
   }
