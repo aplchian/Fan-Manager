@@ -58,8 +58,8 @@ const Event = React.createClass({
               {this.state.event.name}
               <small>{this.state.event.date.split('T')[0]}</small>
               <small>{this.state.event.type}</small>
-              <Link to={`/manage/events/${this.props.params.id}/edit`}><Button>Edit</Button></Link>
-              <Button onClick={this.removeEvent} >Delete</Button>
+              <Button className="pull-right" onClick={this.removeEvent} >Delete</Button>
+              <Link className="pull-right" to={`/manage/events/${this.props.params.id}/edit`}><Button>Edit</Button></Link>
             </PageHeader>
           </Col>
         </Row>

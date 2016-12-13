@@ -21,87 +21,141 @@ const width = style({
 })
 
 
-const Graph = ({data}) => {
+const Graph = React.createClass({
+  getInitialState(){
+    return  ({
+      success: false,
+      node: <div></div>
+    })
+  },
+  componentDidMount(){
+    this.updateGraph()
+  },
+  updateGraph(){
+    var hits = {};
+
+    const node = new ReactFauxDOM.Element('div')
+
+    var width = 960,
+      height = 500,
+      centered = true;
+
+    var projection = d3.geo.albersUsa()
+        .scale(1070)
+        .translate([width / 2, height / 2]);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var svg = d3.select(node).append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
 
-  const node = new ReactFauxDOM.Element('div')
+    const clicked = (d) => {
+      var x = 0,
+          y = 0,
+          k = 1;
 
-  // const w = 800;
-  // const h = 430;
-  // var centered
+      if (d && centered !== d) {
+        var centroid = path.centroid(d);
+        x = -centroid[0];
+        y = -centroid[1];
+        k = 4;
+        centered = d;
+      } else {
+        centered = null;
+      }
 
-  // let dataset = data
+      g.selectAll("path")
+          .classed("active", centered && function(d) { return d === centered; });
+      g.selectAll("text")
+          .text(function(d) { return d.properties.abbr; })
+          .classed("active",false);
 
-  ////////////////////
+      if (centered) {
+          g.select("#label-"+centered.properties.abbr)
+              .text(function(d) { return d.properties.name+': '+(hits[d.properties.abbr]||'(none)'); })
+              .classed("active", centered && function(d) { return d === centered; });
+      }
 
-  var width = 960,
-    height = 500,
-    centered;
+      // g.transition()
+      //     .duration(1000)
+      //     .attr("transform", "scale(" + k + ")translate(" + x + "," + y + ")")
+      //     .style("stroke-width", 1.5 / k + "px");
 
-var projection = d3.geo.albersUsa()
-    .scale(1070)
-    .translate([width / 2, height / 2]);
+          this.setState({
+            success: true,
+            node: node.toReact()
+          })
+    }
 
-var path = d3.geo.path()
-    .projection(projection);
+    svg.append("rect")
+        .attr("class", "background")
+        .attr("width", width)
+        .attr("height", height)
+        .on("click", clicked);
 
-var svg = d3.select(node).append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    var g = svg.append("g");
 
-svg.append("rect")
-    .attr("class", "background")
-    .attr("width", width)
-    .attr("height", height)
-    .on("click", clicked);
+    d3.json("./d3.json", (error, us) => {
+      if (error) throw error;
 
-var g = svg.append("g");
+      g.append("g")
+          .attr("id", "states")
+          .selectAll("path")
+          .data(topojson.feature(us, us.objects.states).features)
+          .enter()
+          .append("path")
+          .attr("d", path)
+          .on("click", clicked);
 
-var x = d3.json("./d3.json", function(error, us) {
-  if (error) throw error;
+          console.log('data',this.props.data)
 
-  g.append("g")
-      .attr("id", "states")
-      .selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
-      .enter()
-      .append("path")
-      .attr("d", path)
-      .on("click", clicked);
+      g.selectAll("text")
+          .data(this.props.data)
+          .enter().append("text")
+          .attr("transform", function(d) { console.log('d',d)})
+          .attr("id", function(d) { return 'label-'+d.properties.abbr; })
+          .attr("dy", ".35em")
+          .on("click", clicked)
+          .text(function(d) { return d.properties.abbr; });
 
-  g.append("path")
-      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-      .attr("id", "state-borders")
-      .attr("d", path)
+      g.append("path")
+          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+          .attr("id", "state-borders")
+          .attr("d", path)
 
-      return node.toReact()
-})
+      this.setState({
+        success: true,
+        node: node.toReact()
+      })
+
+    })
+
+  },
+  render(){
+
+    // let returnNode = this.state.success ? node.toReact() : <div></div>
+    // let returnNode = this.state.success ? node.toReact() : <div></div>
+
+    var returnNode
+
+    if(this.state.success) {
+      returnNode = this.state.node
+    }else {
+      returnNode = null
+    }
 
 
-function clicked(d) {
-  var x, y, k;
+    console.log('returning',returnNode)
 
-  if (d && centered !== d) {
-    var centroid = path.centroid(d);
-    x = centroid[0];
-    y = centroid[1];
-    k = 4;
-    centered = d;
-  } else {
-    x = width / 2;
-    y = height / 2;
-    k = 1;
-    centered = null;
+    return(
+      returnNode
+    )
   }
 
-  g.selectAll("path")
-      .classed("active", centered && function(d) { return d === centered; });
 
-  g.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-      .style("stroke-width", 1.5 / k + "px");
-}
 
 
   ////////////////////
@@ -149,7 +203,8 @@ function clicked(d) {
   //    .attr("x", (d,i) => i * (w / dataset.length))
   //    .attr("y", (d => h - (d.count * 3)))
 
-}
+
+})
 
 
 
@@ -162,125 +217,127 @@ const Dashboard = React.createClass({
   },
   componentDidMount(){
 
-    // let options = {
-    //   state: '',
-    //   bandID: this.state.artist,
-    //   sorttoken: '',
-    //   limit: ''
-    // }
-    // // let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.state.toUpperCase())
-    // this.props.fansByState(options)
-    //   .then(res =>  {
-    //
-    //     console.log('res',res)
-    //
-    //     let states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
-    //         "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-    //         "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-    //         "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-    //         "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-    //
-    //     const filterFans = (state) => {
-    //       return item => item.state === state
-    //     }
-    //
-    //     const countFans = (state) => {
-    //       return filter(filterFans(state),res.data)
-    //
-    //     }
-    //
-    //     let data = map(arr => ({state: arr[0].state, count: arr.length}),
-    //                map(countFans,states))
-    //
-    //     data = filter(item => item.state !== 'SC',data)
-    //
-    //     this.setState({
-    //       data: data
-    //     })
-    //
-    //   }
-    // )
+    let options = {
+      state: '',
+      bandID: this.state.artist,
+      sorttoken: '',
+      limit: ''
+    }
+    // let data = this.state.allFans.filter(fan => q.toUpperCase() === fan.state.toUpperCase())
+    this.props.fansByState(options)
+      .then(res =>  {
+
+        console.log('res',res)
+
+        let states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
+            "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+            "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+            "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+            "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+
+        const filterFans = (state) => {
+          return item => item.state === state
+        }
+
+        const countFans = (state) => {
+          return filter(filterFans(state),res.data)
+
+        }
+
+        let data = map(arr => ({state: arr[0].state, count: arr.length}),
+                   map(countFans,states))
+
+        data = filter(item => item.state !== 'SC',data)
+
+        this.setState({
+          data: data
+        })
+
+      }
+    )
 
   },
   render(){
-    const node = new ReactFauxDOM.Element('div')
-
-    console.log('state',this.state)
-    var width = 960,
-      height = 500,
-      centered;
-
-  var projection = d3.geo.albersUsa()
-      .scale(1070)
-      .translate([width / 2, height / 2]);
-
-  var path = d3.geo.path()
-      .projection(projection);
-
-  var svg = d3.select(node).append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
-  svg.append("rect")
-      .attr("class", "background")
-      .attr("width", width)
-      .attr("height", height)
-      .on("click", clicked);
-
-  var g = svg.append("g");
-
-  var x = d3.json("./d3.json", function(error, us) {
-    if (error) throw error;
-
-    g.append("g")
-        .attr("id", "states")
-        .selectAll("path")
-        .data(topojson.feature(us, us.objects.states).features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .on("click", clicked);
-
-    g.append("path")
-        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-        .attr("id", "state-borders")
-        .attr("d", path)
-
-     console.log("NODE",node)
-
-  })
-
-
-  function clicked(d) {
-    var x, y, k;
-
-    if (d && centered !== d) {
-      var centroid = path.centroid(d);
-      x = centroid[0];
-      y = centroid[1];
-      k = 4;
-      centered = d;
-    } else {
-      x = width / 2;
-      y = height / 2;
-      k = 1;
-      centered = null;
-    }
-
-    g.selectAll("path")
-        .classed("active", centered && function(d) { return d === centered; });
-
-    g.transition()
-        .duration(750)
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-        .style("stroke-width", 1.5 / k + "px");
-  }
+  //   const node = new ReactFauxDOM.Element('div')
+  //
+  //   console.log('state',this.state)
+  //   var width = 960,
+  //     height = 500,
+  //     centered;
+  //
+  // var projection = d3.geo.albersUsa()
+  //     .scale(1070)
+  //     .translate([width / 2, height / 2]);
+  //
+  // var path = d3.geo.path()
+  //     .projection(projection);
+  //
+  // var svg = d3.select(node).append("svg")
+  //     .attr("width", width)
+  //     .attr("height", height);
+  //
+  // svg.append("rect")
+  //     .attr("class", "background")
+  //     .attr("width", width)
+  //     .attr("height", height)
+  //     .on("click", clicked);
+  //
+  // var g = svg.append("g");
+  //
+  // var x = d3.json("./d3.json", function(error, us) {
+  //   if (error) throw error;
+  //
+  //   g.append("g")
+  //       .attr("id", "states")
+  //       .selectAll("path")
+  //       .data(topojson.feature(us, us.objects.states).features)
+  //       .enter()
+  //       .append("path")
+  //       .attr("d", path)
+  //       .on("click", clicked);
+  //
+  //   g.append("path")
+  //       .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+  //       .attr("id", "state-borders")
+  //       .attr("d", path)
+  //
+  //    console.log("NODE",node)
+  //
+  // })
+  //
+  //
+  // function clicked(d) {
+  //   var x, y, k;
+  //
+  //   if (d && centered !== d) {
+  //     var centroid = path.centroid(d);
+  //     x = centroid[0];
+  //     y = centroid[1];
+  //     k = 4;
+  //     centered = d;
+  //   } else {
+  //     x = width / 2;
+  //     y = height / 2;
+  //     k = 1;
+  //     centered = null;
+  //   }
+  //
+  //   g.selectAll("path")
+  //       .classed("active", centered && function(d) { return d === centered; });
+  //
+  //   g.transition()
+  //       .duration(750)
+  //       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+  //       .style("stroke-width", 1.5 / k + "px");
+  // }
+  console.log('state',this.state)
+  // let Graph = this.state.data.length > 0 ? <Graph data={this.state.data}></Graph> : null
+  console.log('GRAPH',Graph)
     return(
       <div>
         <PageWrapper title="Fan Dashboard">
             <PageTitle text="Fans By State" />
-            {/* <Graph data={this.state.data}></Graph> */}
-            <div>{node.toReact()}</div>
+            <Graph data={this.state.data}></Graph>
           </PageWrapper>
       </div>
    )

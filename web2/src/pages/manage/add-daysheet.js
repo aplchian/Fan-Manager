@@ -58,7 +58,7 @@ const AddEvent = React.createClass({
       this.props.getDaySheet(this.props.params.id)
         .then(res => this.setState({
           ...res.data,
-          date: moment(res.data.date)
+          date: moment(res.data.date.split('T')[0])
         }))
     }
     this.handleDateChange()
@@ -164,10 +164,13 @@ const AddEvent = React.createClass({
     }
   },
   render(){
+    console.log('date',moment("2016-12-14"))
     const events = (item,i) => {
-      return <FormControl.Static>
-                {`(${item.event}): ${item.starttime} - ${item.endtime}`}
-                <Button onClick={this.removeEvent(item.id)}>remove</Button>
+      return <FormControl.Static className="form-item-container">
+              <span className="form-item-title">
+                {`${item.event} Start: ${item.starttime} End: ${item.endtime} Duration: ${item.duration}`}
+              </span>
+                <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
               </FormControl.Static>
     }
     const listEvents = (item,i) => {
@@ -183,7 +186,7 @@ const AddEvent = React.createClass({
         <PageWrapper title="Add Daysheet">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form onSubmit={this.handleSubmit}>
+             <form className="half-width" onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formBasicText">
                   <ControlLabel >Date</ControlLabel>
                   <DatePicker
@@ -214,15 +217,16 @@ const AddEvent = React.createClass({
                     placeholder="Destination State"
                     onChange={this.handleChange('destinationstate')}
                   />
-                  <ControlLabel>Schedule</ControlLabel>
                   <Form>
                     <ControlLabel>Event</ControlLabel>
                     <FormControl type="text"
                       value={this.state.newevent.event}
-                      placeholder="Dinner"
+                      placeholder="Sound check"
                       onChange={this.handleAddEvent('event')}
                     />
+
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                    <span>to</span>
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
                     <FormControl type="number"
                       value={this.state.newevent.duration}
@@ -230,11 +234,15 @@ const AddEvent = React.createClass({
                       onChange={this.handleAddEvent('duration')}
                     />
                   </Form>
-                  <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
-                  {this.state.schedule.map(events)}
-                  <ControlLabel>EVENTS</ControlLabel>
-                  {this.state.events.map(listEvents)}
-
+                  <div className="add-btn-container clearfix">
+                    <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
+                  </div>
+                  <div className="form-items-container">
+                    {this.state.schedule.map(events)}
+                  </div>
+                  <div className="form-items-container">
+                    {this.state.events.map(listEvents)}
+                  </div>
                   <ControlLabel>After Show Destination Address:</ControlLabel>
                   <FormControl type="text"
                     value={this.state.destinationname}

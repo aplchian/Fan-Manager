@@ -7,6 +7,7 @@ import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
 import {filter,pluck} from 'ramda'
 import moment from 'moment'
+var FontAwesome = require('react-fontawesome')
 import DatePicker from 'react-datepicker'
 
 
@@ -84,11 +85,15 @@ const ListEvents = React.createClass({
   },
   render(){
     const results = (item,i) => {
-      let date = moment(item.date).format('MMM DD')
+      let date = moment(item.date.split('T')[0]).format('MMM DD')
+      let icon = item.eventtype=== 'press'
+        ? <FontAwesome name='microphone' />
+        : <FontAwesome name='ticket' />
+      console.log('icon',icon)
       return (
         <Link key={i} to={`/manage/events/${item._id}/show`}>
           <Panel key={i}>
-            <div className="panel-date">{date}</div>
+            <div className="panel-date">{icon} {date}</div>
             <div className="panel-event-name">{item.name}</div>
             <div className="panel-event-location">{item.city},{item.state}</div>
           </Panel>

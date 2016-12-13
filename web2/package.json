@@ -22,6 +22,7 @@
     "react-dates": "^4.1.0",
     "react-dom": "^15.4.0",
     "react-faux-dom": "^3.0.0",
+    "react-fontawesome": "^1.5.0",
     "react-router": "^4.0.0-alpha.6",
     "react-scrollbar": "^0.4.2",
     "topojson": "^2.2.0",

@@ -6,9 +6,10 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
 import {append,reject} from 'ramda'
-import TimePicker from 'rc-time-picker';
+import TimePicker from 'rc-time-picker'
 import PouchDB from 'pouchdb'
-import 'rc-time-picker/assets/index.css';
+import 'rc-time-picker/assets/index.css'
+import {Redirect} from 'react-router'
 const db = new PouchDB('slo-dev')
 
 
@@ -55,7 +56,7 @@ const AddEvent = React.createClass({
       this.props.getEvent(this.props.params.id)
         .then(res => this.setState({
           ...res.data,
-          date: moment(res.data.date)
+          date: moment(res.data.date.split('T')[0])
         }))
     }
   },
@@ -65,7 +66,7 @@ const AddEvent = React.createClass({
     // if editing PUT
     if(this.props.params.id){
       this.props.updateEvent(this.state)
-        .then(res => res => this.setState({
+        .then(res => this.setState({
           success: true
         }))
         .catch(err => console.log(err.message))
@@ -172,15 +173,15 @@ const AddEvent = React.createClass({
   },
   render(){
     const contacts = (item,i) => {
-      return <FormControl.Static>
-                {`(${item.type})${item.name}: ${item.email} - ${item.phone}`}
-                <Button onClick={this.removeContact(item.id)}>remove</Button>
+      return <FormControl.Static className="form-item-container">
+                <span className="form-item-title">{`(${item.type}) ${item.name}`}</span>
+                <Button className="pull-right remove-btn" onClick={this.removeContact(item.id)}>remove</Button>
               </FormControl.Static>
     }
     const events = (item,i) => {
-      return <FormControl.Static>
-                {`${item.event}: ${item.starttime} - ${item.endtime}`}
-                <Button onClick={this.removeEvent(item.id)}>remove</Button>
+      return <FormControl.Static className="form-item-container">
+                <span className="form-item-title">{`${item.event}`}</span>
+                <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
               </FormControl.Static>
             }
     return (
@@ -189,7 +190,7 @@ const AddEvent = React.createClass({
         <PageWrapper title="Add Event">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form onSubmit={this.handleSubmit}>
+             <form className="half-width" onSubmit={this.handleSubmit}>
                 <FormGroup
                   controlId="formBasicText"
                 >
@@ -199,6 +200,10 @@ const AddEvent = React.createClass({
                     placeholder="Enter text"
                     onChange={this.handleChange('name')}
                   />
+                  <ControlLabel {...style({display: 'block'})} >Date</ControlLabel>
+                  <DatePicker
+                    selected={this.state.date}
+                    onChange={this.handleDateChange} />
                   <ControlLabel>Type</ControlLabel>
                   <FormControl value={this.state.eventtype} onChange={this.handleChange('eventtype')} componentClass="select" placeholder="type">
                     <option value="show">Show</option>
@@ -210,10 +215,6 @@ const AddEvent = React.createClass({
                     <option value="confirmed">Confirmed</option>
                     <option value="notconfirmed">Not Confirmed</option>
                   </FormControl>
-                  <ControlLabel {...style({display: 'block'})} >Date</ControlLabel>
-                  <DatePicker
-                    selected={this.state.date}
-                    onChange={this.handleDateChange} />
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel>Venue Name</ControlLabel>
@@ -224,10 +225,9 @@ const AddEvent = React.createClass({
                   />
                   <ControlLabel>Add Contact</ControlLabel>
                   <Form>
-                    <ControlLabel>Type</ControlLabel>
                     <FormControl type="text"
                       value={this.state.newcontact.type}
-                      placeholder="...Production"
+                      placeholder="type ex. Production"
                       onChange={this.handleAddContactChange('type')}
                     />
                     <FormControl type="text"
@@ -246,8 +246,12 @@ const AddEvent = React.createClass({
                       onChange={this.handleAddContactChange('phone')}
                     />
                   </Form>
-                  <Button {...style({display: 'block'})}  onClick={this.addContact}>Add</Button>
-                  {this.state.contact.map(contacts)}
+                  <div className="add-btn-container clearfix">
+                    <Button {...style({display: 'block'})} className="pull-right" onClick={this.addContact}>Add</Button>
+                  </div>
+                  <div className="form-items-container">
+                    {this.state.contact.map(contacts)}
+                  </div>
                   <Form>
                     <ControlLabel>Schedule</ControlLabel>
                     <FormControl type="text"
@@ -256,6 +260,7 @@ const AddEvent = React.createClass({
                       onChange={this.handleAddEvent('event')}
                     />
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                    <span className="to-input">to</span>
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
                     <FormControl type="number"
                       value={this.state.newevent.duration}
@@ -263,8 +268,12 @@ const AddEvent = React.createClass({
                       onChange={this.handleAddEvent('duration')}
                     />
                   </Form>
-                  <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
-                  {this.state.schedule.map(events)}
+                  <div className="add-btn-container clearfix">
+                    <Button {...style({display: 'block'})} className="pull-right" onClick={this.addEvent}>Add</Button>
+                  </div>
+                  <div className="form-items-container">
+                    {this.state.schedule.map(events)}
+                  </div>
                   <ControlLabel>Address</ControlLabel>
                   <FormControl type="text"
                     value={this.state.streetone}

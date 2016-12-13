@@ -8,6 +8,7 @@ const db = new PouchDB('slo-dev')
 import {filter, pluck} from 'ramda'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+var FontAwesome = require('react-fontawesome')
 
 
 const container = style({
@@ -86,8 +87,8 @@ const DaySheets = React.createClass({
   },
   render(){
     const results = (item,i) => {
-      let date = item.date.split('T')[0]
-      return <Link to={`/manage/daysheets/${item._id}/show`}><Panel key={i}>{date} {item.city},{item.state}</Panel></Link>
+      let date = moment(item.date.split('T')[0]).format('MMM DD')
+      return <Link to={`/manage/daysheets/${item._id}/show`}><Panel className="daysheet-panel" key={i}><FontAwesome name='sun-o' /> {date}</Panel></Link>
     }
     return(
       <div>
