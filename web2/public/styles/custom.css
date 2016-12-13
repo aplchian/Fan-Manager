@@ -1,3 +1,7 @@
+html {
+  font-family: AvenirNext-Regular, sans-serif;
+}
+
 h3 {
   font-family: AvenirNext-Regular, sans-serif;
   font-size: 13px;
@@ -276,18 +280,41 @@ div.panel.panel-default {
 /*.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range*/
 
 
-div.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 5px 5px;
-    font-family: AvenirNext-Regular, sans-serif;
-    background: black;
-    border: 0px;
-    color: white;
-    border-radius: 8px;
-    pointer-events: none;
+.background {
+  fill: none;
+  pointer-events: all;
 }
 
-.tool-tip-header {
-  font-size: 12px;
+#states {
+  fill: #aaa;
 }
+
+#states .active {
+  fill: orange;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+
+  form.half-width {
+    width: 50%;
+    margin: 20px auto 0 auto;
+  }
+
+  form.half-width input {
+    margin: 0;
+  }
+
+ }
+
+ form label {
+   margin: 13px 0 0 0;
+ }

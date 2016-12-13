@@ -32,7 +32,7 @@ const MainNavBar = () => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav {...navLinks}>
-        <NavItem eventKey={1}><Link to="/manage">Manage</Link></NavItem>
+        <NavItem eventKey={1}><Link to="/manage/todos">Manage</Link></NavItem>
         <NavItem eventKey={2}><Link to="/fans">Fans</Link></NavItem>
       </Nav>
       <Nav {...navLinks} pullRight>

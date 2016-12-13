@@ -68,15 +68,14 @@ const Dashboard = React.createClass({
           })
         }
       )
-      // console.log('props',this.props.data)
-      // this.setState({allFans: this.props.data})
     }else if(this.props.params.type === 'streetteam'){
-      this.props.streetTeam(this.state.artist,(err,res) => {
-        return this.setState({
-          allFans: res,
-          data: res
+      this.props.streetTeam(this.state.artist)
+        .then(res => {
+          this.setState({
+            data: pluck('doc',res.data),
+            results: splitEvery(this.state.limit,pluck('doc',res.data))
+          })
         })
-      })
     }
   },
   componentWillReceiveProps(nextProps){
@@ -112,7 +111,10 @@ const Dashboard = React.createClass({
       let q = this.state.q.toUpperCase()
       let data = filter(propSatisfies(x => x.toUpperCase() === q,this.state.searchtype),this.state.data)
       console.log('data',data)
-      this.setState({results: splitEvery(this.state.limit,data)})
+      this.setState({
+        results: splitEvery(this.state.limit,data),
+        sortPlace: 0
+      })
   },
   syncMailChimp(e){
     e.preventDefault()
@@ -122,26 +124,41 @@ const Dashboard = React.createClass({
   },
   pageForward(e){
     e.preventDefault()
-    this.setState({
-      sortPlace: inc(this.state.sortPlace)
-    })
+    console.log('results length',this.state.results.length,'sortPlace',this.state.sortPlace)
+    if(this.state.results.length > this.state.sortPlace){
+      this.setState({
+        sortPlace: inc(this.state.sortPlace)
+      })
+    }
   },
   pageBackward(e){
     e.preventDefault()
-    this.setState({
-      sortPlace: dec(this.state.sortPlace)
-    })
+    console.log('results length',this.state.results.length,'sortPlace',this.state.sortPlace)
+    if(this.state.sortPlace !== 0){
+      this.setState({
+        sortPlace: dec(this.state.sortPlace)
+      })
+    }
   },
   render(){
     console.log(this.state)
+
     let currentList = this.state.results.length > 0
       ? this.state.results[this.state.sortPlace]
       : []
-    console.log('currrentList',currentList)
+
+    let prevButton = this.state.sortPlace !== 0
+      ? <Button className="pull-left" onClick={this.pageBackward}>Prev</Button>
+      : null
+
+    let nextButton = this.state.results.length > this.state.sortPlace
+      ? <Button className="pull-right" onClick={this.pageForward}>Next</Button>
+      : null
+
 
     const searchType = this.props.params.type === 'search' ? 'Fans' : 'Street Team'
     const resultCount = this.state.results.length > 0
-    ? <tr><td>{flatten(this.state.results).length} Fans Found -- {this.state.sortPlace} of {this.state.results.length}</td></tr>
+    ? <tr><td>{flatten(this.state.results).length} Fans Found -- {this.state.sortPlace + 1} of {this.state.results.length}</td></tr>
     : null
     const MailChimpButton = this.state.results.length > 0
     ? <Button onClick={this.syncMailChimp}>Sync to Mailchimp</Button>
@@ -163,7 +180,7 @@ const Dashboard = React.createClass({
             <Col xs={12} md={10} >
               {resultCount}
               <SearchResultsTable results={currentList} />
-              <Button onClick={this.pageBackward}>Prev</Button>
+              {prevButton}
               <Button onClick={this.pageForward}>Next</Button>
               {MailChimpButton}
             </Col>

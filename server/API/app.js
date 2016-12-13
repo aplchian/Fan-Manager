@@ -100,19 +100,19 @@ app.put('/fans',function(req,res){
   })
 })
 
-app.get('/streetteam',function(req,res){
-  let options = {
-    include_docs: true
-  }
-  dal.listStreetTeam('streetteam',options,function(err,body){
-    if(err){
-      return console.log(err.message)
-    }
-    if(body){
-      res.send(body)
-    }
-  })
-})
+// app.get('/streetteam',function(req,res){
+//   let options = {
+//     include_docs: true
+//   }
+//   dal.listStreetTeam('streetteam',options,function(err,body){
+//     if(err){
+//       return console.log(err.message)
+//     }
+//     if(body){
+//       res.send(body)
+//     }
+//   })
+// })
 
 app.delete('/fan/:id',function(req,res){
   dal.removeFan(req.params.id,function(err,body){

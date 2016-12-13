@@ -85,7 +85,7 @@ const AddTodo = React.createClass({
         <PageWrapper title="Add Todo">
           <Row className="show-grid">
            <Col xs={12} md={12}{...style({width: '100%'})}>
-             <form onSubmit={this.handleSubmit}>
+             <form className="half-width" onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formBasicText">
                   <ControlLabel>Due Date</ControlLabel>
                   <DatePicker

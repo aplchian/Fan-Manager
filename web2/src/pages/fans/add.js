@@ -45,9 +45,10 @@ const Dashboard = React.createClass({
   },
   componentDidMount(){
     if(this.props.params.id){
-      this.props.getFan(this.props.params.id, (err,res) => {
-        this.setState(res)
-      })
+      this.props.getFan(this.props.params.id)
+        .then(res => {
+          this.setState(res.data)
+        })
     }
   },
   handleChange(path){
@@ -83,7 +84,7 @@ const Dashboard = React.createClass({
           <PageWrapper title="Add Fan">
               <Row>
                 <Col>
-                  <form onSubmit={this.handleSubmit}>
+                  <form className="half-width" onSubmit={this.handleSubmit}>
                     <ControlLabel>First Name</ControlLabel>
                     <FormControl type="text"
                       value={this.state.f_name}
@@ -97,7 +98,7 @@ const Dashboard = React.createClass({
                       onChange={this.handleChange('l_name')}
                     />
                     <ControlLabel>Email</ControlLabel>
-                    <FormControl type="text"
+                    <FormControl type="email"
                       value={this.state.email}
                       placeholder="Email"
                       onChange={this.handleChange('email')}
@@ -121,13 +122,13 @@ const Dashboard = React.createClass({
                         <input type="checkbox" checked={this.state.streetteam} onChange={this.toggleStreetTeam} />
                       </div>
                     </div>
-                    <Button type="submit">Submit</Button>
+                    <Button className="pull-right" type="submit">Submit</Button>
                   </form>
                 </Col>
               </Row>
-              <pre>
+              {/* <pre>
                 {JSON.stringify(this.state,null,2)}
-              </pre>
+              </pre> */}
           </PageWrapper>
       </div>
    )

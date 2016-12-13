@@ -10,36 +10,22 @@ const Service = Component => React.createClass({
     return item
   },
   fansByState({bandID,sorttoken,limit,state}){
-    console.log(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`)
     return axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`)
   },
   allFans(artist,cb){
-    axios.get(`${url}fans?artist=${artist}`)
-      .then(res => map(item => item.doc,res.data))
-      .then(res => cb(null,res))
-      .catch(err => cb(err))
+    return axios.get(`${url}fans?artist=${artist}`)
   },
   streetTeam(artist,cb){
-    console.log('artist',artist)
-    axios.get(`${url}fans?artist=${artist}&streetteam=true`)
-      .then(res => map(item => item.doc,res.data))
-      .then(res => cb(null,res))
-      .catch(err => cb(err))
+    return axios.get(`${url}fans?artist=${artist}&streetteam=true`)
   },
   addFan(doc,cb){
-    axios.post(`${url}fans`,doc)
-      .then(res => cb(null,res))
-      .catch(err => cb(err))
+    return axios.post(`${url}fans`,doc)
   },
   getFan(fanId,cb){
-    axios.get(`${url}fans/${fanId}`)
-      .then(res => cb(null,res.data))
-      .catch(err => cb(err))
+    return axios.get(`${url}fans/${fanId}`)
   },
   editFan(doc,cb){
-    axios.put(`${url}fans`,doc)
-      .then(res => cb(null,res))
-      .catch(err => cb(err))
+    return axios.put(`${url}fans`,doc)
   },
   updateEvent(doc){
     return axios.put(`${url}events`,doc)

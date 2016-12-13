@@ -40,7 +40,6 @@ function listFansByState({sortToken,bandId,state,limit}, cb) {
 
 
 function queryDB(view,options,cb){
-  console.log('view',view,'options',options)
   db.query(view,options,function(err,body){
     if(err){
       return cb(err)
@@ -101,9 +100,6 @@ function getArtistTodos({startDate,endDate,artistID},cb){
   }
   queryDB('artisttodos',options,cb)
 }
-
-
-
 
 
 module.exports = {

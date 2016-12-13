@@ -22,9 +22,10 @@ const Dashboard = React.createClass({
     })
   },
   componentDidMount(){
-    this.props.getFan(this.props.params.id, (err,res) => {
-      this.setState(res)
-    })
+    this.props.getFan(this.props.params.id)
+      .then(res => {
+        this.setState(res.data)
+      })
   },
   edit(e){
     e.preventDefault()
