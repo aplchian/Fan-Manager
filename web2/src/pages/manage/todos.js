@@ -8,6 +8,7 @@ const db = new PouchDB('slo-dev')
 import {filter,pluck,reject} from 'ramda'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+const FontAwesome = require('react-fontawesome')
 
 
 const container = style({
@@ -37,7 +38,7 @@ const ListEvents = React.createClass({
       endDate: moment().add(1, 'months'),
       startDate: moment(),
       band: "band_Stop_Light_Observations",
-      display: "all"
+      display: "active"
     })
   },
   componentDidMount(){
@@ -106,9 +107,10 @@ const ListEvents = React.createClass({
           <span> {item} </span>
         )
       }
-      const panelClass = item.completed === "true" ? 'completed-todo' : 'null'
+      const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'
+      let title = <div><FontAwesome name='tasks' /><h4>{item.title}</h4></div>
       return (
-        <Panel className={panelClass} header={item.title} eventKey={i}>
+        <Panel className={`${panelClass} panel-todo-body`} header={title} eventKey={i}>
           <div>
             <div className="todo-notes">{item.notes}</div>
             <div className="todo-edit-btn"><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>

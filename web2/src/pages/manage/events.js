@@ -5,7 +5,7 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
-import {filter,pluck} from 'ramda'
+import {filter,pluck,sort,map} from 'ramda'
 import moment from 'moment'
 var FontAwesome = require('react-fontawesome')
 import DatePicker from 'react-datepicker'
@@ -37,7 +37,8 @@ const ListEvents = React.createClass({
       results: [],
       endDate: moment().add(1, 'months'),
       startDate: moment(),
-      band: "band_Stop_Light_Observations"
+      band: "band_Stop_Light_Observations",
+      order: 'asc'
     })
   },
   componentDidMount(){
@@ -68,7 +69,10 @@ const ListEvents = React.createClass({
     return date => {
       let currentState = this.state
       currentState[path] = date
-      this.setState(currentState)
+      this.setState({
+        currentState,
+        display: 'custom'
+      })
     }
   },
   handleSearch(){
@@ -83,13 +87,34 @@ const ListEvents = React.createClass({
       }))
       .catch(err => console.log(err.message))
   },
+  handleChange(path){
+    return e => {
+      let currentState = this.state
+      currentState[path] = e.target.value
+      if(e.target.value === "seven"){
+        currentState['endDate'] = moment().add(7, 'days')
+      }else if(e.target.value === 'thirty'){
+        currentState['endDate'] = moment().add(1, 'months')
+      }
+      this.setState(currentState, () => {this.handleSearch()})
+
+    }
+  },
+  toggleSort(){
+    let order = this.state.order === 'asc' ? 'desc' : 'asc'
+    this.setState({order})
+  },
   render(){
     const results = (item,i) => {
       let date = moment(item.date.split('T')[0]).format('MMM DD')
-      let icon = item.eventtype=== 'press'
-        ? <FontAwesome name='microphone' />
-        : <FontAwesome name='ticket' />
-      console.log('icon',icon)
+      let icon
+      if(item.eventtype === 'press'){
+        icon = <FontAwesome name='microphone' />
+      }else if(item.eventtype === 'show'){
+        icon = <FontAwesome name='ticket' />
+      }else {
+        icon = <FontAwesome name='diamond' />
+      }
       return (
         <Link key={i} to={`/manage/events/${item._id}/show`}>
           <Panel key={i}>
@@ -100,6 +125,19 @@ const ListEvents = React.createClass({
          </Link>
       )
     }
+
+    //sorts by comparing two dates unix
+    const asc = (a, b) => { return moment(a.date.split('T')[0]).unix() - moment(b.date.split('T')[0]).unix(); }
+    const desc = (a, b) => { return moment(b.date.split('T')[0]).unix() - moment(a.date.split('T')[0]).unix(); }
+
+    const resultsList = this.state.order === 'asc'
+      ? map(results,sort(asc,this.state.results))
+      : map(results,sort(desc,this.state.results))
+
+    const sortIcon = this.state.order === 'asc'
+      ? <FontAwesome className="sort-icon-asc" name='sort-asc' />
+      : <FontAwesome className="sort-icon" name='sort-desc' />
+
     return(
       <div>
         <PageWrapper title="Events">
@@ -118,14 +156,19 @@ const ListEvents = React.createClass({
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('endDate')} />
+                  <FormControl className="sidebar-select" value={this.state.display} onChange={this.handleChange('display')} componentClass="select" placeholder="type">
+                    <option value="thirty">30 days</option>
+                    <option value="seven">7 days</option>
+                    <option value="custom">custom</option>
+                  </FormControl>
                   <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
                 <NavItem className="add-btn"><Link to="/manage/events/add">Add Event</Link></NavItem>
               </Nav>
             </Col>
             <Col xs={12} md={10}>
-              <h3 className="search-result-header">Results</h3>
-              {this.state.results.map(results)}
+              <h3 onClick={this.toggleSort} className="search-result-header">Results {sortIcon}</h3>
+              {resultsList}
             </Col>
           </Row>
           {/* <pre>
