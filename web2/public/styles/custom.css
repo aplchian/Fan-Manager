@@ -370,36 +370,55 @@ form label {
 /**************
   start event page
  ***************/
-.event-hero {
+.event-hero, .daysheet-hero {
   border: 2px solid #000000;
   height: 327px;
   max-width: 800px;
   display: block;
   margin: 0 auto;
   position: relative; }
-  .event-hero .event-title-container {
+  .event-hero .daysheet-date, .daysheet-hero .daysheet-date {
+    font-family: AvenirNext-Bold;
+    font-size: 64px;
+    color: #000000;
+    letter-spacing: 3.71px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center; }
+  .event-hero .daysheet-city-contain, .daysheet-hero .daysheet-city-contain {
+    position: absolute;
+    bottom: 13px;
+    right: 13px;
+    font-family: AvenirNext-Bold;
+    font-size: 14px;
+    color: #000000;
+    letter-spacing: 0.81px; }
+  .event-hero .event-title-container, .daysheet-hero .event-title-container {
     margin: 31px 0 0 51px;
     padding: 11px;
     position: absolute; }
-  .event-hero h1 {
+  .event-hero h1, .daysheet-hero h1 {
     margin: 0;
     font-family: AvenirNext-Bold;
     font-size: 20px;
     color: #000000;
     letter-spacing: 1.16px; }
-  .event-hero .event-date {
+  .event-hero .event-date, .daysheet-hero .event-date {
     font-family: AvenirNext-Regular;
     font-size: 14px;
     color: #000000;
     letter-spacing: 0;
     margin: 14px 0 0 0; }
-  .event-hero .capacity {
+  .event-hero .capacity, .daysheet-hero .capacity {
     font-family: AvenirNext-Regular;
     font-size: 12px;
     color: #B3B3B3;
     letter-spacing: 0;
     margin: 6px 0 0 0; }
-  .event-hero .event-edit-btn {
+  .event-hero .event-edit-btn, .daysheet-hero .event-edit-btn {
     height: 46px;
     width: 128px;
     background: #000000;
@@ -417,11 +436,11 @@ form label {
     border-top: none;
     border-right: none;
     text-transform: uppercase; }
-    .event-hero .event-edit-btn:hover {
+    .event-hero .event-edit-btn:hover, .daysheet-hero .event-edit-btn:hover {
       color: black;
       background-color: white;
       transition: 0.3s ease; }
-  .event-hero .event-status {
+  .event-hero .event-status, .daysheet-hero .event-status {
     font-family: AvenirNext-Bold;
     font-size: 12px;
     color: #000000;
@@ -431,21 +450,21 @@ form label {
     margin: 0;
     bottom: 10px;
     left: 10px; }
-  .event-hero .event-address-container {
+  .event-hero .event-address-container, .daysheet-hero .event-address-container {
     position: absolute;
     right: 61px;
     bottom: 31px;
     border-right: 2px solid #E6E6E6;
     border-bottom: 2px solid #E6E6E6;
     padding: 11px; }
-    .event-hero .event-address-container h5 {
+    .event-hero .event-address-container h5, .daysheet-hero .event-address-container h5 {
       font-family: AvenirNext-Regular;
       font-size: 12px;
       color: #000000;
       letter-spacing: 0.94px;
       text-align: right;
       margin: 2px 0; }
-      .event-hero .event-address-container h5 span {
+      .event-hero .event-address-container h5 span, .daysheet-hero .event-address-container h5 span {
         font-family: AvenirNext-Bold; }
 
 .show-label-container {
@@ -494,14 +513,14 @@ form label {
 .list-content {
   padding: 17px 0; }
 
-.contact-row .contact-container {
+.contact-container, .eod-address {
   font-family: AvenirNext-Regular;
   font-size: 14px;
   color: #000000;
   letter-spacing: 1.1px;
   float: left;
   margin: 0 21px 0 0; }
-  .contact-row .contact-container span {
+  .contact-container span, .eod-address span {
     font-family: AvenirNext-Bold; }
 
 .list-text {
@@ -510,9 +529,9 @@ form label {
   color: #000000;
   letter-spacing: 1.1px; }
 
-.show-event-footer {
+.show-footer {
   height: 100px; }
-  .show-event-footer .delete-event-link {
+  .show-footer .delete-link {
     font-family: AvenirNext-Medium;
     font-size: 10px;
     color: #FF0000;

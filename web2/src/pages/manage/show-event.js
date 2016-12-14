@@ -163,9 +163,9 @@ const Event = React.createClass({
         {dealRow}
         {parkingRow}
         {notesRow}
-        <Row className="show-event-footer">
+        <Row className="show-footer">
           <Col xs={12} md={12}>
-            <div className="delete-event-link" onClick={this.removeEvent}>delete event</div>
+            <div className="delete-link" onClick={this.removeEvent}>delete event</div>
           </Col>
         </Row>
         {/* <pre>

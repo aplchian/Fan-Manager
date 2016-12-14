@@ -5,6 +5,10 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split} from 'ramda'
+import LabelHeader from './components/label-header'
+import ScheduleItem from './components/schedule-item'
+import moment from 'moment'
+
 const db = new PouchDB('slo-dev')
 
 const container = style({
@@ -72,59 +76,64 @@ const DaySheet = React.createClass({
     }
   },
   render(){
+
     const listSchedule = (item,i) => (
-      <Panel header={<h3>{item.event}: {item.starttime}-{item.starttime}</h3>}>duration:{item.duration}</Panel>
+      <ScheduleItem key={i} title={item.event} duration={item.duration} start={item.starttime} />
     )
-    const listEvents = (item,i) => (
-      <Link to={`/manage/events/${item._id}/show`}>
-        <Panel header={<h3>{item.name}: {item.type} </h3>}></Panel>
-      </Link>
-    )
+    const listEvents = (item,i) => {
+      let eventLink = <Link to={`/manage/events/${item._id}/show`}>{item.name}</Link>
+      return <ScheduleItem key={i} title={eventLink} />
+    }
+
+    let date = this.state.daysheet.date === 'T'
+      ? null
+      : moment(this.state.daysheet.date).format('MMM DD YYYY')
+      
     return(
       <PageWrapper>
-        <Row {...container} className="show-grid">
-          <Col xs={12} md={12}>
-              <h1 className="daysheet-date">{this.state.daysheet.date.split('T')[0]}</h1>
-              <Link to={`/manage/daysheets/${this.state.daysheet._id}/edit`}><Button>Edit</Button></Link>
-              <Button onClick={this.removeDaySheet}>Delete</Button>
-          </Col>
+        <Row className="daysheet-hero">
+              <h1 className="daysheet-date">{date}</h1>
+              <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
+              <div className="daysheet-city-contain">{this.state.daysheet.currentcity}, {this.state.daysheet.currentstate}   ->   {this.state.daysheet.destinationcity}, {this.state.daysheet.destinationstate}</div>
         </Row>
-        <Row className="show-grid">
-          <Col xs={12} md={5}>
-            <PageHeader><h3>Schedule</h3></PageHeader>
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="Today's Schedule"/>
             {this.state.schedule.map(listSchedule)}
           </Col>
-          <Col xs={12} md={7}>
-            <PageHeader><h3>Info</h3></PageHeader>
-            <Panel header={<h3>Location</h3>}>
-              <div>
-                Current: {this.state.daysheet.currentcity}, {this.state.daysheet.currentstate}
-              </div>
-              <div>
-                Destination: {this.state.daysheet.destinationcity}, {this.state.daysheet.destinationstate}
-              </div>
-            </Panel>
-            <PageHeader><h3>Today's Events</h3></PageHeader>
+        </Row>
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="Today's Events"/>
             {this.state.events.map(listEvents)}
           </Col>
+        </Row>
+        <Row>
           <Col xs={12} md={12}>
-            <PageHeader><h3>After Show</h3></PageHeader>
-            <Panel header={<h3>Going to:</h3>}>
-              <div>
-                <div>{this.state.daysheet.destinationname}</div>
-                <div>{this.state.daysheet.streetone}</div>
-                <div>{this.state.daysheet.streettwo}</div>
-                <div>{this.state.daysheet.city}, {this.state.daysheet.state}</div>
-                <div>{this.state.daysheet.zipcode}</div>
-              </div>
-            </Panel>
-            <Panel header={<h3>Notes</h3>}>
-              <div>
-                <div>{this.state.daysheet.notes}</div>
-              </div>
-            </Panel>
+            <LabelHeader title="End of Day Destination"/>
+            <div className="eod-address">
+              <div><span>{this.state.daysheet.destinationname}</span></div>
+              <div>{this.state.daysheet.streetone}</div>
+              <div>{this.state.daysheet.streettwo}</div>
+              <div>{this.state.daysheet.city}, {this.state.daysheet.state}</div>
+              <div>{this.state.daysheet.zipcode}</div>
+            </div>
           </Col>
         </Row>
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="notes"/>
+            <div className="list-content">
+              {this.state.daysheet.notes}
+            </div>
+          </Col>
+        </Row>
+        <Row className="show-footer">
+          <Col xs={12} md={12}>
+            <div className="delete-link" onClick={this.removeDaySheet}>delete daysheet</div>
+          </Col>
+        </Row>
+
         {/* <pre>
           {JSON.stringify(this.state,null,2)}
         </pre> */}
