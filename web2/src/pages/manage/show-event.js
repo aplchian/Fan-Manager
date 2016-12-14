@@ -138,7 +138,7 @@ const Event = React.createClass({
 
 
     return(
-      <PageWrapper>
+      <PageWrapper logout={this.props.logOut}>
         <Row className="event-hero">
           <Col xs={12} md={12}>
               <div className="event-title-container">

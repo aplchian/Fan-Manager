@@ -3,6 +3,7 @@ const Home = require('../../home')
 const SubNav = require('./sub-nav')
 import {style, select as $,merge,css} from 'glamor'
 import {Row} from 'react-bootstrap'
+import SiteWrapper from '../../site-wrapper'
 
 const wrapperStyle = style({
   display: 'block',
@@ -10,25 +11,25 @@ const wrapperStyle = style({
   // margin: '50px auto 0 auto',
 })
 
-const backgroundStyle = style({
-  // backgroundColor: '#f4f4f4'
-})
 
 const h3Style = css($('$ h3',{
   color: 'red'
 }))
 
 const Dashboard = React.createClass({
+  getInitialState(){
+    return({
+      user: this.props.user
+    })
+  },
   render(){
     return(
-      <div {...backgroundStyle}>
-        <Home>
+        <SiteWrapper logout={this.props.logout}>
           <SubNav title={this.props.title} />
           <Row {...merge(wrapperStyle,h3Style)}>
             {this.props.children}
           </Row>
-        </Home>
-      </div>
+        </SiteWrapper>
    )
   }
 })

@@ -43,8 +43,9 @@ const DaySheets = React.createClass({
       results: [],
       endDate: moment().add(1, 'months'),
       startDate: moment(),
-      band: "band_Stop_Light_Observations",
-      order: 'asc'
+      band: this.props.band,
+      order: 'asc',
+      user: this.props.user
     })
   },
   componentDidMount(){
@@ -101,16 +102,16 @@ const DaySheets = React.createClass({
     }
 
     //sorts by comparing two dates unix
-    const asc = (a, b) => { return moment(a.date.split('T')[0]).unix() - moment(b.date.split('T')[0]).unix(); }
-    const desc = (a, b) => { return moment(b.date.split('T')[0]).unix() - moment(a.date.split('T')[0]).unix(); }
+    const asc = (a, b) => { return moment(a.date.split('T')[0]).unix() - moment(b.date.split('T')[0]).unix() }
+    const desc = (a, b) => { return moment(b.date.split('T')[0]).unix() - moment(a.date.split('T')[0]).unix() }
 
     const resultsList = this.state.order === 'asc'
       ? map(results,sort(asc,this.state.results))
       : map(results,sort(desc,this.state.results))
-
+    console.log('props',this.props)
     return(
       <div>
-        <PageWrapper title="Daysheets">
+        <PageWrapper logout={this.props.logOut} user={this.state.user} title="Daysheets">
           <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
             <Col xs={12} md={2}>

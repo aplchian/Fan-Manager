@@ -33,7 +33,7 @@ const AddEvent = React.createClass({
         date: moment(),
         schedule: [],
         contact: [],
-        band: "band_Stop_Light_Observations",
+        band: this.props.band,
         status: "confirmed",
         newcontact: {
           id: uuid.v4(),
@@ -187,7 +187,7 @@ const AddEvent = React.createClass({
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/events" /> : null}
-        <PageWrapper title="Add Event">
+        <PageWrapper logout={this.props.logOut} title="Add Event">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
              <form className="half-width" onSubmit={this.handleSubmit}>

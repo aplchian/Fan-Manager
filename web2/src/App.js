@@ -1,5 +1,5 @@
 const React = require('react')
-const {Match,BrowserRouter} = require('react-router')
+const {Match,HashRouter,Redirect} = require('react-router')
 const {style,insertRule,merge} = require('glamor')
 const Home = require('./pages/home')
 const FanDashBoard = require('./pages/fans/dashboard')
@@ -18,47 +18,74 @@ import Events from './pages/manage/events'
 import Event from './pages/manage/show-event'
 import DaySheet from './pages/manage/show-daysheet'
 import Todos from './pages/manage/todos'
-
-
-
+const auth = require('./utils/auth')(
+  process.env.REACT_APP_ID,
+  process.env.REACT_APP_DOMAIN
+)
 
 
 const appStyle = insertRule("body {height: 100%}")
 const appStyle2 = insertRule("body {width: 100%}")
 
 const App = React.createClass({
+  getInitialState(){
+    return ({
+      user: null
+    })
+  },
+  logOut(){
+    this.setState({
+      loggedOut: true
+    })
+  },
+  setUser(user){
+    this.setState({user})
+  },
+  setBand(band){
+    return () => {
+      this.setState({band})
+    }
+  },
   render(){
+    console.log('homestate',this.state)
     return(
-      <BrowserRouter>
+      <HashRouter>
         <div>
-          <Match exactly pattern="/" component={Home}></Match>
-          <Match exactly pattern="/fans" component={Service(FanDashBoard)}></Match>
-          <Match exactly pattern="/:type/fans" component={Service(FanSearch)}></Match>
-          <Match exactly pattern="/fans/add" component={Service(AddFan)}></Match>
-          <Match exactly pattern="/fans/:id/show" component={Service(ShowFan)}></Match>
-          <Match exactly pattern="/fans/:id/edit" component={Service(AddFan)}></Match>
+          <Match exactly pattern="/" render={props => <Home auth={auth} setBand={this.setBand} setUser={this.setUser} {...props} />} />
+          <MatchWhenAuthorized exactly pattern="/fans" component={Service(FanDashBoard,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/:type/fans" component={Service(FanSearch,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/fans/add" component={Service(AddFan,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/fans/:id/show" component={Service(ShowFan,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/fans/:id/edit" component={Service(AddFan,this.logOut,this.state)}></MatchWhenAuthorized>
 
-          <Match exactly pattern="/manage" component={Service(Manage)}></Match>
-          <Match exactly pattern="/manage/events" component={Service(Events)}></Match>
-          <Match exactly pattern="/manage/daysheets" component={Service(DaySheets)}></Match>
+          <MatchWhenAuthorized exactly pattern="/manage" logout={this.logOut} component={Service(Manage,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/events" component={Service(Events,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/daysheets" logout={this.logOut} component={Service(DaySheets,this.logOut,this.state)}></MatchWhenAuthorized>
 
-          <Match exactly pattern="/manage/daysheets/:id/edit" component={Service(AddDaySheet)}></Match>
-          <Match exactly pattern="/manage/daysheets/:id/show" component={Service(DaySheet)}></Match>
-          <Match exactly pattern="/manage/daysheets/add" component={Service(AddDaySheet)}></Match>
+          <MatchWhenAuthorized exactly pattern="/manage/daysheets/:id/edit" component={Service(AddDaySheet,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/daysheets/:id/show" component={Service(DaySheet,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/daysheets/add" component={Service(AddDaySheet,this.logOut,this.state)}></MatchWhenAuthorized>
 
-          <Match exactly pattern="/manage/events/add" component={Service(AddEvent)}></Match>
-          <Match exactly pattern="/manage/events/:id/show" component={Service(Event)}></Match>
-          <Match exactly pattern="/manage/events/:id/edit" component={Service(AddEvent)}></Match>
+          <MatchWhenAuthorized exactly pattern="/manage/events/add" component={Service(AddEvent,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/events/:id/show" component={Service(Event,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/events/:id/edit" component={Service(AddEvent,this.logOut,this.state)}></MatchWhenAuthorized>
 
-          {/* <Match exactly pattern="/manage/daysheets/:id/edit" component={Service(AddDaySheet)}></Match> */}
-          <Match exactly pattern="/manage/todos" component={Service(Todos)}></Match>
-          <Match exactly pattern="/manage/todos/add" component={Service(AddTodo)}></Match>
-          <Match exactly pattern="/manage/todos/:id/edit" component={Service(AddTodo)}></Match>
+          <MatchWhenAuthorized exactly pattern="/manage/todos" component={Service(Todos,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/todos/add" component={Service(AddTodo,this.logOut,this.state)}></MatchWhenAuthorized>
+          <MatchWhenAuthorized exactly pattern="/manage/todos/:id/edit" component={Service(AddTodo,this.logOut,this.state)}></MatchWhenAuthorized>
 
         </div>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 })
+
+const MatchWhenAuthorized = ({component: Component, ...rest}) =>
+  <Match {...rest} render={props => auth.loggedIn() ?
+    <div>
+       <Component {...props} />
+     </div> : <Redirect to="/" />
+  }
+/>
 
 module.exports = App

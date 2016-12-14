@@ -212,7 +212,7 @@ const Dashboard = React.createClass({
   getInitialState(){
     return ({
       data: [],
-      artist: "band_Stop_Light_Observations"
+      artist: this.props.band
     })
   },
   componentDidMount(){
@@ -335,7 +335,7 @@ const Dashboard = React.createClass({
   console.log('GRAPH',Graph)
     return(
       <div>
-        <PageWrapper title="Fan Dashboard">
+        <PageWrapper logout={this.props.logOut} title="Fan Dashboard">
             <PageTitle text="Fans By State" />
             <Graph data={this.state.data}></Graph>
           </PageWrapper>

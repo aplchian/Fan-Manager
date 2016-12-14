@@ -341,7 +341,7 @@ div.panel.panel-default {
 }
 
 #states {
-  fill: #aaa;
+  fill: black;
 }
 
 #states .active {
@@ -665,5 +665,44 @@ div.panel.panel-default {
     text-align: right;
     cursor: pointer;
     text-transform: uppercase;
+   }
+ }
+
+ .home-page {
+   width: 100%;
+   height: 100%;
+   background-color: black;
+   position: absolute;
+   top: 0;
+   left: 0;
+   .content-container {
+     width: 400px;
+     margin: 0 auto;
+     display: block;
+     h1{
+       margin-top: 86px;
+       text-align: center;
+       font-family: AvenirNext-Heavy;
+       font-size: 81px;
+       color: #FFFFFF;
+       letter-spacing: 0.85px;
+       text-transform: uppercase;
+     }
+     .select-artist{
+        opacity: 0.37;
+        font-family: AvenirNext-Regular;
+        font-size: 14px;
+        color: #FFFFFF;
+        letter-spacing: 0.56px;
+        border-bottom: 1px solid rgba(255,255,255,0.25);
+        text-align: center;
+        padding: 10px 0;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover{
+          opacity: 1;
+        }
+     }
+
    }
  }

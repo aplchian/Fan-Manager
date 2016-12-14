@@ -15,10 +15,8 @@ app.use(bodyParser.json())
 // app.use('/api',checkJwt)
 // app.use('/health',checkJwt) <--pingdom
 
-
-
 const checkJwt = jwt({
-  secret: new Buffer(process.env.AUTH0_SECRET, 'base64')
+  secret: process.env.AUTH0_SECRET
 })
 
 app.get('/protected', checkJwt, function(req,res){
@@ -305,6 +303,27 @@ app.get('/todos/:id',function(req,res){
       res.status(400)
       res.send(err.message)
     })
+})
+
+app.post('/users',function(req,res){
+  var doc = req.body
+  console.log('new user',doc)
+  dal.createUser(doc,function(err,body){
+    if(err){
+      return console.log(err.message)
+    }
+    if(body){
+      return res.send(body)
+    }
+  })
+})
+
+app.get('/bands',function(req,res){
+  let userId = req.query.userId
+  dal.getUserBands(userId,function(err,body){
+    if(err) return console.log(err.message)
+      return res.send(body)
+  })
 })
 
 

@@ -14,5 +14,5 @@ module.exports = fan => {
     "type": "fan"
   }
   fan._id = 'fan_' + fan.state + '_' + fan.email
-  return fansdaas
+  return fan
 }

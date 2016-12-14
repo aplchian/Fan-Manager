@@ -41,7 +41,7 @@ const AddEvent = React.createClass({
       zipcode: '',
       mileage: '',
       notes: "",
-      band: "band_Stop_Light_Observations",
+      band: this.props.band,
       mileage: '',
       destinationname: '',
       newevent: {
@@ -183,7 +183,7 @@ const AddEvent = React.createClass({
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/daysheets" /> : null}
-        <PageWrapper title="Add Daysheet">
+        <PageWrapper logout={this.props.logOut} title="Add Daysheet">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
              <form className="half-width" onSubmit={this.handleSubmit}>

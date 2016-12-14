@@ -40,7 +40,7 @@ const Dashboard = React.createClass({
       city: '',
       streetteam: false,
       success: 'email is required',
-      band: "band_Stop_Light_Observations"
+      band: this.props.band
     })
   },
   componentDidMount(){
@@ -81,7 +81,7 @@ const Dashboard = React.createClass({
     console.log(this.state)
     return(
       <div>
-          <PageWrapper title="Add Fan">
+          <PageWrapper logout={this.props.logOut} title="Add Fan">
               <Row>
                 <Col>
                   <form className="half-width" onSubmit={this.handleSubmit}>

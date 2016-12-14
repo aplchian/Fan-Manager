@@ -40,6 +40,8 @@ function listFansByState({sortToken,bandId,state,limit}, cb) {
 
 
 function queryDB(view,options,cb){
+  console.log('view',view)
+  console.log('options',options)
   db.query(view,options,function(err,body){
     if(err){
       return cb(err)
@@ -101,6 +103,14 @@ function getArtistTodos({startDate,endDate,artistID},cb){
   queryDB('artisttodos',options,cb)
 }
 
+function getUserBands(userID,cb){
+  let options = {
+    startkey: [userID],
+    endkey: [`${userID}\uffff`]
+  }
+  queryDB('userbands',options,cb)
+}
+
 
 module.exports = {
     fansByState: listFansByState,
@@ -112,6 +122,7 @@ module.exports = {
     getArtistEvents: getArtistEvents,
     getArtistDaySheets: getArtistDaySheets,
     getArtistTodos: getArtistTodos,
+    getUserBands,
     updateFan: update.fan,
     updateEvent: update.event,
     updateDaySheet: update.event,
@@ -124,6 +135,8 @@ module.exports = {
     listStreetTeam: queryDB,
     createEvent: create.event,
     createDaySheet: create.daysheet,
-    createTodo: create.todo
+    createTodo: create.todo,
+    createUser: create.user
+
 
 }

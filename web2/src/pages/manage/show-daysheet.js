@@ -88,9 +88,9 @@ const DaySheet = React.createClass({
     let date = this.state.daysheet.date === 'T'
       ? null
       : moment(this.state.daysheet.date).format('MMM DD YYYY')
-      
+
     return(
-      <PageWrapper>
+      <PageWrapper logout={this.props.logOut}>
         <Row className="daysheet-hero">
               <h1 className="daysheet-date">{date}</h1>
               <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>

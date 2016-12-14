@@ -46,7 +46,7 @@ const Dashboard = React.createClass({
       q: '',
       data: [],
       results: [],
-      artist: "band_Stop_Light_Observations",
+      artist: this.props.band,
       limit: 10,
       sortToken: '',
       sortPlace: 0
@@ -80,23 +80,28 @@ const Dashboard = React.createClass({
   },
   componentWillReceiveProps(nextProps){
     if(nextProps.params.type === 'search'){
-      this.props.allFans((err,res) => {
-        if(err) return console.log(err)
-        return this.setState({
-          allFans: res,
-          data: [],
-          q: ''
-        })
-      })
+      let options = {
+        state: '',
+        bandID: this.state.artist,
+        sorttoken: '',
+        limit: ''
+      }
+      this.props.fansByState(options)
+        .then(res =>  {
+          this.setState({
+            data: res.data,
+            results: splitEvery(this.state.limit,res.data)
+          })
+        }
+      )
     }else if(nextProps.params.type === 'streetteam'){
-      this.props.streetTeam((err,res) => {
-        if(err) return console.log(err)
-        return this.setState({
-          allFans: res,
-          data: res,
-          q: ''
+      this.props.streetTeam(this.state.artist)
+        .then(res => {
+          this.setState({
+            data: pluck('doc',res.data),
+            results: splitEvery(this.state.limit,pluck('doc',res.data))
+          })
         })
-      })
     }
   },
   handleChange(path){
@@ -167,7 +172,7 @@ const Dashboard = React.createClass({
 
     return(
       <div>
-        <PageWrapper title={`Search ${searchType}`}>
+        <PageWrapper logout={this.props.logOut} title={`Search ${searchType}`}>
           <Row>
             <Col xs={12} md={2} >
               <PageTitle to="Search"/>

@@ -3,8 +3,17 @@ const fetch = require('isomorphic-fetch')
 const axios = require('axios')
 const url = process.env.REACT_APP_XHR
 const {pluck,map} = require('ramda')
+const auth = require('../utils/auth')(
+  process.env.REACT_APP_ID,
+  process.env.REACT_APP_DOMAIN
+)
 
-const Service = Component => React.createClass({
+const Service = (Component,logOutUp,parentState) => React.createClass({
+  getInitialState(){
+    return({
+      loggedIn: true
+    })
+  },
   tap(item){
     console.log(item)
     return item
@@ -78,7 +87,10 @@ const Service = Component => React.createClass({
   getArtistTodos({artistId,startdate,enddate}){
     return axios.get(`${url}todos/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
-
+  logOut(){
+    auth.logout()
+    logOutUp()
+  },
   render(){
     return <Component
       {...this.props}
@@ -105,6 +117,9 @@ const Service = Component => React.createClass({
       getArtistEvents={this.getArtistEvents}
       getArtistDaySheets={this.getArtistDaySheets}
       getArtistTodos={this.getArtistTodos}
+      logOut={this.logOut}
+      user={parentState.user}
+      band={parentState.band}
     />
   }
 })

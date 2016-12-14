@@ -37,7 +37,7 @@ const ListEvents = React.createClass({
       results: [],
       endDate: moment().add(1, 'months'),
       startDate: moment(),
-      band: "band_Stop_Light_Observations",
+      band: this.props.band,
       display: "active"
     })
   },
@@ -132,7 +132,7 @@ const ListEvents = React.createClass({
 
     return(
       <div>
-        <PageWrapper title="Todos">
+        <PageWrapper logout={this.props.logOut} title="Todos">
           <div {...style({color: 'white'})} >fix this</div>
           <Row {...container} className="show-grid">
             <Col xs={12} md={2}>

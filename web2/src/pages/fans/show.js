@@ -38,7 +38,7 @@ const Dashboard = React.createClass({
     return(
       <div>
          {Edit}
-         <PageWrapper title="View Fan">
+         <PageWrapper logout={this.props.logOut} title="View Fan">
            <Row>
              <Col xs={12} md={12}>
                <PageHeader>{this.state.email}</PageHeader>

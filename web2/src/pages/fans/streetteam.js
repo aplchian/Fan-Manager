@@ -8,7 +8,7 @@ const Dashboard = React.createClass({
   render(){
     return(
       <div>
-          <PageWrapper>
+          <PageWrapper logout={this.props.logOut}>
             <h1>street team</h1>
           </PageWrapper>
       </div>

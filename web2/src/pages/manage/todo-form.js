@@ -22,7 +22,7 @@ const AddTodo = React.createClass({
       duedate: moment(),
       completed: "false",
       assignedto: [],
-      band: "band_Stop_Light_Observations",
+      band: this.props.band,
       type: "todo"
     })
   },
@@ -82,7 +82,7 @@ const AddTodo = React.createClass({
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/todos" /> : null}
-        <PageWrapper title="Add Todo">
+        <PageWrapper logout={this.props.logOut} title="Add Todo">
           <Row className="show-grid">
            <Col xs={12} md={12}{...style({width: '100%'})}>
              <form className="half-width" onSubmit={this.handleSubmit}>

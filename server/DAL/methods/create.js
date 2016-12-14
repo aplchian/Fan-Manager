@@ -148,9 +148,29 @@ function createTodo(doc, cb) {
     })
 }
 
+function createUser(doc, cb) {
+    console.log('doc',doc)
+
+    if (prop('_rev')(doc)) {
+        return cb(new Error('400 _rev not allowed'))
+    }
+
+    if (prop('_id')(doc)) {
+        return cb(new Error('400 _id not allowed'))
+    }
+
+    doc._id = `user_${doc.user_id}`
+    doc.type = "user"
+    db.put(doc, (err,res) => {
+      if(err) return cb(err)
+      return cb(null,res)
+    })
+}
+
 module.exports = {
   fan: createFan,
   daysheet: createDaysheet,
   event: createEvent,
-  todo: createTodo
+  todo: createTodo,
+  user: createUser
 }
