@@ -95,7 +95,6 @@ const DaySheets = React.createClass({
       ? <FontAwesome className="sort-icon-asc" name='sort-asc' />
       : <FontAwesome className="sort-icon" name='sort-desc' />
 
-
     const results = (item,i) => {
       let date = moment(item.date.split('T')[0]).format('MMM DD')
       return <Link to={`/manage/daysheets/${item._id}/show`}><Panel className="daysheet-panel" key={i}><FontAwesome name='sun-o' /> {date}</Panel></Link>
@@ -112,7 +111,7 @@ const DaySheets = React.createClass({
     return(
       <div>
         <PageWrapper title="Daysheets">
-          <div>fix this?</div>
+          <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
             <Col xs={12} md={2}>
               <h3 className="search-result-header">Options</h3>

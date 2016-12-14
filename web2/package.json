@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "node-sass": "^4.0.0",
+    "nodemon": "^1.11.0",
     "react-scripts": "0.7.0"
   },
   "dependencies": {
@@ -32,6 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-css": "node-sass --include-path scss public/scss/custom.scss public/styles/custom.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
   }
 }

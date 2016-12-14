@@ -133,9 +133,7 @@ const ListEvents = React.createClass({
     return(
       <div>
         <PageWrapper title="Todos">
-          <div className="results-header">
-            <div className="results-add-icon"></div>
-          </div>
+          <div {...style({color: 'white'})} >fix this</div>
           <Row {...container} className="show-grid">
             <Col xs={12} md={2}>
               <h3 className="search-result-header">Filter</h3>

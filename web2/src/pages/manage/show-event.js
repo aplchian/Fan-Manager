@@ -36,74 +36,136 @@ const Event = React.createClass({
     }
   },
   render(){
+
     console.log(this.state)
-    const listSchedule = (item,i) => (
-      <ListGroupItem key={i}>{item.event} -- {item.starttime} - {item.endtime} -> {item.duration}min </ListGroupItem>
-    )
-    const listContacts = (item,i) => (
-      <div {...style({marginBottom: 10})}>
-        <div><b>{item.type}</b></div>
-        <div>{item.name}</div>
-        <div>{item.email}</div>
-        <div>{item.phone}</div>
+
+    const LabelHeader = ({title}) => <div className="show-label-container">{title}</div>
+
+    const ScheduleItem = ({title, duration, start}) => (
+      <div className="schedule-item">
+        <div className="event-title">{title}</div>
+        <div className="event-duration">{duration}</div>
+        <div className="start-time">{start}</div>
       </div>
     )
+
+    const ContactItem = ({title,name,email,phone}) => (
+      <div className="contact-container">
+        <div><span>{title}</span></div>
+        <div>{name}</div>
+        <div>{email}</div>
+        <div>{phone}</div>
+      </div>
+    )
+
+    const listSchedule = (item,i) => (
+      <ScheduleItem key={i} title={item.event} duration={item.duration} start={item.starttime}></ScheduleItem>
+    )
+
+    const listContacts = (item,i) => (
+      <ContactItem
+        key={i}
+        title={item.type}
+        name={item.name}
+        email={item.email}
+        phone={item.phone}
+      />
+    )
+
+    let dealRow = this.state.event.deal !== ''
+      ? (
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="deal" />
+            <div className="list-content list-text">
+              {this.state.event.deal}
+            </div>
+          </Col>
+        </Row>
+      )
+      : null
+
+    let parkingRow = this.state.event.parking !== ''
+      ? (
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="parking" />
+            <div className="list-content list-text">
+              {this.state.event.parking}
+            </div>
+          </Col>
+        </Row>
+      )
+      :null
+
+    let notesRow = this.state.event.notes !== ''
+      ? (
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="notes" />
+            <div className="list-content list-text">
+              {this.state.event.notes}
+            </div>
+          </Col>
+        </Row>
+      )
+      : null
+
+    let contactsRow = this.state.event.contact.length > 0
+      ? (
+        <Row className="contact-row clearfix">
+          <Col xs={12} md={12}>
+            <LabelHeader title="contacts" />
+            <div className="list-content clearfix">
+              {this.state.event.contact.map(listContacts)}
+            </div>
+          </Col>
+        </Row>
+      )
+      : null
+
+    let scheduleRow = this.state.event.schedule.length > 0
+      ? (
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="schedule" />
+            {this.state.event.schedule.map(listSchedule)}
+          </Col>
+        </Row>
+      )
+      : null
+
 
 
     return(
       <PageWrapper>
-        <Row {...container} className="show-grid">
+        <Row className="event-hero">
           <Col xs={12} md={12}>
-            <PageHeader>
-              {this.state.event.name}
-              <small>{this.state.event.date.split('T')[0]}</small>
-              <small>{this.state.event.type}</small>
-              <Button className="pull-right" onClick={this.removeEvent} >Delete</Button>
-              <Link className="pull-right" to={`/manage/events/${this.props.params.id}/edit`}><Button>Edit</Button></Link>
-            </PageHeader>
+              <div className="event-title-container">
+                <h1 className="page-jumbo-title">{this.state.event.name}</h1>
+                <h2 className="event-date">{this.state.event.date.split('T')[0]}</h2>
+                <h3 className="capacity">{this.state.event.capacity}</h3>
+              </div>
+              <Link to={`/manage/events/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
           </Col>
+          <div className="event-address-container">
+            <h5><span>{this.state.event.venue}</span></h5>
+            <h5>{this.state.event.addressone}</h5>
+            <h5>{this.state.event.addresstwo}</h5>
+            <h5>{this.state.event.city}</h5>
+            <h5>{this.state.event.state}</h5>
+            <h5>{this.state.event.zipcode}</h5>
+          </div>
+          <div className="event-status">{this.state.event.status === "confirmed" ? "Confirmed" : "Not Confirmed"}</div>
         </Row>
-        <Row className="show-grid">
+        {scheduleRow}
+        {contactsRow}
+        {dealRow}
+        {parkingRow}
+        {notesRow}
+        <Row className="show-event-footer">
           <Col xs={12} md={12}>
-            <PageHeader><h3>Schedule</h3></PageHeader>
-            <ListGroup>
-              {this.state.event.schedule.map(listSchedule)}
-            </ListGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={6}>
-            <PageHeader><h3>Venue</h3></PageHeader>
-            <Panel className="event-title" header={<h3>Address</h3>}>
-              <div>{this.state.event.venue}</div>
-              <div>{this.state.event.addressone}</div>
-              <div>{this.state.event.addresstwo}</div>
-              <div>{this.state.event.city}</div>
-              <div>{this.state.event.state}</div>
-              <div>{this.state.event.zipcode}</div>
-            </Panel>
-            <Panel className="event-title" header={<h3>Contact</h3>}>
-              {this.state.event.contact.map(listContacts)}
-            </Panel>
-            <Panel className="event-title" header={<h3>Parking</h3>}>
-              {this.state.event.parking}
-            </Panel>
-            <Panel className="event-title" header={<h3>Capacity</h3>}>
-              {this.state.event.capacity}
-            </Panel>
-
-          </Col>
-          <Col xs={12} md={6}>
-            <PageHeader><h3>Other</h3></PageHeader>
-            <Panel className="event-title" header={<h3>Deal</h3>}>
-              {this.state.event.deal}
-            </Panel>
-            <Panel className="event-title" header={<h3>Status</h3>}>
-              {this.state.event.status === "confirmed" ? "Confirmed" : "Not Confirmed"}
-            </Panel>
-            <Panel className="event-title" header={<h3>Notes</h3>}>
-              {this.state.event.notes}
-            </Panel>
+            <div className="delete-event-link" onClick={this.removeEvent}>delete event</div>
           </Col>
         </Row>
         {/* <pre>

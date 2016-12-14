@@ -33,18 +33,18 @@ const SubNav = React.createClass({
     }
   },
   render(){
-    const li = (item,i) => <NavItem eventKey={i} title={item.name}><Link className="sub-item" to={item.to}>{item.name}</Link></NavItem>
+    const li = (item,i) => <NavItem eventKey={i} title={item.name}><Link className="sub-nav-item" to={item.to}>{item.name}</Link></NavItem>
 
     function handleSelect(selectedKey) {
       console.log(selectedKey);
     }
     return(
-      <div {...linkStyle}>
-        <Header header={this.props.title} />
-        <div {...subNavStyle}>
+      <div>
+        <div>
           <Nav bsStyle="pills" activeKey={9} onSelect={handleSelect}>
             {this.state.links.map(li)}
           </Nav>
+          <Header header={this.props.title} />
         </div>
       </div>
     )
