@@ -78,6 +78,9 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
   removeDaySheet(id){
     return axios.delete(`${url}daysheets/${id}`)
   },
+  removeTodo(id){
+    return axios.delete(`${url}todos/${id}`)
+  },
   getArtistEvents({artistId,startdate,enddate}){
     return axios.get(`${url}events/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
   },
@@ -114,6 +117,7 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
       addDaySheet={this.addDaySheet}
       removeEvent={this.removeEvent}
       removeDaySheet={this.removeDaySheet}
+      removeTodo={this.removeTodo}
       getArtistEvents={this.getArtistEvents}
       getArtistDaySheets={this.getArtistDaySheets}
       getArtistTodos={this.getArtistTodos}

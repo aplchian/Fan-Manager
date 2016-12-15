@@ -94,6 +94,59 @@ const DaySheet = React.createClass({
       ? null
       : moment(this.state.daysheet.date).format('MMM DD YYYY')
 
+    const todaysSchedule = this.state.schedule.length > 0
+      ? (
+        <Row>
+          <Col xs={12} md={12}>
+            <LabelHeader title="Today's Schedule"/>
+            {this.state.schedule.map(listSchedule)}
+          </Col>
+        </Row>
+      )
+      : null
+
+      const todaysEvents = this.state.events.length > 0
+        ? (
+          <Row>
+            <Col xs={12} md={12}>
+              <LabelHeader title="Today's Events"/>
+              {this.state.events.map(listEvents)}
+            </Col>
+          </Row>
+        )
+        : null
+
+        const eodAddress = (this.state.daysheet.city !== '' && this.state.daysheet.city)
+          ? (
+            <Row>
+              <Col xs={12} md={12}>
+                <LabelHeader title="End of Day Destination"/>
+                <div className="eod-address">
+                  <div><span>{this.state.daysheet.destinationname}</span></div>
+                  <div>{this.state.daysheet.streetone}</div>
+                  <div>{this.state.daysheet.streettwo}</div>
+                  <div>{this.state.daysheet.city}, {this.state.daysheet.state}</div>
+                  <div>{this.state.daysheet.zipcode}</div>
+                </div>
+              </Col>
+            </Row>
+          )
+          : null
+
+          const notes = (this.state.daysheet.notes !== '' && this.state.daysheet.notes)
+            ? (
+              <Row>
+                <Col xs={12} md={12}>
+                  <LabelHeader title="notes"/>
+                  <div className="list-content">
+                    {this.state.daysheet.notes}
+                  </div>
+                </Col>
+              </Row>
+            )
+            : null
+
+
     return(
       <PageWrapper logout={this.props.logOut}>
         <Row {...s_bg} className="daysheet-hero">
@@ -101,38 +154,10 @@ const DaySheet = React.createClass({
               <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
               <div className="daysheet-city-contain">{this.state.daysheet.currentcity}, {this.state.daysheet.currentstate}   ->   {this.state.daysheet.destinationcity}, {this.state.daysheet.destinationstate}</div>
         </Row>
-        <Row>
-          <Col xs={12} md={12}>
-            <LabelHeader title="Today's Schedule"/>
-            {this.state.schedule.map(listSchedule)}
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={12}>
-            <LabelHeader title="Today's Events"/>
-            {this.state.events.map(listEvents)}
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={12}>
-            <LabelHeader title="End of Day Destination"/>
-            <div className="eod-address">
-              <div><span>{this.state.daysheet.destinationname}</span></div>
-              <div>{this.state.daysheet.streetone}</div>
-              <div>{this.state.daysheet.streettwo}</div>
-              <div>{this.state.daysheet.city}, {this.state.daysheet.state}</div>
-              <div>{this.state.daysheet.zipcode}</div>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={12}>
-            <LabelHeader title="notes"/>
-            <div className="list-content">
-              {this.state.daysheet.notes}
-            </div>
-          </Col>
-        </Row>
+        {todaysSchedule}
+        {todaysEvents}
+        {eodAddress}
+        {notes}
         <Row className="show-footer">
           <Col xs={12} md={12}>
             <div className="delete-link" onClick={this.removeDaySheet}>delete daysheet</div>

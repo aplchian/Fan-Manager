@@ -47,7 +47,7 @@ const App = React.createClass({
     }
   },
   render(){
-    console.log('homestate',this.state)
+    console.log('appSTATE',this.state)
     return(
       <HashRouter>
         <div>

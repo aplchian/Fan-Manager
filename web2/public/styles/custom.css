@@ -1,6 +1,7 @@
 html, body {
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  color: rgba(64, 64, 64, 0.86) !important; }
 
 h3 {
   font-family: AvenirNext-Regular, sans-serif;
@@ -38,7 +39,6 @@ h3 {
   color: #000000;
   letter-spacing: 1.75px;
   text-transform: uppercase;
-  text-decoration: underline;
   text-align: center; }
 
 .container {
@@ -62,7 +62,8 @@ h3 {
 
 .search-result-header {
   border-bottom: 1px solid #bdbdbd;
-  padding-bottom: 4px; }
+  padding-bottom: 4px;
+  margin-bottom: 10px; }
 
 .search-result-header:hover {
   cursor: pointer; }
@@ -270,7 +271,8 @@ div.panel.panel-default {
 .daysheet-date {
   color: #FF736A;
   font-family: AvenirNext-Regular, sans-serif;
-  display: inline-block; }
+  display: inline-block;
+  position: absolute; }
 
 /*.show-grid .row {
   width: 800px;
@@ -297,7 +299,7 @@ div.panel.panel-default {
 @media (min-width: 768px) {
   form.half-width {
     width: 50%;
-    margin: 20px auto 0 auto; }
+    margin: 0px auto; }
   form.half-width input {
     margin: 0; } }
 
@@ -326,8 +328,7 @@ form label {
   color: gray;
   font-family: AvenirNext-Regular, sans-serif;
   font-size: 12px;
-  line-height: 36px;
-  background-color: #f6f6f6; }
+  line-height: 36px; }
 
 .add-btn-container {
   display: block; }
@@ -385,9 +386,11 @@ form label {
     position: absolute;
     left: 50%;
     top: 50%;
+    width: 70%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center; }
+    text-align: center;
+    padding: 20px;
+    background: white; }
   .event-hero .daysheet-city-contain, .daysheet-hero .daysheet-city-contain {
     position: absolute;
     bottom: 13px;
@@ -395,11 +398,15 @@ form label {
     font-family: AvenirNext-Bold;
     font-size: 14px;
     color: #000000;
-    letter-spacing: 0.81px; }
+    letter-spacing: 0.81px;
+    background-color: white;
+    padding: 8px; }
   .event-hero .event-title-container, .daysheet-hero .event-title-container {
     margin: 31px 0 0 51px;
     padding: 11px;
-    position: absolute; }
+    position: absolute;
+    background-color: white;
+    padding: 10px; }
   .event-hero h1, .daysheet-hero h1 {
     margin: 0;
     font-family: AvenirNext-Bold;
@@ -449,14 +456,22 @@ form label {
     position: absolute;
     margin: 0;
     bottom: 10px;
-    left: 10px; }
+    left: 10px;
+    padding: 10px;
+    background-color: white; }
+  .event-hero .confirmed, .daysheet-hero .confirmed {
+    color: green; }
+  .event-hero .not-confirmed, .daysheet-hero .not-confirmed {
+    color: red; }
   .event-hero .event-address-container, .daysheet-hero .event-address-container {
     position: absolute;
     right: 61px;
     bottom: 31px;
     border-right: 2px solid #E6E6E6;
     border-bottom: 2px solid #E6E6E6;
-    padding: 11px; }
+    padding: 11px;
+    background-color: white;
+    padding: 10px; }
     .event-hero .event-address-container h5, .daysheet-hero .event-address-container h5 {
       font-family: AvenirNext-Regular;
       font-size: 12px;
@@ -513,14 +528,14 @@ form label {
 .list-content {
   padding: 17px 0; }
 
-.contact-container, .eod-address {
+.contact-container, .eod-address, .list-content {
   font-family: AvenirNext-Regular;
   font-size: 14px;
-  color: #000000;
+  color: rgba(64, 64, 64, 0.86);
   letter-spacing: 1.1px;
   float: left;
   margin: 0 21px 0 0; }
-  .contact-container span, .eod-address span {
+  .contact-container span, .eod-address span, .list-content span {
     font-family: AvenirNext-Bold; }
 
 .list-text {
@@ -593,13 +608,22 @@ form label {
   color: #000000;
   letter-spacing: 0.32px;
   border-radius: 0px; }
+  .search-sidebar .sidebar-select .form-group input, .search-results .sidebar-select .form-group input {
+    margin: 0; }
+
+.search-sidebar .sidebar-input, .search-results .sidebar-input {
+  margin: 0;
+  height: 27px; }
+
+.search-sidebar .sidebar-label, .search-results .sidebar-label {
+  margin-bottom: 2px; }
 
 .search-sidebar button, .search-results button {
   border-radius: 0;
-  background-color: black;
+  background-color: white;
   font-family: AvenirNext-Bold;
   font-size: 12px;
-  color: #FFFFFF;
+  color: black;
   letter-spacing: 0.81px;
   border: 1px solid black;
   transition: 0.3s ease; }
@@ -658,6 +682,133 @@ form label {
   background-color: white;
   border-bottom: 0px solid #f8f8f8;
   padding: 10px; }
+
+label {
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: #000000;
+  letter-spacing: 0.73px; }
+
+.form-control {
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: rgba(64, 64, 64, 0.86);
+  letter-spacing: 0.85px; }
+
+.form-container {
+  margin: 25px 0; }
+
+.form-btn {
+  border-radius: 0;
+  background-color: white;
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0.81px;
+  border: 1px solid black;
+  transition: 0.3s ease;
+  margin-top: 5px; }
+  .form-btn:hover {
+    color: black;
+    background-color: white; }
+
+.main-form {
+  padding-bottom: 30px; }
+
+.fan-select {
+  margin: 0; }
+
+thead {
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: #000000;
+  letter-spacing: 0.93px; }
+
+.table-header {
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: rgba(64, 64, 64, 0.86);
+  letter-spacing: 0.85px;
+  position: relative; }
+  .table-header span {
+    position: absolute;
+    right: 0px;
+    bottom: 0; }
+
+.current-page {
+  height: 10px;
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: rgba(64, 64, 64, 0.86);
+  letter-spacing: 0.85px;
+  position: relative; }
+  .current-page span {
+    position: absolute;
+    right: 0px;
+    bottom: 0; }
+
+.fan-row td a {
+  color: rgba(64, 64, 64, 0.86); }
+
+.sync-mailchimp {
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: #337ab7;
+  letter-spacing: 0.85px;
+  text-align: right;
+  cursor: pointer; }
+
+.table-btn-contain {
+  height: 50px;
+  width: 100%;
+  position: relative; }
+  .table-btn-contain button {
+    border: none;
+    padding: 0; }
+    .table-btn-contain button:hover {
+      text-decoration: underline; }
+
+.alert-container.success {
+  font-family: AvenirNext-Regular;
+  width: 100%;
+  height: 30px;
+  display: block;
+  background: #00D66F;
+  text-align: center;
+  color: white;
+  line-height: 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.85px; }
+  .alert-container.success span {
+    font-size: 12px; }
+
+#alert-exit-btn {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-family: AvenirNext-Regular;
+  font-size: 9px;
+  color: #FFFFFF;
+  letter-spacing: 0.85px;
+  cursor: pointer; }
+
+.to {
+  font-family: AvenirNext-Regular;
+  font-size: 11px;
+  color: rgba(64, 64, 64, 0.86);
+  margin: 0 6px; }
+
+.remove-todo-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+  color: red;
+  font-family: AvenirNext-Regular;
+  font-size: 10px;
+  letter-spacing: 0.61px;
+  cursor: pointer;
+  padding-right: 4px; }
 
 @media (max-width: 600px) {
   .event-hero {

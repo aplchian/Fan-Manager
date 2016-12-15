@@ -118,7 +118,7 @@ const AddTodo = React.createClass({
                       <option value={false}>Not Completed</option>
                     </FormControl>
                   </FormGroup>
-                  <Button type="submit">Submit</Button>
+                  <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>
            </Col>

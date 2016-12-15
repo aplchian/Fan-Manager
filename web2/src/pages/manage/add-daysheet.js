@@ -168,7 +168,7 @@ const AddEvent = React.createClass({
     const events = (item,i) => {
       return <FormControl.Static className="form-item-container">
               <span className="form-item-title">
-                {`${item.event} Start: ${item.starttime} End: ${item.endtime} Duration: ${item.duration}`}
+                {`${item.event}`}
               </span>
                 <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
               </FormControl.Static>
@@ -186,8 +186,8 @@ const AddEvent = React.createClass({
         <PageWrapper logout={this.props.logOut} title="Add Daysheet">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form className="half-width" onSubmit={this.handleSubmit}>
-                <FormGroup controlId="formBasicText">
+             <form className="half-width clearfix" onSubmit={this.handleSubmit}>
+                <FormGroup className="clearfix main-form" controlId="formBasicText">
                   <ControlLabel >Date</ControlLabel>
                   <DatePicker
                     {...style({display: 'block'})}
@@ -217,7 +217,7 @@ const AddEvent = React.createClass({
                     placeholder="Destination State"
                     onChange={this.handleChange('destinationstate')}
                   />
-                  <Form>
+                  <Form className="form-container">
                     <ControlLabel>Event</ControlLabel>
                     <FormControl type="text"
                       value={this.state.newevent.event}
@@ -226,17 +226,17 @@ const AddEvent = React.createClass({
                     />
 
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
-                    <span>to</span>
+                    <span className="to">to</span>
                     <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
-                    <FormControl type="number"
+                    <FormControl type="text"
                       value={this.state.newevent.duration}
                       placeholder="duration"
                       onChange={this.handleAddEvent('duration')}
                     />
+                    <div className="add-btn-container clearfix">
+                      <Button className="form-btn pull-right" {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
+                    </div>
                   </Form>
-                  <div className="add-btn-container clearfix">
-                    <Button {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
-                  </div>
                   <div className="form-items-container">
                     {this.state.schedule.map(events)}
                   </div>
@@ -287,14 +287,14 @@ const AddEvent = React.createClass({
                     placeholder="Notes"
                     onChange={this.handleChange('notes')}
                   />
-                  <Button type="submit">Submit</Button>
+                  <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>
            </Col>
           </Row>
-          <pre>
+          {/* <pre>
             {JSON.stringify(this.state,null,2)}
-          </pre>
+          </pre> */}
         </PageWrapper>
       </div>
     )

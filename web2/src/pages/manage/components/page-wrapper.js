@@ -24,7 +24,7 @@ const Dashboard = React.createClass({
   },
   render(){
     return(
-        <SiteWrapper logout={this.props.logout}>
+        <SiteWrapper user={this.props.user} logout={this.props.logout}>
           <SubNav title={this.props.title} />
           <Row {...merge(wrapperStyle,h3Style)}>
             {this.props.children}

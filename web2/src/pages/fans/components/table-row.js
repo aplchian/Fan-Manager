@@ -21,7 +21,7 @@ const linkStyle = style({
 module.exports = ({state,city,fname,lname,email,id}) => {
   const addLink = text => <Link to={`/fans/${id}/show`}>{text}</Link>
   return (
-    <tr {...tableRowStyle}>
+    <tr className="fan-row">
       <td><Link {...linkStyle} to={`/fans/${id}/show`}>{state}</Link></td>
       <td><Link {...linkStyle} to={`/fans/${id}/show`}>{city}</Link></td>
       <td><Link {...linkStyle} to={`/fans/${id}/show`}>{fname}</Link></td>

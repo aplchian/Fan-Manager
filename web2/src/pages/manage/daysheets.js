@@ -75,8 +75,8 @@ const DaySheets = React.createClass({
   render(){
 
     const sortIcon = this.state.order === 'asc'
-      ? <FontAwesome className="sort-icon-asc" name='sort-asc' />
-      : <FontAwesome className="sort-icon" name='sort-desc' />
+      ? <FontAwesome {...style({position: 'relative', left: '4px'})} className="sort-icon-asc" name='sort-asc' />
+      : <FontAwesome {...style({position: 'relative', left: '4px'})} className="sort-icon" name='sort-desc' />
 
     const results = (item,i) => {
       let date = moment(item.date.split('T')[0]).format('MMM DD')

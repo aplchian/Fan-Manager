@@ -1,7 +1,9 @@
+$faded: rgba(64,64,64,.86);
 
 html, body {
   padding: 0;
   margin: 0;
+  color: rgba(64,64,64,.86) !important;
 }
 
 h3 {
@@ -45,7 +47,7 @@ h3 {
   color: #000000;
   letter-spacing: 1.75px;
   text-transform: uppercase;
-  text-decoration: underline;
+  // text-decoration: underline;
   text-align: center;
 }
 
@@ -77,6 +79,7 @@ h3 {
 .search-result-header {
   border-bottom: 1px solid rgb(189, 189, 189);
   padding-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .search-result-header:hover {
@@ -326,6 +329,7 @@ div.panel.panel-default {
   color: #FF736A;
   font-family: AvenirNext-Regular, sans-serif;
   display: inline-block;
+  position: absolute;
 }
 
 /*.show-grid .row {
@@ -361,7 +365,7 @@ div.panel.panel-default {
 
   form.half-width {
     width: 50%;
-    margin: 20px auto 0 auto;
+    margin: 0px auto;
   }
 
   form.half-width input {
@@ -401,7 +405,6 @@ div.panel.panel-default {
    font-family: AvenirNext-Regular, sans-serif;
    font-size: 12px;
    line-height: 36px;
-   background-color: #f6f6f6
  }
 
  .add-btn-container {
@@ -474,9 +477,11 @@ div.panel.panel-default {
       position: absolute;
       left: 50%;
       top: 50%;
+      width: 70%;
       transform: translate(-50%,-50%);
-      width: 100%;
       text-align: center;
+      padding: 20px;
+      background: white;
     }
 
     .daysheet-city-contain {
@@ -487,6 +492,8 @@ div.panel.panel-default {
       font-size: 14px;
       color: #000000;
       letter-spacing: 0.81px;
+      background-color: white;
+      padding: 8px;
     }
 
 
@@ -496,6 +503,8 @@ div.panel.panel-default {
       // border-top: 2px solid #E6E6E6;
       padding: 11px;
       position: absolute;
+      background-color: white;
+      padding: 10px;
     }
 
     h1 {
@@ -557,6 +566,14 @@ div.panel.panel-default {
       margin: 0;
       bottom: 10px;
       left: 10px;
+      padding: 10px;
+      background-color: white;
+    }
+    .confirmed {
+      color: green;
+    }
+    .not-confirmed{
+      color: red;
     }
     .event-address-container{
       position: absolute;
@@ -565,7 +582,8 @@ div.panel.panel-default {
       border-right: 2px solid #E6E6E6;
       border-bottom: 2px solid #E6E6E6;
       padding: 11px;
-
+      background-color: white;
+      padding: 10px;
 
       h5 {
         font-family: AvenirNext-Regular;
@@ -635,10 +653,10 @@ div.panel.panel-default {
  }
 
 
- .contact-container, .eod-address {
+ .contact-container, .eod-address, .list-content {
     font-family: AvenirNext-Regular;
     font-size: 14px;
-    color: #000000;
+    color: rgba(64,64,64,.86);
     letter-spacing: 1.1px;
     float: left;
     margin: 0 21px 0 0;
@@ -728,13 +746,26 @@ div.panel.panel-default {
     color: #000000;
     letter-spacing: 0.32px;
     border-radius: 0px;
+    // margin-top: 0;
+    .form-group {
+      input {
+        margin: 0;
+      }
+    }
+   }
+   .sidebar-input {
+     margin: 0;
+     height: 27px;
+   }
+   .sidebar-label {
+     margin-bottom: 2px;
    }
    button {
       border-radius: 0;
-      background-color: black;
+      background-color: white;;
       font-family: AvenirNext-Bold;
       font-size: 12px;
-      color: #FFFFFF;
+      color: black;
       letter-spacing: 0.81px;
       border: 1px solid black;
       transition: 0.3s ease;
@@ -809,8 +840,159 @@ div.panel.panel-default {
    padding: 10px;
  }
 
+label {
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: #000000;
+  letter-spacing: 0.73px;
+}
 
+.form-control {
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: rgba(64,64,64,.86);
+  letter-spacing: 0.85px;
 
+}
+
+.form-container{
+  margin: 25px 0;
+}
+
+.form-btn {
+  border-radius: 0;
+  background-color: white;
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0.81px;
+  border: 1px solid black;
+  transition: 0.3s ease;
+  margin-top: 5px;
+    &:hover {
+     color: black;
+     background-color: white;
+    }
+}
+
+.main-form {
+  padding-bottom: 30px;
+}
+
+.fan-select {
+  margin: 0;
+}
+
+thead {
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: #000000;
+  letter-spacing: 0.93px;
+}
+
+.table-header {
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: $faded;
+  letter-spacing: 0.85px;
+  position: relative;
+
+  span {
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+  }
+}
+
+.current-page {
+  height: 10px;
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: $faded;
+  letter-spacing: 0.85px;
+  position: relative;
+  span {
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+  }
+}
+
+.fan-row {
+  td{
+    a{
+      color: $faded;
+    }
+  }
+}
+
+.sync-mailchimp {
+  font-family: AvenirNext-Bold;
+  font-size: 11px;
+  color: #337ab7;
+  letter-spacing: 0.85px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.table-btn-contain {
+  height: 50px;
+  width: 100%;
+  position: relative;
+  button{
+    border: none;
+    padding: 0;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.alert-container.success {
+  font-family: AvenirNext-Regular;
+  width: 100%;
+  height: 30px;
+  display: block;
+  background: #00D66F;  text-align: center;
+  color: white;
+  line-height: 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.85px;
+  span {
+    font-size: 12px;
+  }
+}
+
+#alert-exit-btn {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-family: AvenirNext-Regular;
+  font-size: 9px;
+  color: #FFFFFF;
+  letter-spacing: 0.85px;
+  cursor: pointer;
+}
+
+.to {
+  font-family: AvenirNext-Regular;
+  font-size: 11px;
+  color: $faded;
+  margin: 0 6px;
+}
+
+.remove-todo-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+  color: red;
+  font-family: AvenirNext-Regular;
+  font-size: 10px;
+  letter-spacing: 0.61px;
+  cursor: pointer;
+  padding-right: 4px;
+}
 
  ////////////// mobile /////////////
 
@@ -828,6 +1010,5 @@ div.panel.panel-default {
 
      }
    }
-
 
 }

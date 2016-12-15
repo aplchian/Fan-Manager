@@ -49,7 +49,10 @@ const Dashboard = React.createClass({
       artist: this.props.band,
       limit: 10,
       sortToken: '',
-      sortPlace: 0
+      sortPlace: 0,
+      mailchimp: false,
+      success: false,
+
     })
   },
   componentDidMount(){
@@ -123,13 +126,19 @@ const Dashboard = React.createClass({
   },
   syncMailChimp(e){
     e.preventDefault()
-    let data = buildMailChimp(this.state.data)
+    let data = buildMailChimp(flatten(this.state.results))
     this.props.syncMailChimp(data)
-      .then(res => console.log(res))
+      .then(res => this.setState({
+        success: true,
+        mailchimp: true
+      }))
+      .catch(err => this.setState({
+        success: true,
+        mailchimp: false
+      }))
   },
   pageForward(e){
     e.preventDefault()
-    console.log('results length',this.state.results.length,'sortPlace',this.state.sortPlace)
     if(this.state.results.length > this.state.sortPlace){
       this.setState({
         sortPlace: inc(this.state.sortPlace)
@@ -138,7 +147,6 @@ const Dashboard = React.createClass({
   },
   pageBackward(e){
     e.preventDefault()
-    console.log('results length',this.state.results.length,'sortPlace',this.state.sortPlace)
     if(this.state.sortPlace !== 0){
       this.setState({
         sortPlace: dec(this.state.sortPlace)
@@ -153,44 +161,62 @@ const Dashboard = React.createClass({
       : []
 
     let prevButton = this.state.sortPlace !== 0
-      ? <Button className="pull-left" onClick={this.pageBackward}>Prev</Button>
+      ? <Button className="pull-left" onClick={this.pageBackward}>prev</Button>
       : null
 
-    let nextButton = this.state.results.length > this.state.sortPlace
-      ? <Button className="pull-right" onClick={this.pageForward}>Next</Button>
+    let nextButton = this.state.results.length > this.state.sortPlace + 1
+      ? <Button className="pull-right" onClick={this.pageForward}>next</Button>
       : null
 
 
     const searchType = this.props.params.type === 'search' ? 'Fans' : 'Street Team'
+
     const resultCount = this.state.results.length > 0
-    ? <tr><td>{flatten(this.state.results).length} Fans Found -- {this.state.sortPlace + 1} of {this.state.results.length}</td></tr>
+    ? <div className="current-page" ><span>{this.state.sortPlace + 1} of {this.state.results.length}</span></div>
     : null
     const MailChimpButton = this.state.results.length > 0
-    ? <Button onClick={this.syncMailChimp}>Sync to Mailchimp</Button>
+    ? <div className="sync-mailchimp" onClick={this.syncMailChimp}>Sync to Mailchimp</div>
     : null
+
+    const Alert = ({message,show,success}) => {
+      if(show){
+        return success === "true"
+                 ? <div className="alert-container success animated slideInDown">{message} <span onClick={() => this.setState({success: false})} id="alert-exit-btn">x</span></div>
+                 : <div className="alert-container failure animated slideInDown">{message} <span id="alert-exit-btn">x</span></div>
+      }else {
+        return null
+      }
+    }
 
 
     return(
       <div>
+        <Alert success={"true"} show={this.state.success} message="Fans Synced with MailChimp!" />
         <PageWrapper logout={this.props.logOut} title={`Search ${searchType}`}>
           <Row>
-            <Col xs={12} md={2} >
-              <PageTitle to="Search"/>
+            <Col xs={12} md={2} className="search-sidebar fan-select">
+              <h3 className="search-result-header">Options</h3>
               <FanSearchBar
+                className="fan-select"
                 handleSubmit={this.handleSubmit}
                 handleChange={this.handleChange}
                 q={this.state.q}
                />
             </Col>
-            <Col xs={12} md={10} >
+            <Col xs={12} md={10} className="search-results">
+              <div className="table-header"><h3 className="search-result-header">Results</h3> <span className="table-header" >{flatten(this.state.results).length} Fans Found</span> </div>
               {resultCount}
               <SearchResultsTable results={currentList} />
-              {prevButton}
-              <Button onClick={this.pageForward}>Next</Button>
+              <div className="table-btn-contain clearfix">
+                {prevButton}
+                {nextButton}
+              </div>
               {MailChimpButton}
             </Col>
           </Row>
-          {/* {JSON.stringify(this.state,null,2)} */}
+          {/* <pre>
+            {JSON.stringify(this.state,null,2)}
+          </pre> */}
         </PageWrapper>
 
       </div>

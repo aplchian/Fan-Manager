@@ -18,7 +18,6 @@ const Home = React.createClass({
     })
   },
   componentDidMount(){
-    console.log('authh',this.props.auth)
     this.props.auth.notify(profile => {
       this.props.setUser(profile)
     })
@@ -27,6 +26,7 @@ const Home = React.createClass({
     }
     if(localStorage.getItem('profile')){
       let profile = JSON.parse(localStorage.getItem('profile'))
+      this.props.setUser(profile)
       axios.get(`${url}bands?userId=user_${profile.user_id}`)
         .then(res => {
           this.setState({

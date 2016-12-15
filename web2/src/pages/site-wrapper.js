@@ -14,9 +14,10 @@ const appStyle2 = insertRule("body {width: 100%}")
 
 const Home = React.createClass({
   render(){
+    console.log('pagewrapper',this.props.user)
     return(
       <div {...merge(appStyle,appStyle2)}>
-        <MainNavBar logout={this.props.logout} />
+        <MainNavBar user={this.props.user} logout={this.props.logout} />
         <Content {...style({maxWidth: '800px'})}>
           {this.props.children}
         </Content>

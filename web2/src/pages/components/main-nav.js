@@ -21,11 +21,39 @@ const navLinks = $('& a',{
 const MainNavBar = React.createClass({
   getInitialState(){
     return({
-      loggedIn: true
+      loggedIn: true,
+      user: {
+        profile: ''
+      }
     })
   },
+  componentDidMount(){
+    if(localStorage.getItem('profile')){
+      let profile = JSON.parse(localStorage.getItem('profile'))
+      this.setState({
+        user: profile
+      })
+    }
+  },
   render(){
-    console.log('')
+
+    const avatarStyle = style({
+      background: `url(${this.state.user.picture}) no-repeat center center`,
+      backgroundSize: 'cover',
+      height: '33px',
+      width: '33px',
+      borderRadius: '100%',
+      margin: '9px 10px 0 0'
+    })
+
+    console.log('checkstat',this.state)
+
+
+    var avatar = this.state.user.profile === ''
+      ? null
+      : <NavItem {...avatarStyle}></NavItem>
+
+
     return(
       <Navbar {...style({marginBottom: '0px',color: 'red'})} collapseOnSelect>
         <Navbar.Header>
@@ -40,8 +68,8 @@ const MainNavBar = React.createClass({
             <NavItem className="main-nav-item" eventKey={2}><Link to="/fans">Fans</Link></NavItem>
           </Nav>
           <Nav {...navLinks} pullRight>
+            {avatar}
             <NavItem onClick={this.props.logout} eventKey={1} href="#">logout</NavItem>
-            {/* <NavItem eventKey={2} href="#">Link Right</NavItem> */}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

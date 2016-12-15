@@ -11,6 +11,11 @@ const container = style({
   margin: "0 auto"
 })
 
+const s_bg = style({
+  background: 'url(./images/bg1.png) no-repeat center center',
+  backgroundSize: 'cover'
+})
+
 const Event = React.createClass({
   getInitialState(){
     return({
@@ -72,7 +77,7 @@ const Event = React.createClass({
       />
     )
 
-    let dealRow = this.state.event.deal !== ''
+    const dealRow = (this.state.event.deal !== '' && this.state.event.deal)
       ? (
         <Row>
           <Col xs={12} md={12}>
@@ -85,7 +90,7 @@ const Event = React.createClass({
       )
       : null
 
-    let parkingRow = this.state.event.parking !== ''
+    const parkingRow = (this.state.event.parking !== '' && this.state.event.parking)
       ? (
         <Row>
           <Col xs={12} md={12}>
@@ -98,7 +103,7 @@ const Event = React.createClass({
       )
       :null
 
-    let notesRow = this.state.event.notes !== ''
+    const notesRow = (this.state.event.notes !== '' && this.state.event.notes)
       ? (
         <Row>
           <Col xs={12} md={12}>
@@ -111,7 +116,7 @@ const Event = React.createClass({
       )
       : null
 
-    let contactsRow = this.state.event.contact.length > 0
+    const contactsRow = (this.state.event.contact.length > 0 && this.state.event.contact)
       ? (
         <Row className="contact-row clearfix">
           <Col xs={12} md={12}>
@@ -124,7 +129,7 @@ const Event = React.createClass({
       )
       : null
 
-    let scheduleRow = this.state.event.schedule.length > 0
+    const scheduleRow = (this.state.event.schedule.length > 0 && this.state.event.schedule)
       ? (
         <Row>
           <Col xs={12} md={12}>
@@ -135,11 +140,13 @@ const Event = React.createClass({
       )
       : null
 
-
+   const confirmedLabel = this.state.event.status === "confirmed"
+      ? <div className="event-status confirmed">Confirmed</div>
+      : <div className="event-status not-confirmed">Not Confirmed</div>
 
     return(
       <PageWrapper logout={this.props.logOut}>
-        <Row className="event-hero">
+        <Row {...s_bg} className="event-hero">
           <Col xs={12} md={12}>
               <div className="event-title-container">
                 <h1 className="page-jumbo-title">{this.state.event.name}</h1>
@@ -156,7 +163,7 @@ const Event = React.createClass({
             <h5>{this.state.event.state}</h5>
             <h5>{this.state.event.zipcode}</h5>
           </div>
-          <div className="event-status">{this.state.event.status === "confirmed" ? "Confirmed" : "Not Confirmed"}</div>
+          {confirmedLabel}
         </Row>
         {scheduleRow}
         {contactsRow}

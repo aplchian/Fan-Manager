@@ -42,10 +42,9 @@ const ListEvents = React.createClass({
     })
   },
   componentDidMount(){
-    const tap = (item) => {
-      console.log('dattta',item)
-      return item
-    }
+    this.getTodos()
+  },
+  getTodos(){
     let data = {
       artistId: this.state.band,
       startdate: this.state.startDate.format(),
@@ -98,8 +97,17 @@ const ListEvents = React.createClass({
       this.setState(currentState)
     }
   },
+  removeTodo(id){
+    return e => {
+      if(confirm('Are you sure you want to delete this todo?')){
+        this.props.removeTodo(id)
+          .then(res => this.getTodos())
+          .catch(err => console.log('error!',err.message))
+
+      }
+    }
+  },
   render(){
-    console.log(this.state)
     const results = (item,i) => {
       let date = item.duedate.split('T')[0]
       const assignedTo = item => {
@@ -108,12 +116,13 @@ const ListEvents = React.createClass({
         )
       }
       const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'
-      let title = <div><FontAwesome name='tasks' /><h4 className="todo-title">{item.title}</h4></div>
+      const title = <div><FontAwesome name='tasks' /><h4 className="todo-title">{item.title}</h4></div>
       return (
         <Panel className={`${panelClass} panel-todo-body`} header={title} eventKey={i}>
           <div>
             <div className="todo-notes">{item.notes}</div>
             <div className="todo-edit-btn"><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>
+            <div className="remove-todo-btn" onClick={this.removeTodo(item._id)}>delete</div>
             <div className="todo-assignedto">Assigned To: {item.assignedto.map(assignedTo)}</div>
           </div>
          </Panel>

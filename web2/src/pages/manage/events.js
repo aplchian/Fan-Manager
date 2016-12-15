@@ -138,9 +138,11 @@ const ListEvents = React.createClass({
       ? <FontAwesome className="sort-icon-asc" name='sort-asc' />
       : <FontAwesome className="sort-icon" name='sort-desc' />
 
+      console.log('eventspage',this.props.user)
+
     return(
       <div>
-        <PageWrapper logout={this.props.logOut} title="Events">
+        <PageWrapper user={this.props.user} logout={this.props.logOut} title="Events">
           <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
             <Col xs={12} md={2} className="search-sidebar">
