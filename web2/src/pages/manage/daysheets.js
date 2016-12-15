@@ -11,28 +11,10 @@ import DatePicker from 'react-datepicker'
 var FontAwesome = require('react-fontawesome')
 
 
-const container = style({
-  display: 'block',
-  margin: "0 auto"
-})
 
-const sideBarHeaderStyle = style({
-  textAlign: 'center',
-  fontFamily: 'AvenirNext-Regular, sans-serif',
-  fontSize: 18
-})
 
-const resultsHeaderStyle = style({
-  fontFamily: 'AvenirNext-Regular, sans-serif',
-  fontSize: 18
-})
 
-const sideBarStyle = style({
-  // borderRight: '1px solid rgb(221, 221, 221)',
-  borderRadius: '0px',
-  textAlign: 'center',
-  paddingBottom: '40px'
-})
+
 
 const DaySheets = React.createClass({
   getInitialState(){
@@ -108,32 +90,33 @@ const DaySheets = React.createClass({
     const resultsList = this.state.order === 'asc'
       ? map(results,sort(asc,this.state.results))
       : map(results,sort(desc,this.state.results))
-    console.log('props',this.props)
     return(
       <div>
         <PageWrapper logout={this.props.logOut} user={this.state.user} title="Daysheets">
           <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
-            <Col xs={12} md={2}>
+            <Col xs={12} md={2} className="search-sidebar">
               <h3 className="search-result-header">Options</h3>
               <DatePicker
+                className="date-picker"
                 selected={this.state.startDate}
                 selectsStart  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('startDate')} />
                 <p className="sidebar-to">to</p>
               <DatePicker
+                className="date-picker"
                 selected={this.state.endDate}
                 selectsEnd  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('endDate')} />
                 <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem className="add-btn"><Link to="/manage/daysheets/add">Add DaySheet</Link></NavItem>
+                <div className="add-link"><Link to="/manage/daysheets/add">+ add daysheet</Link></div>
               </Nav>
             </Col>
-            <Col xs={12} md={10}>
-              <h3 onClick={this.toggleSort} className="search-result-header">Results {sortIcon}</h3>
+            <Col xs={12} md={10} className="search-results">
+              <h3 onClick={this.toggleSort} className="search-result-header">Results{sortIcon}</h3>
               {resultsList}
             </Col>
           </Row>

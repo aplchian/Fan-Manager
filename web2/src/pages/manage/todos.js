@@ -108,7 +108,7 @@ const ListEvents = React.createClass({
         )
       }
       const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'
-      let title = <div><FontAwesome name='tasks' /><h4>{item.title}</h4></div>
+      let title = <div><FontAwesome name='tasks' /><h4 className="todo-title">{item.title}</h4></div>
       return (
         <Panel className={`${panelClass} panel-todo-body`} header={title} eventKey={i}>
           <div>
@@ -134,16 +134,18 @@ const ListEvents = React.createClass({
       <div>
         <PageWrapper logout={this.props.logOut} title="Todos">
           <div {...style({color: 'white'})} >fix this</div>
-          <Row {...container} className="show-grid">
-            <Col xs={12} md={2}>
+          <Row className="show-grid">
+            <Col className="search-sidebar" xs={12} md={2}>
               <h3 className="search-result-header">Filter</h3>
                 <DatePicker
+                  className="date-picker"
                   selected={this.state.startDate}
                   selectsStart  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('startDate')} />
                   <p className="sidebar-to">to</p>
                 <DatePicker
+                  className="date-picker"
                   selected={this.state.endDate}
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
@@ -155,10 +157,10 @@ const ListEvents = React.createClass({
                   </FormControl>
                   <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem className="add-btn"><Link to="/manage/todos/add">Add Todo</Link></NavItem>
+                <div className="add-link"><Link to="/manage/todos/add"> + add todo</Link></div>
               </Nav>
             </Col>
-            <Col xs={12} md={10}>
+            <Col className="search-results" xs={12} md={10}>
               <h3 className="search-result-header">Results</h3>
               <Accordion>
                 {todos.map(results)}

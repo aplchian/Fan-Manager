@@ -16,6 +16,11 @@ const container = style({
   margin: "0 auto"
 })
 
+const s_bg = style({
+  background: 'url(./images/bg1.png) no-repeat center center',
+  backgroundSize: 'cover'
+})
+
 const DaySheet = React.createClass({
   getInitialState(){
     return({
@@ -91,7 +96,7 @@ const DaySheet = React.createClass({
 
     return(
       <PageWrapper logout={this.props.logOut}>
-        <Row className="daysheet-hero">
+        <Row {...s_bg} className="daysheet-hero">
               <h1 className="daysheet-date">{date}</h1>
               <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
               <div className="daysheet-city-contain">{this.state.daysheet.currentcity}, {this.state.daysheet.currentstate}   ->   {this.state.daysheet.destinationcity}, {this.state.daysheet.destinationstate}</div>

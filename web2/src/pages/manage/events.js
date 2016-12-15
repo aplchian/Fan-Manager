@@ -117,7 +117,7 @@ const ListEvents = React.createClass({
       }
       return (
         <Link key={i} to={`/manage/events/${item._id}/show`}>
-          <Panel key={i}>
+          <Panel className="event-panel" key={i}>
             <div className="panel-date">{icon} {date}</div>
             <div className="panel-event-name">{item.name}</div>
             <div className="panel-event-location">{item.city},{item.state}</div>
@@ -142,16 +142,18 @@ const ListEvents = React.createClass({
       <div>
         <PageWrapper logout={this.props.logOut} title="Events">
           <div {...style({color: 'white'})}>fix this?</div>
-          <Row {...container} className="show-grid">
-            <Col xs={12} md={2}>
+          <Row className="show-grid">
+            <Col xs={12} md={2} className="search-sidebar">
               <h3 className="search-result-header">Filter</h3>
                 <DatePicker
+                  className="date-picker"
                   selected={this.state.startDate}
                   selectsStart  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('startDate')} />
                   <p className="sidebar-to">to</p>
                 <DatePicker
+                  className="date-picker"
                   selected={this.state.endDate}
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
@@ -163,10 +165,10 @@ const ListEvents = React.createClass({
                   </FormControl>
                   <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <NavItem className="add-btn"><Link to="/manage/events/add">Add Event</Link></NavItem>
+                <div className="add-link"><Link to="/manage/events/add">+ add event</Link></div>
               </Nav>
             </Col>
-            <Col xs={12} md={10}>
+            <Col xs={12} md={10} className="search-results">
               <h3 onClick={this.toggleSort} className="search-result-header">Results {sortIcon}</h3>
               {resultsList}
             </Col>
