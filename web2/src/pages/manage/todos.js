@@ -5,7 +5,7 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
-import {filter,pluck,reject} from 'ramda'
+import {filter,pluck,reject,tail} from 'ramda'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 const FontAwesome = require('react-fontawesome')
@@ -111,7 +111,7 @@ const ListEvents = React.createClass({
       let date = item.duedate.split('T')[0]
       const assignedTo = item => {
         return (
-          <span> {item} </span>
+          <span>{tail(item.split('_')).join(' ')}, </span>
         )
       }
       const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'

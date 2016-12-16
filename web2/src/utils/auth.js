@@ -6,7 +6,16 @@ const url = process.env.REACT_APP_XHR
 
 
 module.exports = function(clientId,domain) {
-  const lock = new Auth0Lock(clientId, domain)
+  var options = {
+    theme: {
+      logo: './images/lock.png',
+      primaryColor: 'black'
+    },
+    languageDictionary: {
+      title: 'INTOUCH'
+    },
+    }
+  const lock = new Auth0Lock(clientId, domain,options)
 
 
 
