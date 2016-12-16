@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "AvenirNext-Regular";
+  src: url("../fonts/avenirnextltpro-regular.ttf"); }
+
+@font-face {
+  font-family: "AvenirNext-Medium";
+  src: url("../fonts/avenirltstd-medium.ttf"); }
+
+@font-face {
+  font-family: "AvenirNext-Bold";
+  src: url("../fonts/avenirnextltpro-bold.ttf"); }
+
 html, body {
   padding: 0;
   margin: 0;
@@ -67,19 +79,6 @@ h3 {
 
 .search-result-header:hover {
   cursor: pointer; }
-
-.react-datepicker__input-container {
-  font-family: AvenirNext-Regular, sans-serif;
-  font-size: 12px;
-  /*color: #324AD2;*/
-  width: 100%;
-  margin: 5px 0 5px 0; }
-
-.react-datepicker__input-container input {
-  display: block;
-  margin: 0 auto;
-  border: none;
-  border-bottom: 1px solid gray; }
 
 .sidebar-to {
   font-family: AvenirNext-Regular, sans-serif;
@@ -201,12 +200,21 @@ div.panel.panel-default {
   color: #4D4D4D;
 }*/
 .nav-pills li a:hover {
-  color: #324AD2;
+  color: black;
   background-color: white; }
 
 .btn-default {
-  font-family: AvenirNext-Regular, sans-serif;
-  font-size: 13px; }
+  border-radius: 0;
+  background-color: white;
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0.81px;
+  border: 1px solid black;
+  transition: 0.3s ease; }
+  .btn-default:hover {
+    color: black;
+    background-color: white; }
 
 .sidebar-btn {
   display: block;
@@ -418,7 +426,7 @@ form label {
     font-size: 14px;
     color: #000000;
     letter-spacing: 0;
-    margin: 14px 0 0 0; }
+    margin: 2px 0 0 0; }
   .event-hero .capacity, .daysheet-hero .capacity {
     font-family: AvenirNext-Regular;
     font-size: 12px;
@@ -882,6 +890,19 @@ thead {
 
 .d3-text {
   color: red; }
+
+.form-submit-btn {
+  border-radius: 0;
+  background-color: white;
+  font-family: AvenirNext-Bold;
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0.81px;
+  border: 1px solid black;
+  transition: 0.3s ease; }
+  .form-submit-btn:hover {
+    color: black;
+    background-color: white; }
 
 @media (max-width: 600px) {
   .event-hero {

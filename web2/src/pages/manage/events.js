@@ -138,7 +138,6 @@ const ListEvents = React.createClass({
       ? <FontAwesome className="sort-icon-asc" name='sort-asc' />
       : <FontAwesome className="sort-icon" name='sort-desc' />
 
-      console.log('eventspage',this.props.user)
 
     return(
       <div>

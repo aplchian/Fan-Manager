@@ -236,8 +236,6 @@ const Dashboard = React.createClass({
     this.props.fansByState(options)
       .then(res =>  {
 
-        console.log('res',res)
-
         let states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
             "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
             "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
@@ -255,7 +253,6 @@ const Dashboard = React.createClass({
         let data = compose(
                    sort((a,b) => a.count - b.count),
                    filter(item => item.state !== 'SC'),
-                   tap(item => console.log('tap',item)),
                    map(arr => ({state: arr[0].state, count: arr.length})),
                    reject(item => item.length === 0),
                    map(countFans)
@@ -271,7 +268,6 @@ const Dashboard = React.createClass({
   render(){
   //   const node = new ReactFauxDOM.Element('div')
   //
-  //   console.log('state',this.state)
   //   var width = 960,
   //     height = 500,
   //     centered;

@@ -19,7 +19,6 @@ const Home = React.createClass({
   },
   componentDidMount(){
     this.props.auth.notify(profile => {
-      console.log('notify!!',profile)
       axios.get(`${url}bands?userId=user_${profile.user_id}`)
         .then(res => {
           this.setState({
@@ -40,10 +39,8 @@ const Home = React.createClass({
           })
         })
     }
-    console.log('MOUNT!')
   },
   render(){
-    console.log('state',this.state)
     const listBands = (item) => {
       return <Link to="/manage/todos"><div onClick={this.props.setBand(item)} className="select-artist">{join(" ",tail(split('_',item)))}</div></Link>
     }

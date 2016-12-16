@@ -115,7 +115,6 @@ const AddEvent = React.createClass({
   },
   removeContact(id){
     return e => {
-      console.log('remove ',id)
       let currentContacts = this.state.contact
       let contact = reject(item => item.id === id,currentContacts)
       this.setState({contact})
@@ -158,7 +157,6 @@ const AddEvent = React.createClass({
   },
   removeEvent(id){
     return e => {
-      console.log('remove ',id)
       let currentEvents = this.state.schedule
       let schedule = reject(item => item.id === id,currentEvents)
       this.setState({schedule})
@@ -280,12 +278,12 @@ const AddEvent = React.createClass({
                 </div>
                   <ControlLabel>Address</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.streetone}
+                    value={this.state.addressone}
                     placeholder="Street Address 1"
                     onChange={this.handleChange('addressone')}
                   />
                   <FormControl type="text"
-                    value={this.state.streettwo}
+                    value={this.state.addresstwo}
                     placeholder="Street Address 2"
                     onChange={this.handleChange('addresstwo')}
                   />
@@ -336,9 +334,9 @@ const AddEvent = React.createClass({
               </form>
            </Col>
           </Row>
-          {/* <pre>
+          <pre>
             {JSON.stringify(this.state,null,2)}
-          </pre> */}
+          </pre>
         </PageWrapper>
       </div>
     )

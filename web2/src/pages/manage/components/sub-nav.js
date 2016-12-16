@@ -36,7 +36,6 @@ const SubNav = React.createClass({
     const li = (item,i) => <NavItem eventKey={i} title={item.name}><Link className="sub-nav-item" to={item.to}>{item.name}</Link></NavItem>
 
     function handleSelect(selectedKey) {
-      console.log(selectedKey);
     }
     return(
       <div>

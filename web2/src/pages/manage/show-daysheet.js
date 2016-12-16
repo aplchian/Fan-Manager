@@ -64,7 +64,7 @@ const DaySheet = React.createClass({
             schedule: concatEvents(res.data),
             events: pluck('doc',res.data),
             date: date
-          }, () => {console.log('afterState',this.state)})
+          })
         })
     }
     this.props.getDaySheet(this.props.params.id)

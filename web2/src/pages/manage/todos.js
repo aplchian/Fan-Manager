@@ -52,7 +52,6 @@ const ListEvents = React.createClass({
     }
     this.props.getArtistTodos(data)
       .then(res => {
-        console.log('res',res.data)
         this.setState({
           results: pluck('doc',res.data)
         })

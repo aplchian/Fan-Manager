@@ -136,7 +136,6 @@ const AddEvent = React.createClass({
   },
   removeEvent(id){
     return e => {
-      console.log('remove ',id)
       let currentEvents = this.state.schedule
       let schedule = reject(item => item.id === id,currentEvents)
       this.setState({schedule})
@@ -152,7 +151,6 @@ const AddEvent = React.createClass({
     }
     return e => {
       let events = map(toggle,this.state.events)
-      console.log('events',events)
       this.setState({events})
     }
   },
@@ -164,7 +162,6 @@ const AddEvent = React.createClass({
     }
   },
   render(){
-    console.log('date',moment("2016-12-14"))
     const events = (item,i) => {
       return <FormControl.Static className="form-item-container">
               <span className="form-item-title">

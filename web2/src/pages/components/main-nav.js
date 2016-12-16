@@ -46,7 +46,6 @@ const MainNavBar = React.createClass({
       margin: '9px 10px 0 0'
     })
 
-    console.log('checkstat',this.state)
 
 
     var avatar = this.state.user.profile === ''

@@ -78,7 +78,6 @@ const Dashboard = React.createClass({
     })
   },
   render(){
-    console.log(this.state)
     return(
       <div>
           <PageWrapper logout={this.props.logOut} title="Add Fan">
@@ -122,7 +121,7 @@ const Dashboard = React.createClass({
                         <input type="checkbox" checked={this.state.streetteam} onChange={this.toggleStreetTeam} />
                       </div>
                     </div>
-                    <Button className="pull-right" type="submit">Submit</Button>
+                    <Button className="form-btn" className="pull-right" type="submit">Submit</Button>
                   </form>
                 </Col>
               </Row>

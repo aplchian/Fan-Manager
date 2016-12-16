@@ -118,7 +118,6 @@ const Dashboard = React.createClass({
     e.preventDefault()
       let q = this.state.q.toUpperCase()
       let data = filter(propSatisfies(x => x.toUpperCase() === q,this.state.searchtype),this.state.data)
-      console.log('data',data)
       this.setState({
         results: splitEvery(this.state.limit,data),
         sortPlace: 0
@@ -154,7 +153,6 @@ const Dashboard = React.createClass({
     }
   },
   render(){
-    console.log(this.state)
 
     let currentList = this.state.results.length > 0
       ? this.state.results[this.state.sortPlace]

@@ -48,7 +48,6 @@ function loadEmails(){
 function sync(cb){
 
   var status
-  console.log(emails)
 
   const emailsUniq = compose(
     map(appendId),
