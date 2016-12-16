@@ -33,24 +33,42 @@ const Dashboard = React.createClass({
       edit: true
     })
   },
+  deleteFan(){
+    this.props.removeFan(this.state._id)
+      .then(res => console.log('success!'))
+      .catch(err => console.log('error!'))
+  },
   render(){
     let Edit = this.state.edit ? <Redirect to={`/fans/${this.state._id}/edit`} /> : null
+    const FanItem = ({label,text}) => (
+      <div className="fan-item-container">
+        <div className="fan-label">{label}</div>
+        <div className="fan-item">{text}</div>
+      </div>
+    )
     return(
       <div>
          {Edit}
          <PageWrapper logout={this.props.logOut} title="View Fan">
            <Row>
              <Col xs={12} md={12}>
-               <PageHeader>{this.state.email}</PageHeader>
+               <div className="fan-header">
+                 <h1>{this.state.email}</h1>
+                 <span onClick={this.edit}>edit</span>
+               </div>
              </Col>
            </Row>
-            <Panel header={`First Name`}>{this.state.f_name}</Panel>
-            <Panel header={`Last Name`}>{this.state.l_name}</Panel>
-            <Panel header={`Email`}>{this.state.email}</Panel>
-            <Panel header={`City`}>{this.state.city}</Panel>
-            <Panel header={`State`}>{this.state.state}</Panel>
-            <Panel header={`Join Date`}>{moment(this.state.join).format('MMM Do YYYY')}</Panel>
-            <Button onClick={this.edit}>EDIT</Button>
+           <Row className="fan-content-contain">
+             <Col xs={12} md={12}>
+               <FanItem label="First Name" text={this.state.f_name} />
+               <FanItem label="Last Name" text={this.state.l_name} />
+               <FanItem label="Email" text={this.state.email} />
+               <FanItem label="City" text={this.state.city} />
+               <FanItem label="State" text={this.state.state} />
+               <FanItem label="Join Date" text={moment(this.state.join).format('MMM Do YYYY')} />
+               <div className="delete-fan" onClick={this.deleteFan}><a>delete fan</a></div>
+             </Col>
+           </Row>
           </PageWrapper>
       </div>
    )

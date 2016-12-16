@@ -161,6 +161,11 @@ function createUser(doc, cb) {
 
     doc._id = `user_${doc.user_id}`
     doc.type = "user"
+    doc.bands = [
+      "band_Stop_Light_Observations",
+      "band_Atlas_Road_Crew",
+      "band_The_Beatles"
+    ]
     db.put(doc, (err,res) => {
       if(err) return cb(err)
       return cb(null,res)

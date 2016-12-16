@@ -112,7 +112,7 @@ app.put('/fans',function(req,res){
 //   })
 // })
 
-app.delete('/fan/:id',function(req,res){
+app.delete('/fans/:id',function(req,res){
   dal.removeFan(req.params.id,function(err,body){
     if(err){
       return res.send(err.message)
@@ -327,6 +327,6 @@ app.get('/bands',function(req,res){
 })
 
 
-app.listen(3040,function(){
+app.listen(3046,function(){
   console.log('listening on port 3039')
 })

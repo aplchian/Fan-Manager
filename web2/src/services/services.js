@@ -72,6 +72,9 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
   getDaySheets(){
     return axios.get(`${url}daysheetsdsd`)
   },
+  removeFan(id){
+    return axios.delete(`${url}fans/${id}`)
+  },
   removeEvent(id){
     return axios.delete(`${url}events/${id}`)
   },
@@ -115,6 +118,7 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
       getDaySheet={this.getDaySheet}
       syncMailChimp={this.syncMailChimp}
       addDaySheet={this.addDaySheet}
+      removeFan={this.removeFan}
       removeEvent={this.removeEvent}
       removeDaySheet={this.removeDaySheet}
       removeTodo={this.removeTodo}

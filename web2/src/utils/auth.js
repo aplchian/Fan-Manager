@@ -16,14 +16,13 @@ module.exports = function(clientId,domain) {
     lock.show()
   }
 
-  let notifyFunc
+  var notifyFunc
 
   function _doAuthentication(authResult){
     setToken(authResult.idToken)
     lock.getUserInfo(authResult.accessToken, function(err,profile){
       if (err) return console.log(err.message)
       localStorage.setItem('profile',JSON.stringify(profile))
-      console.log('PROFILE',profile,`${url}/users`)
       axios.post(`${url}users`,profile)
         .then(res => console.log('success',profile))
         .catch(err => console.log('err',err.message))
