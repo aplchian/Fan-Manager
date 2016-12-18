@@ -66,13 +66,13 @@ const AddEvent = React.createClass({
   handleSubmit(e){
     e.preventDefault()
 
-    const updateEvents = item => {
-      this.props.updateEvent(this.state)
-        .then(res => console.log(res))
-        .catch(err => console.log(err.message))
-    }
+    // const updateEvents = item => {
+    //   this.props.updateEvent(this.state)
+    //     .then(res => console.log(res))
+    //     .catch(err => console.log(err.message))
+    // }
     // update all event status'
-    this.state.events.forEach(updateEvents)
+    // this.state.events.forEach(updateEvents)
     //UPDATE daysheet if editing
     if(this.props.params.id){
       let doc = this.state
@@ -81,13 +81,17 @@ const AddEvent = React.createClass({
       .then(res => this.setState({
         success: true
       }))
-      .catch(err => console.log(err.message))
+      .catch(err => this.setState({
+        success: true
+      }))
     }else{
       this.props.addDaySheet(this.state)
         .then(res => this.setState({
           success: true
         }))
-        .catch(err => console.log(err.message))
+        .catch(err => this.setState({
+          success: true
+        }))
      }
 
 

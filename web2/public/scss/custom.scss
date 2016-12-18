@@ -1120,11 +1120,29 @@ thead {
    }
 }
 
+.control-label {
+  display: block;
+}
+
  ////////////// mobile /////////////
 
 
 
  @media (max-width: 600px) {
+
+   .container {
+     width: 90%;
+   }
+
+   .home-page{
+     .content-container{
+       width: 90%;
+       h1{
+         font-size: 37px;
+       }
+     }
+   }
+
    .event-hero {
      border: none;
    }
@@ -1133,8 +1151,42 @@ thead {
      .event-edit-btn {
        position: absolute;
        width: 100%;
+     }
+     .daysheet-date {
+       font-size: 17px;
+     }
 
+     .daysheet-city-contain {
+       font-size: 10px;
+     }
+
+     .event-title-container {
+       margin: 64px 0 0 51px;
+     }
+
+     .event-address-container {
+       right: 0;
+       border: none;
+     }
+
+     .event-status {
+       font-size: 9px;
      }
    }
+
+   .panel-event-location {
+     display: none;
+   }
+
+   .panel-event-name {
+     display: block;
+     position: relative;
+     transform: translate(0,0);
+     -webkit-transform: translate(0,0);
+     left: 0px;
+     margin-top: 6px;
+     margin: 6px 0 0 14px;
+   }
+
 
 }

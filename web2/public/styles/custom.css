@@ -895,9 +895,39 @@ thead {
     color: black;
     background-color: white; }
 
+.control-label {
+  display: block; }
+
 @media (max-width: 600px) {
+  .container {
+    width: 90%; }
+  .home-page .content-container {
+    width: 90%; }
+    .home-page .content-container h1 {
+      font-size: 37px; }
   .event-hero {
     border: none; }
   .event-hero .event-edit-btn, .daysheet-hero .event-edit-btn {
     position: absolute;
-    width: 100%; } }
+    width: 100%; }
+  .event-hero .daysheet-date, .daysheet-hero .daysheet-date {
+    font-size: 17px; }
+  .event-hero .daysheet-city-contain, .daysheet-hero .daysheet-city-contain {
+    font-size: 10px; }
+  .event-hero .event-title-container, .daysheet-hero .event-title-container {
+    margin: 64px 0 0 51px; }
+  .event-hero .event-address-container, .daysheet-hero .event-address-container {
+    right: 0;
+    border: none; }
+  .event-hero .event-status, .daysheet-hero .event-status {
+    font-size: 9px; }
+  .panel-event-location {
+    display: none; }
+  .panel-event-name {
+    display: block;
+    position: relative;
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    left: 0px;
+    margin-top: 6px;
+    margin: 6px 0 0 14px; } }
