@@ -65,6 +65,7 @@ const Dashboard = React.createClass({
       }
       this.props.fansByState(options)
         .then(res =>  {
+          console.log('date',res.data)
           this.setState({
             data: res.data,
             results: splitEvery(this.state.limit,res.data)

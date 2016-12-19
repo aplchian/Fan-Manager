@@ -108,9 +108,16 @@ const AddTodo = React.createClass({
                   <FormGroup controlId="formControlsSelectMultiple">
                     <ControlLabel>Assigned To:</ControlLabel>
                     <FormControl onChange={this.handleMultiSelect} componentClass="select" multiple>
+                      <option value="user_Sarah_Graif">Sarah Graif</option>
+                      <option value="user_Mark_Bryan">Mark Bryan</option>
+                      <option value="user_Will_Blackburn">Will Blackburn</option>
+                      <option value="user_Louis_Duffie">Louis Duffie</option>
+                      <option value="user_John-Keith">Cubby</option>
+                      <option value="user_Mahoney">Mahoney</option>
+                      <option value="user_Luke_Withers">Luke Withers</option>
                       <option value="user_alex_boquist">Alex Boquist</option>
-                      <option value="user_sarah_graif">Sarah Graif</option>
-                      <option value="user_will_blackburn">Will Blackburn</option>
+                      <option value="user_Band">Band</option>
+                      <option value="user_All">All</option>
                     </FormControl>
                     <ControlLabel>Status:</ControlLabel>
                     <FormControl value={this.state.completed} onChange={this.handleChange('completed')} componentClass="select" placeholder="type">

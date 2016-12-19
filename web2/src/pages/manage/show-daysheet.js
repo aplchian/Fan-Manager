@@ -29,7 +29,8 @@ const DaySheet = React.createClass({
         schedule: []
       },
       schedule: [],
-      events: []
+      events: [],
+      success: false
     })
   },
   componentDidMount(){
@@ -76,7 +77,9 @@ const DaySheet = React.createClass({
     e.preventDefault()
     if(confirm('Are you sure you want to delete this daysheet?')){
       this.props.removeDaySheet(this.state.daysheet._id)
-        .then(res => console.log('deleted!',res))
+        .then(res => this.setState({
+          success: true
+        }))
         .catch(err => console.log('error!',err.message))
     }
   },
