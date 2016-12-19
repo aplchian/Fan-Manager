@@ -44,13 +44,9 @@ app.get('/fans/state/:bandId',function(req,res){
 
 app.get('/fans/:fan',function(req,res){
   var fan = req.params.fan
-  dal.getFan(fan,function(err,body){
-    if(err){
-      return console.log(err.message)
-    }
-    if(body){
-      res.send(body)
-    }
+  dal.getFan(fan,(err,body) => {
+    if(err) return console.log(err.message)
+    return res.send(body)
   })
 })
 

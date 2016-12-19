@@ -76,14 +76,22 @@ const AddEvent = React.createClass({
     //UPDATE daysheet if editing
     if(this.props.params.id){
       let doc = this.state
-      delete doc.newevent
+      // delete doc.newevent
+      console.log('working!')
       this.props.updateDaySheet(doc)
-      .then(res => this.setState({
-        success: true
-      }))
-      .catch(err => this.setState({
-        success: true
-      }))
+      .then(res => {
+        console.log('success!!')
+        this.setState({
+          success: true,
+          huh: 'what'
+        })
+      })
+      .catch(err => {
+        console.log('faill!!')
+        this.setState({
+          success: true
+        })
+      })
     }else{
       this.props.addDaySheet(this.state)
         .then(res => this.setState({

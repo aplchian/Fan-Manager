@@ -18,7 +18,7 @@ const headerStyle = style({
 const Dashboard = React.createClass({
   getInitialState(){
     return({
-      edit: null
+      edit: null,
     })
   },
   componentDidMount(){
@@ -34,9 +34,13 @@ const Dashboard = React.createClass({
     })
   },
   deleteFan(){
-    this.props.removeFan(this.state._id)
-      .then(res => console.log('success!'))
-      .catch(err => console.log('error!'))
+    if(confirm('Are you sure you want to delete this fan?')){
+      this.props.removeFan(this.state._id)
+        .then(res => this.setState({
+          deleted: true
+        }))
+        .catch(err => console.log('error!'))
+    }
   },
   render(){
     let Edit = this.state.edit ? <Redirect to={`/fans/${this.state._id}/edit`} /> : null
@@ -46,8 +50,10 @@ const Dashboard = React.createClass({
         <div className="fan-item">{text}</div>
       </div>
     )
+    console.log(this.state)
     return(
       <div>
+        {this.state.deleted ? <Redirect to="/search/fans" /> : null}
          {Edit}
          <PageWrapper logout={this.props.logOut} title="View Fan">
            <Row>

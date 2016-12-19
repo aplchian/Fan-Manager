@@ -6,6 +6,7 @@ const WarningBar = require('../components/warning-bar')
 // const Button = require('../components/submit-button.js')
 const PageTitle = require('../components/page-header.js')
 import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox} from 'react-bootstrap'
+import {Redirect} from 'react-router'
 
 // import {Button,Modal} from 'react-bootstrap'
 
@@ -39,7 +40,7 @@ const Dashboard = React.createClass({
       state: '',
       city: '',
       streetteam: false,
-      success: 'email is required',
+      success: false,
       band: this.props.band
     })
   },
@@ -60,16 +61,20 @@ const Dashboard = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
+    let state = this.state
+    delete state.success
     if(this.state._id){
-      this.props.editFan(this.state,(err,res) => {
-        if(err) return console.log('err',err)
-        return console.log('success',res)
-      })
+      this.props.editFan(state)
+      .then(res => this.setState({
+        success: true
+      }))
+      .catch(err => console.log('error',err.message))
     }else {
-      this.props.addFan(this.state,(err,res) => {
-        if(err) return console.log('err',err)
-        return console.log('success',res)
-      })
+      this.props.addFan(state)
+        .then(res => this.setState({
+          success: true
+        }))
+        .catch(err => console.log('error',err.message))
     }
   },
   toggleStreetTeam(e){
@@ -80,6 +85,7 @@ const Dashboard = React.createClass({
   render(){
     return(
       <div>
+        {this.state.success ? <Redirect to="/search/fans" /> : null}
           <PageWrapper logout={this.props.logOut} title="Add Fan">
               <Row>
                 <Col>

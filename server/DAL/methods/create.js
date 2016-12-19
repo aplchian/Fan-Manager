@@ -158,7 +158,6 @@ function createUser(doc, cb) {
     if (prop('_id')(doc)) {
         return cb(new Error('400 _id not allowed'))
     }
-
     doc._id = `user_${doc.user_id}`
     doc.type = "user"
     doc.bands = [
