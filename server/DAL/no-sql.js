@@ -117,6 +117,7 @@ module.exports = {
     getFan: getThe.fan,
     getEvent: getThe.event,
     getDaySheet: getThe.daysheet,
+    getBand: getThe.band,
     getTodo: getThe.todo,
     getView: queryDB,
     getArtistEvents: getArtistEvents,

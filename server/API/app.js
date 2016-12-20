@@ -103,6 +103,15 @@ app.delete('/fans/:id',function(req,res){
   })
 })
 
+app.get('/bands/:id',function(req,res){
+  dal.getBand(req.params.id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
+})
+
 app.post('/mailchimp',function(req,res){
   var doc = req.body
   axios({

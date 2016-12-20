@@ -7,25 +7,30 @@ function getDoc(doc){
   return db.get(doc)
 }
 
-function getFan(doc){
+function fan(doc){
   return getDoc(doc)
 }
 
-function getEvent(doc){
+function event(doc){
   return getDoc(doc)
 }
 
-function getDaySheet(doc){
+function daysheet(doc){
   return getDoc(doc)
 }
 
-function getTodo(doc){
+function todo(doc){
+  return getDoc(doc)
+}
+
+function band(doc){
   return getDoc(doc)
 }
 
 module.exports = {
-  fan: getFan,
-  event: getEvent,
-  daysheet: getDaySheet,
-  todo: getTodo
+  fan,
+  event,
+  daysheet,
+  todo,
+  band
 }
