@@ -81,7 +81,6 @@ function createEvent(doc, cb) {
     }
 
     forEach(missingKey, keys)
-    console.log('doc',doc)
 
     if (!hasKeys) {
         return cb(new Error(`400Missing ${status} property within data`))
@@ -96,7 +95,8 @@ function createEvent(doc, cb) {
     }
 
     let date = doc.date.split('T')[0]
-    doc._id = `event_${date}_${doc.type}_${doc.name}`
+    doc._id = `event_${date}_${doc.type}_${doc.name}`.split(' ').join('_')
+    console.log('id',doc._id)
     delete doc.newevent
     delete doc.newcontact
     db.put(doc, (err,res) => {
@@ -119,7 +119,7 @@ function createDaysheet(doc, cb) {
     // let date = doc.date.split('T')[0]
     // doc.date = doc.date.format()
     let date = doc.date.split('T')[0]
-    doc._id = `daysheet_${date}_${doc.band}`
+    doc._id = `daysheet_${date}_${doc.band}`.split(' ').join('_')
     delete doc.events
     delete doc.newevent
     db.put(doc, (err,res) => {
@@ -140,7 +140,7 @@ function createTodo(doc, cb) {
     }
 
     let date = doc.duedate.split('T')[0]
-    doc._id = `todo_${doc.band}_${date}*_${doc.id}`
+    doc._id = `todo_${doc.band}_${date}*_${doc.id}`.split(' ').join('_')
     delete doc.id
     db.put(doc, (err,res) => {
       if(err) return cb(err)
@@ -158,7 +158,7 @@ function createUser(doc, cb) {
     if (prop('_id')(doc)) {
         return cb(new Error('400 _id not allowed'))
     }
-    doc._id = `user_${doc.user_id}`
+    doc._id = `user_${doc.user_id}`.split(' ').join('_')
     doc.type = "user"
     doc.bands = [
       "band_Stop_Light_Observations",

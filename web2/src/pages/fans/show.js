@@ -50,7 +50,6 @@ const Dashboard = React.createClass({
         <div className="fan-item">{text}</div>
       </div>
     )
-    console.log(this.state)
     return(
       <div>
         {this.state.deleted ? <Redirect to="/search/fans" /> : null}
