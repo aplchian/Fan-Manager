@@ -5,7 +5,7 @@ import {style} from 'glamor'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
-import {append,reject,filter,compose,head,path,map,equals,forEach,pluck,tap} from 'ramda'
+import {append,reject,filter,compose,head,path,map,equals,forEach,pluck,tap,propEq,find} from 'ramda'
 import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
@@ -23,10 +23,28 @@ const AddTodo = React.createClass({
       completed: "false",
       assignedto: [],
       band: this.props.band,
-      type: "todo"
+      type: "todo",
+      members: []
     })
   },
   componentDidMount(){
+
+    const buildPromises = item => {
+      return this.props.getUser(item)
+    }
+
+    const formatUsers = compose(
+      map(item => ({user: item.nickname, id: item._id})),
+      pluck('data')
+    )
+
+    this.props.getBand(this.state.band)
+      .then(res => {
+        Promise.all(map(buildPromises,res.data.users))
+          .then(res => this.setState({
+            members: formatUsers(res)
+          }))
+      })
     // if editing
     if(this.props.params.id){
       this.props.getTodo(this.props.params.id)
@@ -36,6 +54,7 @@ const AddTodo = React.createClass({
         }))
         .catch(err => console.log(err.message))
     }
+
   },
   handleDateChange(date){
     this.setState({
@@ -46,7 +65,6 @@ const AddTodo = React.createClass({
     return e => {
       let currentState = this.state
       currentState[path] = e.target.value
-      console.log('change',currentState)
       this.setState(currentState)
     }
   },
@@ -68,17 +86,18 @@ const AddTodo = React.createClass({
     }
   },
   handleMultiSelect(e){
-    let activeOptions = compose(
-      pluck('value'),
+    const matchUsers = user => find(propEq('id',user.value))(this.state.members)
+    const getUsers = item => map(matchUsers,item)
+    const assignedto = compose(
+      getUsers,
       filter(item => item.status),
-      map(item => ({value: item.value, status: item.selected}))
+      map(item => ({value: item.value, status: item.selected})),
     )(e.target.options)
-    this.setState({
-      assignedto: activeOptions
-    })
+    this.setState({assignedto})
   },
   render(){
-    console.log(this.state)
+    const listAssignments = item => <option value={item.id}>{item.user}</option>
+
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/todos" /> : null}
@@ -108,16 +127,7 @@ const AddTodo = React.createClass({
                   <FormGroup controlId="formControlsSelectMultiple">
                     <ControlLabel>Assigned To:</ControlLabel>
                     <FormControl onChange={this.handleMultiSelect} componentClass="select" multiple>
-                      <option value="user_Sarah_Graif">Sarah Graif</option>
-                      <option value="user_Mark_Bryan">Mark Bryan</option>
-                      <option value="user_Will_Blackburn">Will Blackburn</option>
-                      <option value="user_Louis_Duffie">Louis Duffie</option>
-                      <option value="user_John-Keith">Cubby</option>
-                      <option value="user_Mahoney">Mahoney</option>
-                      <option value="user_Luke_Withers">Luke Withers</option>
-                      <option value="user_alex_boquist">Alex Boquist</option>
-                      <option value="user_Band">Band</option>
-                      <option value="user_All">All</option>
+                      {map(listAssignments,this.state.members)}
                     </FormControl>
                     <ControlLabel>Status:</ControlLabel>
                     <FormControl value={this.state.completed} onChange={this.handleChange('completed')} componentClass="select" placeholder="type">

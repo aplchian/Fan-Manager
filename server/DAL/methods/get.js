@@ -27,10 +27,15 @@ function band(doc){
   return getDoc(doc)
 }
 
+function user(doc){
+  return getDoc(doc)
+}
+
 module.exports = {
   fan,
   event,
   daysheet,
   todo,
-  band
+  band,
+  user
 }

@@ -118,6 +118,7 @@ module.exports = {
     getEvent: getThe.event,
     getDaySheet: getThe.daysheet,
     getBand: getThe.band,
+    getUser: getThe.user,
     getTodo: getThe.todo,
     getView: queryDB,
     getArtistEvents: getArtistEvents,

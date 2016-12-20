@@ -60,6 +60,12 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
   getEvent(eventId){
     return axios.get(`${url}events/${eventId}`)
   },
+  getUser(id){
+    return axios.get(`${url}events/${id}`)
+  },
+  getBand(id){
+    return axios.get(`${url}bands/${id}`)
+  },
   getDaySheet(id){
     return axios.get(`${url}daysheets/${id}`)
   },
@@ -109,6 +115,8 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
       getFan={this.getFan}
       getEvent={this.getEvent}
       getTodo={this.getTodo}
+      getBand={this.getBand}
+      getUser={this.getUser}
       editFan={this.editFan}
       updateEvent={this.updateEvent}
       updateDaySheet={this.updateDaySheet}

@@ -122,7 +122,7 @@ app.post('/mailchimp',function(req,res){
     url: "https://us3.api.mailchimp.com/3.0/batches",
     headers: {
         "Content-Type": "application/json",
-        "Authorization": "apikey f517cf56d577b4ac23c81929c36353fc-us3"
+        "Authorization": `apikey ${process.env.MAILCHIMP}`
     }
   })
   .then(results => res.send({ok: true}))
@@ -293,6 +293,15 @@ app.post('/todos',function(req,res){
 app.get('/todos/:id',function(req,res){
   let id = req.params.id
   dal.getTodo(id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
+})
+
+app.get('/users/:id',function(req,res){
+  dal.getUser(req.params.id)
     .then(resp => res.send(resp))
     .catch(err => {
       res.status(400)

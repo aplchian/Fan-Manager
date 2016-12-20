@@ -111,7 +111,7 @@ const ListEvents = React.createClass({
       let date = item.duedate.split('T')[0]
       const assignedTo = item => {
         return (
-          <div>{tail(item.split('_')).join(' ')}</div>
+          <div>{item.user}</div>
         )
       }
       const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'
