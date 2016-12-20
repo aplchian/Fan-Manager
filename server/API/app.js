@@ -84,14 +84,12 @@ app.post('/fans',function(req,res){
 
 app.put('/fans',function(req,res){
   var doc = req.body
-  dal.updateFan(doc,function(err,body){
-    if(err){
-      return(console.log(err.message))
-    }
-    if(body){
-      return res.send(body)
-    }
-  })
+  dal.updateFan(doc)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.delete('/fans/:id',function(req,res){
@@ -186,26 +184,32 @@ app.get('/daysheets',function(req,res){
 
 app.put('/events',function(req,res){
   var doc = req.body
-  dal.updateEvent(doc,function(err,body){
-    if(err) return(console.log(err.message))
-      return res.send(body)
-  })
+  dal.updateEvent(doc)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.put('/daysheets',function(req,res){
   var doc = req.body
-  dal.updateDaySheet(doc,function(err,body){
-    if(err) return(console.log(err.message))
-      return res.send(body)
+  dal.updateDaySheet(doc)
+  .then(resp => res.send(resp))
+  .catch(err => {
+    res.status(400)
+    res.send(err.message)
   })
 })
 
 app.put('/todos',function(req,res){
   var doc = req.body
-  dal.updateTodo(doc,function(err,body){
-    if(err) return(console.log(err.message))
-      return res.send(body)
-  })
+  dal.updateTodo(doc)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.delete('/events/:id',function(req,res){

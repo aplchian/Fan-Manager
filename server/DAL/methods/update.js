@@ -12,30 +12,23 @@ function update(doc, cb) {
     if (prop('_rev')(doc) === undefined || prop('_id')(doc) === undefined) {
         return cb(new Error('400 _rev or _id is missing'))
     }
-    db.put(doc, function(err, res) {
-        if (err) {
-            return cb(err)
-        }
-        if (res) {
-            return cb(null, res)
-        }
-    })
+    return db.put(doc)
 }
 
-function updateFan(doc,cb){
-  update(doc,cb)
+function updateFan(doc){
+  return update(doc)
 }
 
-function updateEvent(doc,cb){
-  update(doc,cb)
+function updateEvent(doc){
+  return update(doc)
 }
 
-function updateDaySheet(doc,cb){
-  update(doc,cb)
+function updateDaySheet(doc){
+  return update(doc)
 }
 
-function updateTodo(doc,cb){
-  update(doc,cb)
+function updateTodo(doc){
+  return update(doc)
 }
 
 
