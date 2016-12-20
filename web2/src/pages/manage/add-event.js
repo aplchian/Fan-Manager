@@ -334,9 +334,9 @@ const AddEvent = React.createClass({
               </form>
            </Col>
           </Row>
-          <pre>
+          {/* <pre>
             {JSON.stringify(this.state,null,2)}
-          </pre>
+          </pre> */}
         </PageWrapper>
       </div>
     )

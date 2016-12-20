@@ -3,7 +3,7 @@ import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Check
 import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
-import {Link} from 'react-router'
+import {Link,Redirect} from 'react-router'
 import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split} from 'ramda'
 import LabelHeader from './components/label-header'
 import ScheduleItem from './components/schedule-item'
@@ -78,7 +78,7 @@ const DaySheet = React.createClass({
     if(confirm('Are you sure you want to delete this daysheet?')){
       this.props.removeDaySheet(this.state.daysheet._id)
         .then(res => this.setState({
-          success: true
+          deleted: true
         }))
         .catch(err => console.log('error!',err.message))
     }
@@ -152,6 +152,7 @@ const DaySheet = React.createClass({
 
     return(
       <PageWrapper logout={this.props.logOut}>
+        {this.state.deleted ? <Redirect to="/manage/daysheets" /> : null}
         <Row {...s_bg} className="daysheet-hero">
               <h1 className="daysheet-date">{date}</h1>
               <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>

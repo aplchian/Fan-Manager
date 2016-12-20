@@ -3,8 +3,9 @@ import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Check
 import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
-import {Link} from 'react-router'
+import {Link,Redirect} from 'react-router'
 const db = new PouchDB('slo-dev')
+
 
 const container = style({
   display: 'block',
@@ -36,7 +37,9 @@ const Event = React.createClass({
     e.preventDefault()
     if(confirm('Are you sure you want to delete?')){
       this.props.removeEvent(this.state.event._id)
-        .then(res => console.log('success',res))
+        .then(res => this.setState({
+          deleted: true
+        }))
         .catch(err => console.log('error',err.message))
     }
   },
@@ -146,6 +149,7 @@ const Event = React.createClass({
 
     return(
       <PageWrapper logout={this.props.logOut}>
+        {this.state.deleted ? <Redirect to="/manage/events" /> : null}
         <Row {...s_bg} className="event-hero">
           <Col xs={12} md={12}>
               <div className="event-title-container">
