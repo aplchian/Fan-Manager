@@ -111,18 +111,22 @@ const ListEvents = React.createClass({
       let date = item.duedate.split('T')[0]
       const assignedTo = item => {
         return (
-          <span>{tail(item.split('_')).join(' ')}, </span>
+          <div>{tail(item.split('_')).join(' ')}</div>
         )
       }
       const panelClass = item.completed === "true" ? 'completed-todo' : 'todo'
       const title = <div><FontAwesome name='tasks' /><h4 className="todo-title">{item.title}</h4></div>
       return (
         <Panel className={`${panelClass} panel-todo-body`} header={title} eventKey={i}>
-          <div>
-            <div className="todo-notes">{item.notes}</div>
+          <div className="todo-content-container">
+            <div className="todo-description-container">
+              <div className="todo-label">description:</div>
+              <div className="todo-notes">{item.notes}</div>
+            </div>
             <div className="todo-edit-btn"><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>
             <div className="remove-todo-btn" onClick={this.removeTodo(item._id)}>delete</div>
-            <div className="todo-assignedto">Assigned To: {item.assignedto.map(assignedTo)}</div>
+            <div className="todo-label">assigned to:</div>
+            <div className="todo-assignedto">{item.assignedto.map(assignedTo)}</div>
           </div>
          </Panel>
       )

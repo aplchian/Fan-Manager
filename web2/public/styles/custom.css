@@ -120,9 +120,10 @@ h3 {
   margin-left: 10px; }
 
 .todo-assignedto {
-  color: gray;
-  margin-top: 20px;
-  font-size: 10px; }
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0; }
 
 .panel-body {
   font-family: AvenirNext-Regular, sans-serif;
@@ -132,14 +133,11 @@ h3 {
 .panel-body:hover {
   background-color: #ececec; }
 
-.todo-edit-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 10px;
-  text-transform: uppercase; }
-
 .todo-notes {
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
   width: 90%; }
 
 .panel-date {
@@ -353,7 +351,7 @@ form label {
   cursor: pointer; }
 
 .panel-todo-body .panel-body {
-  background-color: #f4f4f4; }
+  background-color: #F6F6F6; }
 
 .event-date {
   font-size: 19px; }
@@ -654,23 +652,28 @@ form label {
   font-size: 11px;
   color: #000000;
   letter-spacing: 0.89px; }
-  .todo-title .todo-notes {
-    font-family: AvenirNext-Regular;
-    font-size: 10px;
-    color: #000000;
-    letter-spacing: 0.61px; }
+
+.todo-content-container {
+  position: relative; }
+
+.todo-description-container {
+  margin-bottom: 21px; }
+
+.todo-label {
+  font-family: AvenirNext-Regular;
+  font-size: 10px;
+  color: #9B9B9B;
+  letter-spacing: .4px; }
 
 .todo-edit-btn a {
   font-family: AvenirNext-Regular;
-  font-size: 10px;
+  font-size: 12px;
   color: #000000;
-  letter-spacing: 0.61px; }
-
-.todo-assignedto {
-  font-family: AvenirNext-Regular;
-  font-size: 10px;
-  color: #979797;
-  letter-spacing: 0.54px; }
+  letter-spacing: 0;
+  text-transform: lowercase;
+  position: absolute;
+  top: 0;
+  right: 0; }
 
 .panel-heading {
   padding: 0; }
@@ -809,12 +812,15 @@ thead {
   position: absolute;
   bottom: 2px;
   right: 0;
-  color: red;
   font-family: AvenirNext-Regular;
-  font-size: 10px;
-  letter-spacing: 0.61px;
+  font-size: 12px;
+  color: #FF0000;
+  letter-spacing: 0;
   cursor: pointer;
-  padding-right: 4px; }
+  padding-right: 4px;
+  text-transform: lowercase; }
+  .remove-todo-btn:hover {
+    text-decoration: underline; }
 
 .fan-header {
   border-bottom: 1px solid #D8D8D8;

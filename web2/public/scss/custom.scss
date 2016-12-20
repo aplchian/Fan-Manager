@@ -161,9 +161,10 @@ h3 {
 }
 
 .todo-assignedto {
- color: gray;
- margin-top: 20px;
- font-size: 10px;
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
 }
 
 .panel-body {
@@ -176,15 +177,11 @@ h3 {
   background-color: rgb(236, 236, 236);
 }
 
-.todo-edit-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.todo-notes {
+.todo-notes{
+  font-family: AvenirNext-Regular;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
   width: 90%;
 }
 
@@ -419,7 +416,7 @@ div.panel.panel-default {
    padding: 3px 6px;
    border: 1px solid red;
    color: red;
-   margin: 5px 5px 0 0
+   margin: 5px 5px 0 0;
  }
 
  .form-items-container {
@@ -456,12 +453,15 @@ div.panel.panel-default {
   bottom: -4px;
 }
 
-.sort-icon:hover , .sort-icon-asc:hover {
+.sort-icon:hover, .sort-icon-asc:hover {
   cursor: pointer;
 }
 
-.panel-todo-body .panel-body {
-  background-color: rgb(244, 244, 244)
+.panel-todo-body{
+  // padding: 17px 10px;
+ .panel-body {
+  background-color: #F6F6F6;
+}
 }
 
 .event-date {
@@ -828,29 +828,36 @@ div.panel.panel-default {
   font-size: 11px;
   color: #000000;
   letter-spacing: 0.89px;
-  .todo-notes{
-    font-family: AvenirNext-Regular;
-    font-size: 10px;
-    color: #000000;
-    letter-spacing: 0.61px;
-  }
+ }
+
+ .todo-content-container {
+   position: relative;
+ }
+
+ .todo-description-container {
+   margin-bottom: 21px;
+ }
+
+ .todo-label {
+  font-family: AvenirNext-Regular;
+  font-size: 10px;
+  color: #9B9B9B;
+  letter-spacing: .4px;
  }
 
  .todo-edit-btn{
    a{
-     font-family: AvenirNext-Regular;
-     font-size: 10px;
-     color: #000000;
-     letter-spacing: 0.61px;
+    font-family: AvenirNext-Regular;
+    font-size: 12px;
+    color: #000000;
+    letter-spacing: 0;
+    text-transform: lowercase;
+    position: absolute;
+    top: 0;
+    right: 0;
    }
  }
 
- .todo-assignedto{
-    font-family: AvenirNext-Regular;
-    font-size: 10px;
-    color: #979797;
-    letter-spacing: 0.54px;
- }
 
  .panel-heading{
    padding: 0;
@@ -1019,12 +1026,16 @@ thead {
   position: absolute;
   bottom: 2px;
   right: 0;
-  color: red;
   font-family: AvenirNext-Regular;
-  font-size: 10px;
-  letter-spacing: 0.61px;
+  font-size: 12px;
+  color: #FF0000;
+  letter-spacing: 0;
   cursor: pointer;
   padding-right: 4px;
+  text-transform: lowercase;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .fan-header {
