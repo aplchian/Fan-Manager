@@ -4,10 +4,11 @@ import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link,Redirect} from 'react-router'
-import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split} from 'ramda'
+import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split,join} from 'ramda'
 import LabelHeader from './components/label-header'
 import ScheduleItem from './components/schedule-item'
 import moment from 'moment'
+import combineAndSort from './helpers/combine-and-sort'
 
 const db = new PouchDB('slo-dev')
 
@@ -34,42 +35,29 @@ const DaySheet = React.createClass({
     })
   },
   componentDidMount(){
-    let date = this.props.params.id.split('_')[1]
-    let start = `event_${date}`
-    let end = `${start}\uffff`
-    const getEvents = compose(
-      flatten,
-      reject(isEmpty),
-      map(item => item.schedule),
-      pluck('doc')
-    )
-    const removeColon = item => {
-      let arr = item.split(":")
-      return concat(arr[0],arr[1])
-    }
-    const getDate = () => {
-      let date = this.state.daysheet.date
-      let data = {
-        artistId: this.state.daysheet.band,
+
+    const date = this.props.params.id.split('_')[1]
+    const start = `event_${date}`
+    const end = `${start}\uffff`
+
+    const getDate = ({date,band,schedule},getEvents) => {
+      const options = {
+        artistId: band,
         startdate: date,
         enddate: date
       }
-      const concatEvents = data => {
-        let concatData = getEvents(data).concat(this.state.daysheet.schedule)
-        let sorted = sort((a,b) => removeColon(a.starttime) - removeColon(b.starttime),concatData)
-        return sorted
-      }
-      this.props.getArtistEvents(data)
+      getEvents(options)
         .then(res => {
           this.setState({
-            schedule: concatEvents(res.data),
+            schedule: combineAndSort(res.data,schedule),
             events: pluck('doc',res.data),
             date: date
           })
         })
     }
+
     this.props.getDaySheet(this.props.params.id)
-      .then(res => this.setState({daysheet: res.data}, () => getDate()))
+      .then(res => this.setState({daysheet: res.data}, () => getDate(this.state.daysheet,this.props.getArtistEvents)))
       .catch(err => console.log(err.message))
 
   },

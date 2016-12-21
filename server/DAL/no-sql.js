@@ -32,7 +32,7 @@ function listFansByState({sortToken,bandId,state,limit}, cb) {
 
 
 function queryDB(view,options,cb){
-  db.query(view,options),function(err,body){
+  db.query(view,options,function(err,body){
     if(err){
       return cb(err)
     }
