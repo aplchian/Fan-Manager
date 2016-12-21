@@ -93,14 +93,12 @@ app.put('/fans',function(req,res){
 })
 
 app.delete('/fans/:id',function(req,res){
-  dal.removeFan(req.params.id,function(err,body){
-    if(err){
-      return res.send(err.message)
-    }
-    if(body){
-      res.send(body)
-    }
-  })
+  dal.removeFan(req.params.id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.get('/bands/:id',function(req,res){
@@ -222,24 +220,30 @@ app.put('/todos',function(req,res){
 })
 
 app.delete('/events/:id',function(req,res){
-  dal.removeEvent(req.params.id,function(err,body){
-    if(err) return res.send(err.message)
-      return res.send(body)
-  })
+  dal.removeEvent(req.params.id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.delete('/daysheets/:id',function(req,res){
-  dal.removeDaySheet(req.params.id,function(err,body){
-    if(err) return res.send(err.message)
-      return res.send(body)
-  })
+  dal.removeDaySheet(req.params.id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.delete('/todos/:id',function(req,res){
-  dal.removeTodo(req.params.id,function(err,body){
-    if(err) return res.send(err.message)
-      return res.send(body)
-  })
+  dal.removeTodo(req.params.id)
+    .then(resp => res.send(resp))
+    .catch(err => {
+      res.status(400)
+      res.send(err.message)
+    })
 })
 
 app.get('/events/artists/:artistid',function(req,res){

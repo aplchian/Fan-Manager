@@ -15,27 +15,10 @@ function update(doc, cb) {
     return db.put(doc)
 }
 
-function updateFan(doc){
-  return update(doc)
-}
-
-function updateEvent(doc){
-  return update(doc)
-}
-
-function updateDaySheet(doc){
-  return update(doc)
-}
-
-function updateTodo(doc){
-  return update(doc)
-}
-
-
 module.exports = {
-  fan: updateFan,
-  event: updateEvent,
-  daysheet: updateDaySheet,
-  todo: updateTodo
+  fan: update,
+  event: update,
+  daysheet: update,
+  todo: update
 
 }

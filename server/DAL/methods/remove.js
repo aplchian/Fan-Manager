@@ -1,48 +1,19 @@
 const PouchDB = require('pouchdb')
 var dotenv = require('dotenv');
-dotenv.load();
+dotenv.load()
+const {curry} = require('ramda')
 const db = new PouchDB(process.env.DB_URL)
 
 
-function remove(doc,cb){
-  db.get(doc, {
-    include_docs: true
-  },function(err,body){
-    if (err){
-      return cb(err)
-    }
-    if(body){
-      db.remove(body,function(err,body){
-        if(err){
-          return cb(err)
-        }
-        if(body){
-          return cb(null,body)
-        }
-      })
-    }
-  })
-}
-
-function removeFan(doc,cb){
-  remove(doc,cb)
-}
-
-function removeEvent(doc,cb){
-  remove(doc,cb)
-}
-
-function removeDaysheet(doc,cb){
-  remove(doc,cb)
-}
-
-function removeTodo(doc,cb){
-  remove(doc,cb)
-}
+const remove = curry((db,doc) => {
+  return db.get(doc, {include_docs: true})
+    .then(res => db.remove(res))
+    .then(res => res)
+})
 
 module.exports = {
-  fan: removeFan,
-  event: removeEvent,
-  daysheet: removeDaysheet,
-  todo: removeTodo
+  fan: remove(db),
+  event: remove(db),
+  daysheet: remove(db),
+  todo: remove(db)
 }

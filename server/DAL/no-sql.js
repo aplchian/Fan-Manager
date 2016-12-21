@@ -3,27 +3,19 @@ const PouchDB = require('pouchdb')
 var dotenv = require('dotenv');
 dotenv.load();
 const db = new PouchDB(process.env.DB_URL)
-const {
-    prop,
-    forEach,
-    inc,
-    tail,
-    pluck
-} = require('ramda')
+const {prop,forEach,inc,tail,pluck,curry} = require('ramda')
 const create = require('./methods/create.js')
 const update = require('./methods/update.js')
 const remove = require('./methods/remove.js')
 const getThe = require('./methods/get.js')
-
+const queryDateRange = require('./helpers/queryDateRange')
 
 
 function listFansByState({sortToken,bandId,state,limit}, cb) {
   hasSortToken = sortToken === '' ? false : true
-  // limit = hasSortToken ? inc(limit) : {limit: }
   let options = {
       startkey: [bandId,state,sortToken],
       endkey: [bandId,`${state}\uffff`],
-      // limit: limit,
       include_docs: true
   }
     db.query('artistfans', options, function(err, res) {
@@ -40,9 +32,7 @@ function listFansByState({sortToken,bandId,state,limit}, cb) {
 
 
 function queryDB(view,options,cb){
-  console.log('view',view)
-  console.log('options',options)
-  db.query(view,options,function(err,body){
+  db.query(view,options),function(err,body){
     if(err){
       return cb(err)
     }
@@ -52,64 +42,18 @@ function queryDB(view,options,cb){
   })
 }
 
-function getArtistEvents({startDate,endDate,artistID},cb){
-  startDate = new Date(startDate)
-  endDate = new Date(endDate)
-  let startYear = startDate.getUTCFullYear()
-  let startMonth = startDate.getUTCMonth() + 1
-  let startDay = startDate.getUTCDate()
-  let endYear = endDate.getUTCFullYear()
-  let endMonth = endDate.getUTCMonth() + 1
-  let endDay = endDate.getUTCDate()
-  let options = {
-    include_docs: true,
-    startkey: [artistID,startYear,startMonth,startDay,0,0],
-    endkey: [artistID,endYear,endMonth,endDay,23,59]
-  }
-  queryDB('artistevents',options,cb)
-}
+const getDateRange = curry((query,view,{startDate,endDate,artistID},cb) => {
+  const options = queryDateRange(startDate,endDate,artistID)
+  query(view,options,cb)
+})
 
-function getArtistDaySheets({startDate,endDate,artistID},cb){
-  startDate = new Date(startDate)
-  endDate = new Date(endDate)
-  let startYear = startDate.getUTCFullYear()
-  let startMonth = startDate.getUTCMonth() + 1
-  let startDay = startDate.getUTCDate()
-  let endYear = endDate.getUTCFullYear()
-  let endMonth = endDate.getUTCMonth() + 1
-  let endDay = endDate.getUTCDate()
-  let options = {
-    include_docs: true,
-    startkey: [artistID,startYear,startMonth,startDay,0,0],
-    endkey: [artistID,endYear,endMonth,endDay,23,59]
-  }
-  queryDB('artistdaysheets',options,cb)
-}
-
-function getArtistTodos({startDate,endDate,artistID},cb){
-  startDate = new Date(startDate)
-  endDate = new Date(endDate)
-  let startYear = startDate.getUTCFullYear()
-  let startMonth = startDate.getUTCMonth() + 1
-  let startDay = startDate.getUTCDate()
-  let endYear = endDate.getUTCFullYear()
-  let endMonth = endDate.getUTCMonth() + 1
-  let endDay = endDate.getUTCDate()
-  let options = {
-    include_docs: true,
-    startkey: [artistID,startYear,startMonth,startDay,0,0],
-    endkey: [artistID,endYear,endMonth,endDay,23,59]
-  }
-  queryDB('artisttodos',options,cb)
-}
-
-function getUserBands(userID,cb){
+const getUserBands = curry((query,userID,cb) => {
   let options = {
     startkey: [userID],
     endkey: [`${userID}\uffff`]
   }
-  queryDB('userbands',options,cb)
-}
+  query('userbands',options,cb)
+})
 
 
 module.exports = {
@@ -121,10 +65,10 @@ module.exports = {
     getUser: getThe.user,
     getTodo: getThe.todo,
     getView: queryDB,
-    getArtistEvents: getArtistEvents,
-    getArtistDaySheets: getArtistDaySheets,
-    getArtistTodos: getArtistTodos,
-    getUserBands,
+    getArtistEvents: getDateRange(queryDB,'artistevents'),
+    getArtistDaySheets: getDateRange(queryDB,'artistdaysheets'),
+    getArtistTodos: getDateRange(queryDB,'artisttodos'),
+    getUserBands: getUserBands(queryDB),
     updateFan: update.fan,
     updateEvent: update.event,
     updateDaySheet: update.event,
@@ -139,6 +83,4 @@ module.exports = {
     createDaySheet: create.daysheet,
     createTodo: create.todo,
     createUser: create.user
-
-
 }
