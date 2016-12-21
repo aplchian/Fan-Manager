@@ -3,39 +3,13 @@ var dotenv = require('dotenv');
 dotenv.load();
 const db = new PouchDB(process.env.DB_URL)
 
-function getDoc(doc){
-  return db.get(doc)
-}
-
-function fan(doc){
-  return getDoc(doc)
-}
-
-function event(doc){
-  return getDoc(doc)
-}
-
-function daysheet(doc){
-  return getDoc(doc)
-}
-
-function todo(doc){
-  return getDoc(doc)
-}
-
-function band(doc){
-  return getDoc(doc)
-}
-
-function user(doc){
-  return getDoc(doc)
-}
+const getDoc = doc => db.get(doc)
 
 module.exports = {
-  fan,
-  event,
-  daysheet,
-  todo,
-  band,
-  user
+  fan: getDoc,
+  event: getDoc,
+  daysheet: getDoc,
+  todo: getDoc,
+  band: getDoc,
+  user: getDoc,
 }
