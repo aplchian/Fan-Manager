@@ -17,25 +17,32 @@ module.exports = function(clientId,domain) {
     }
   const lock = new Auth0Lock(clientId, domain,options)
 
-
-
   lock.on('authenticated', _doAuthentication)
 
-  function login() {
+  var notifyFn
+
+  function login(fn) {
+    notifyFn = fn
     lock.show()
   }
 
+  console.log('NOTIFYFUNNNCCTTTIOONNN',notifyFn)
+
   var notifyFunc
+
+  console.log('NOTIFY_FUNCTION',notifyFunc)
 
   function _doAuthentication(authResult){
     setToken(authResult.idToken)
+    console.log('Authenticated',notifyFunc)
     lock.getUserInfo(authResult.accessToken, function(err,profile){
       if (err) return console.log(err.message)
       localStorage.setItem('profile',JSON.stringify(profile))
       axios.post(`${url}users`,profile)
-        .then(res => console.log('success',profile))
+        .then(res => {
+          console.log('success!',notifyFunc)
+        })
         .catch(err => console.log('err',err.message))
-      if(notifyFunc) { notifyFunc(profile) }
     })
 
   }
@@ -61,7 +68,9 @@ module.exports = function(clientId,domain) {
   }
 
   function notify(fn){
+    console.log('notifyMarkeer',fn)
     notifyFunc = fn
+    console.log('notifyFunc', notifyFunc)
   }
 
   if(getToken()){

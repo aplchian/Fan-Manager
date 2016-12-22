@@ -57,11 +57,13 @@ const DaySheets = React.createClass({
     }
   },
   handleSearch(){
+
     let data = {
       artistId: this.state.band,
       startdate: this.state.startDate.format(),
       enddate: this.state.endDate.format()
     }
+
     this.props.getArtistDaySheets(data)
       .then(res => this.setState({
         results: pluck('doc',res.data)
@@ -69,8 +71,10 @@ const DaySheets = React.createClass({
       .catch(err => console.log(err.message))
   },
   toggleSort(){
+
     let order = this.state.order === 'asc' ? 'desc' : 'asc'
     this.setState({order})
+
   },
   render(){
 
@@ -90,40 +94,42 @@ const DaySheets = React.createClass({
     const resultsList = this.state.order === 'asc'
       ? map(results,sort(asc,this.state.results))
       : map(results,sort(desc,this.state.results))
+
     return(
       <div>
+
         <PageWrapper logout={this.props.logOut} user={this.state.user} title="Daysheets">
           <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
             <Col xs={12} md={2} className="search-sidebar">
               <h3 className="search-result-header">Options</h3>
-              <DatePicker
+                <DatePicker
                 className="date-picker"
                 selected={this.state.startDate}
                 selectsStart  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('startDate')} />
                 <p className="sidebar-to">to</p>
-              <DatePicker
+                <DatePicker
                 className="date-picker"
                 selected={this.state.endDate}
                 selectsEnd  startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleDateChange('endDate')} />
                 <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
-              <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <div className="add-link"><Link to="/manage/daysheets/add">+ add daysheet</Link></div>
-              </Nav>
-            </Col>
-            <Col xs={12} md={10} className="search-results">
-              <h3 onClick={this.toggleSort} className="search-result-header">Results{sortIcon}</h3>
-              {resultsList}
-            </Col>
+                <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
+                  <div className="add-link">
+                    <Link to="/manage/daysheets/add">+ add daysheet</Link>
+                  </div>
+                </Nav>
+                </Col>
+                <Col xs={12} md={10} className="search-results">
+                  <h3 onClick={this.toggleSort} className="search-result-header">Results{sortIcon}</h3>
+                  {resultsList}
+                </Col>
           </Row>
-          {/* <pre>
-            {JSON.stringify(this.state,null,2)}
-          </pre> */}
         </PageWrapper>
+
       </div>
     )
   }

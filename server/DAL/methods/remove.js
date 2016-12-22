@@ -4,7 +4,6 @@ dotenv.load()
 const {curry} = require('ramda')
 const db = new PouchDB(process.env.DB_URL)
 
-
 const remove = curry((db,doc) => {
   return db.get(doc, {include_docs: true})
     .then(res => db.remove(res))

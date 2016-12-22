@@ -8,7 +8,7 @@ const auth = require('../utils/auth')(
   process.env.REACT_APP_DOMAIN
 )
 
-const Service = (Component,logOutUp,parentState) => React.createClass({
+const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
   getInitialState(){
     return({
       loggedIn: true
@@ -134,6 +134,7 @@ const Service = (Component,logOutUp,parentState) => React.createClass({
       getArtistDaySheets={this.getArtistDaySheets}
       getArtistTodos={this.getArtistTodos}
       logOut={this.logOut}
+      setBand={setBand}
       user={parentState.user}
       band={parentState.band}
     />

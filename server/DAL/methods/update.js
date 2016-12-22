@@ -20,5 +20,4 @@ module.exports = {
   event: update,
   daysheet: update,
   todo: update
-
 }

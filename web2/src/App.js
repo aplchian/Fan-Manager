@@ -24,9 +24,6 @@ const auth = require('./utils/auth')(
 )
 
 
-const appStyle = insertRule("body {height: 100%}")
-const appStyle2 = insertRule("body {width: 100%}")
-
 const App = React.createClass({
   getInitialState(){
     return ({
@@ -46,11 +43,14 @@ const App = React.createClass({
       this.setState({band})
     }
   },
+  setBands(bands){
+    console.log('bands',bands)
+  },
   render(){
     return(
       <HashRouter>
         <div>
-          <Match exactly pattern="/" render={props => <Home auth={auth} setBand={this.setBand} setUser={this.setUser} {...props} />} />
+          <Match exactly pattern="/" render={props => <Home auth={auth} setBands={this.setBands} setBand={this.setBand} setUser={this.setUser} {...props} />} />
           <MatchWhenAuthorized exactly pattern="/fans" component={Service(FanDashBoard,this.logOut,this.state)}></MatchWhenAuthorized>
           <MatchWhenAuthorized exactly pattern="/:type/fans" component={Service(FanSearch,this.logOut,this.state)}></MatchWhenAuthorized>
           <MatchWhenAuthorized exactly pattern="/fans/add" component={Service(AddFan,this.logOut,this.state)}></MatchWhenAuthorized>

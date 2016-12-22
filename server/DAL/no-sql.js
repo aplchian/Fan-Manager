@@ -37,6 +37,7 @@ function queryDB(view,options,cb){
       return cb(err)
     }
     if(body){
+      console.log('body',body)
       return cb(null,body.rows)
     }
   })

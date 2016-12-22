@@ -18,17 +18,22 @@ const Home = React.createClass({
     })
   },
   componentDidMount(){
-    this.props.auth.notify(profile => {
-      axios.get(`${url}bands?userId=user_${profile.user_id}`)
-        .then(res => {
-          this.setState({
-            bands: res.data[0].key[1]
-          })
-        })
-    })
+    // let fn = this.props.auth.notify(profile => {
+    //   axios.get(`${url}bands?userId=user_${profile.user_id}`)
+    //     .then(res => {
+    //       this.props.setBands(res.data[0].key[1])
+    //     })
+    // })
+
     if(!this.props.auth.loggedIn() && this.props.location.hash.indexOf('access_token') === -1){
-      this.props.auth.login()
+      this.props.auth.login(profile => {
+        axios.get(`${url}bands?userId=user_${profile.user_id}`)
+          .then(res => {
+            this.props.setBands(res.data[0].key[1])
+          })
+      })
     }
+
     if(localStorage.getItem('profile')){
       let profile = JSON.parse(localStorage.getItem('profile'))
       this.props.setUser(profile)
@@ -40,7 +45,18 @@ const Home = React.createClass({
         })
     }
   },
+  updateBands(){
+      let profile = JSON.parse(localStorage.getItem('profile'))
+      this.props.setUser(profile)
+      axios.get(`${url}bands?userId=user_${profile.user_id}`)
+        .then(res => {
+          this.setState({
+            bands: res.data[0].key[1]
+          })
+        })
+  },
   render(){
+    console.log('props',this.props)
     const listBands = (item) => {
       return <Link to="/manage/todos"><div onClick={this.props.setBand(item)} className="select-artist">{join(" ",tail(split('_',item)))}</div></Link>
     }
@@ -49,7 +65,11 @@ const Home = React.createClass({
       <div className="home-page">
         <div className="content-container" >
           <h1>intouch</h1>
-          {map(listBands,this.state.bands)}
+          {
+            this.state.bands.length > 0
+            ? map(listBands,this.state.bands)
+            : <div onClick={this.updateBands} className="refresh-bands">No Bands Found. Click here to try again!</div>
+          }
         </div>
       </div>
     )
