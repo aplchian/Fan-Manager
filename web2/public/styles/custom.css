@@ -911,6 +911,10 @@ thead {
   cursor: pointer;
   text-align: center; }
 
+.daysheet-icon {
+  position: relative;
+  left: 4px; }
+
 @media (max-width: 600px) {
   .container {
     width: 90%; }

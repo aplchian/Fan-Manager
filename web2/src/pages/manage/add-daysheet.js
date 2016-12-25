@@ -65,44 +65,16 @@ const AddEvent = React.createClass({
   },
   handleSubmit(e){
     e.preventDefault()
-
-    // const updateEvents = item => {
-    //   this.props.updateEvent(this.state)
-    //     .then(res => console.log(res))
-    //     .catch(err => console.log(err.message))
-    // }
-    // update all event status'
-    // this.state.events.forEach(updateEvents)
-    //UPDATE daysheet if editing
     if(this.props.params.id){
       let doc = this.state
-      // delete doc.newevent
-      console.log('working!')
       this.props.updateDaySheet(doc)
-      .then(res => {
-        console.log('success!!')
-        this.setState({
-          success: true,
-          huh: 'what'
-        })
-      })
-      .catch(err => {
-        console.log('faill!!')
-        this.setState({
-          success: true
-        })
-      })
+      .then(res => {this.setState({success: true,})})
+      .catch(err => {this.setState({success: true})})
     }else{
       this.props.addDaySheet(this.state)
-        .then(res => this.setState({
-          success: true
-        }))
-        .catch(err => this.setState({
-          success: true
-        }))
+        .then(res => this.setState({success: true}))
+        .catch(err => this.setState({success: true}))
      }
-
-
   },
   handleChange(path){
     return e => {
@@ -174,7 +146,26 @@ const AddEvent = React.createClass({
     }
   },
   render(){
-    const events = (item,i) => {
+    const {
+      success,
+      date,
+      currentcity,
+      currentstate,
+      destinationcity,
+      destinationstate,
+      destinationname,
+      schedule,
+      events,
+      streetone,
+      streettwo,
+      city,
+      state,
+      zipcode,
+      mileage,
+      notes,
+    } = this.state
+
+    const showEvents = (item,i) => {
       return <FormControl.Static className="form-item-container">
               <span className="form-item-title">
                 {`${item.event}`}
@@ -191,7 +182,7 @@ const AddEvent = React.createClass({
 
     return (
       <div>
-        {this.state.success ? <Redirect to="/manage/daysheets" /> : null}
+        {success ? <Redirect to="/manage/daysheets" /> : null}
         <PageWrapper logout={this.props.logOut} title="Add Daysheet">
           <Row {...container} className="show-grid">
            <Col xs={12} md={12} {...style({width: '100%'})}>
@@ -200,29 +191,29 @@ const AddEvent = React.createClass({
                   <ControlLabel >Date</ControlLabel>
                   <DatePicker
                     {...style({display: 'block'})}
-                    selected={this.state.date}
+                    selected={date}
                     onChange={this.handleDateChange} />
                   <ControlLabel {...style({display: 'block'})}>Current City</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.currentcity}
+                    value={currentcity}
                     placeholder="Current City"
                     onChange={this.handleChange('currentcity')}
                   />
                   <ControlLabel>Current State</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.currentstate}
+                    value={currentstate}
                     placeholder="Current State"
                     onChange={this.handleChange('currentstate')}
                   />
                   <ControlLabel>Destination City</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.destinationcity}
+                    value={destinationcity}
                     placeholder="Destination City"
                     onChange={this.handleChange('destinationcity')}
                   />
                   <ControlLabel>Destination State</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.destinationstate}
+                    value={destinationstate}
                     placeholder="Destination State"
                     onChange={this.handleChange('destinationstate')}
                   />
@@ -247,52 +238,52 @@ const AddEvent = React.createClass({
                     </div>
                   </Form>
                   <div className="form-items-container">
-                    {this.state.schedule.map(events)}
+                    {schedule.map(showEvents)}
                   </div>
                   <div className="form-items-container">
-                    {this.state.events.map(listEvents)}
+                    {events.map(listEvents)}
                   </div>
                   <ControlLabel>After Show Destination Address:</ControlLabel>
                   <FormControl type="text"
-                    value={this.state.destinationname}
+                    value={destinationname}
                     placeholder="Destination Name"
                     onChange={this.handleChange('destinationname')}
                   />
                   <FormControl type="text"
-                    value={this.state.streetone}
+                    value={streetone}
                     placeholder="Street Address 1"
                     onChange={this.handleChange('streetone')}
                   />
                   <FormControl type="text"
-                    value={this.state.streettwo}
+                    value={streettwo}
                     placeholder="Street Address 2"
                     onChange={this.handleChange('streettwo')}
                   />
                   <FormControl type="text"
-                    value={this.state.city}
+                    value={city}
                     placeholder="City"
                     onChange={this.handleChange('city')}
                   />
                   <FormControl type="text"
-                    value={this.state.state}
+                    value={state}
                     placeholder="State"
                     onChange={this.handleChange('state')}
                   />
                   <FormControl type="number"
-                    value={this.state.zipcode}
+                    value={zipcode}
                     placeholder="Zipcode"
                     onChange={this.handleChange('zipcode')}
                   />
                   <ControlLabel>Mileage</ControlLabel>
                   <FormControl type="number"
-                    value={this.state.mileage}
+                    value={mileage}
                     placeholder="Mileage"
                     onChange={this.handleChange('mileage')}
                   />
                   <ControlLabel>Notes</ControlLabel>
                   <FormControl
                     componentClass="textarea"
-                    value={this.state.notes}
+                    value={notes}
                     placeholder="Notes"
                     onChange={this.handleChange('notes')}
                   />

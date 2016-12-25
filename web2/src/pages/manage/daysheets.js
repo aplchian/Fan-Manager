@@ -5,16 +5,11 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
-import {filter, pluck,sort,map} from 'ramda'
+import {filter, pluck,sort,map,compose} from 'ramda'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+import {sortBy,sortIcon} from '../utils/daysheets'
 var FontAwesome = require('react-fontawesome')
-
-
-
-
-
-
 
 const DaySheets = React.createClass({
   getInitialState(){
@@ -31,16 +26,7 @@ const DaySheets = React.createClass({
     })
   },
   componentDidMount(){
-    let data = {
-      artistId: this.state.band,
-      startdate: this.state.startDate.format(),
-      enddate: this.state.endDate.format()
-    }
-    this.props.getArtistDaySheets(data)
-      .then(res => this.setState({
-        results: pluck('doc',res.data)
-      }))
-      .catch(err => console.log(err.message))
+    this.handleSearch()
   },
   handleSelect(type){
     let results = this.state.data
@@ -57,64 +43,48 @@ const DaySheets = React.createClass({
     }
   },
   handleSearch(){
-
-    let data = {
+    let searchData = {
       artistId: this.state.band,
       startdate: this.state.startDate.format(),
       enddate: this.state.endDate.format()
     }
-
-    this.props.getArtistDaySheets(data)
-      .then(res => this.setState({
-        results: pluck('doc',res.data)
-      }))
+    this.props.getArtistDaySheets(searchData)
+      .then(({data}) => this.setState({results: pluck('doc', data)}))
       .catch(err => console.log(err.message))
   },
   toggleSort(){
-
     let order = this.state.order === 'asc' ? 'desc' : 'asc'
     this.setState({order})
-
   },
   render(){
-
-    const sortIcon = this.state.order === 'asc'
-      ? <FontAwesome {...style({position: 'relative', left: '4px'})} className="sort-icon-asc" name='sort-asc' />
-      : <FontAwesome {...style({position: 'relative', left: '4px'})} className="sort-icon" name='sort-desc' />
-
-    const results = (item,i) => {
-      let date = moment(item.date.split('T')[0]).format('MMM DD')
-      return <Link to={`/manage/daysheets/${item._id}/show`}><Panel className="daysheet-panel" key={i}><FontAwesome name='sun-o' /> {date}</Panel></Link>
-    }
-
-    //sorts by comparing two dates unix
-    const asc = (a, b) => { return moment(a.date.split('T')[0]).unix() - moment(b.date.split('T')[0]).unix() }
-    const desc = (a, b) => { return moment(b.date.split('T')[0]).unix() - moment(a.date.split('T')[0]).unix() }
-
-    const resultsList = this.state.order === 'asc'
-      ? map(results,sort(asc,this.state.results))
-      : map(results,sort(desc,this.state.results))
-
+    const {
+      results,
+      order,
+      user,
+      startDate,
+      endDate
+    } = this.state
+    const sortedResults = sortBy(order,results)
+    const sortedIcon = sortIcon(order)
     return(
       <div>
-
-        <PageWrapper logout={this.props.logOut} user={this.state.user} title="Daysheets">
+        <PageWrapper logout={this.props.logOut} user={user} title="Daysheets">
           <div {...style({color: 'white'})}>fix this?</div>
           <Row className="show-grid">
             <Col xs={12} md={2} className="search-sidebar">
               <h3 className="search-result-header">Options</h3>
                 <DatePicker
                 className="date-picker"
-                selected={this.state.startDate}
-                selectsStart  startDate={this.state.startDate}
-                endDate={this.state.endDate}
+                selected={startDate}
+                selectsStart  startDate={startDate}
+                endDate={endDate}
                 onChange={this.handleDateChange('startDate')} />
                 <p className="sidebar-to">to</p>
                 <DatePicker
                 className="date-picker"
-                selected={this.state.endDate}
-                selectsEnd  startDate={this.state.startDate}
-                endDate={this.state.endDate}
+                selected={endDate}
+                selectsEnd  startDate={startDate}
+                endDate={endDate}
                 onChange={this.handleDateChange('endDate')} />
                 <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
                 <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
@@ -124,8 +94,8 @@ const DaySheets = React.createClass({
                 </Nav>
                 </Col>
                 <Col xs={12} md={10} className="search-results">
-                  <h3 onClick={this.toggleSort} className="search-result-header">Results{sortIcon}</h3>
-                  {resultsList}
+                  <h3 onClick={this.toggleSort} className="search-result-header">Results{sortedIcon}</h3>
+                  {sortedResults}
                 </Col>
           </Row>
         </PageWrapper>

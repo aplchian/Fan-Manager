@@ -18,12 +18,12 @@ const Home = React.createClass({
     })
   },
   componentDidMount(){
-    // let fn = this.props.auth.notify(profile => {
-    //   axios.get(`${url}bands?userId=user_${profile.user_id}`)
-    //     .then(res => {
-    //       this.props.setBands(res.data[0].key[1])
-    //     })
-    // })
+    this.props.auth.notify(profile => {
+      axios.get(`${url}bands?userId=user_${profile.user_id}`)
+        .then(res => {
+          this.props.setBands(res.data[0].key[1])
+        })
+    })
 
     if(!this.props.auth.loggedIn() && this.props.location.hash.indexOf('access_token') === -1){
       this.props.auth.login(profile => {
@@ -56,7 +56,6 @@ const Home = React.createClass({
         })
   },
   render(){
-    console.log('props',this.props)
     const listBands = (item) => {
       return <Link to="/manage/todos"><div onClick={this.props.setBand(item)} className="select-artist">{join(" ",tail(split('_',item)))}</div></Link>
     }
