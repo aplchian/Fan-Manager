@@ -11,6 +11,8 @@ const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import {Redirect} from 'react-router'
+import {listEvents,showEvents} from '../utils/daysheets'
+
 
 require('react-datepicker/dist/react-datepicker.css');
 
@@ -26,30 +28,13 @@ const inputStyle = style({
 const AddEvent = React.createClass({
   getInitialState(){
     return({
-      currentcity: '',
       type: 'daysheet',
-      currentstate: '',
-      destinationcity: '',
-      destinationstate: '',
       schedule: [],
       date: moment(),
       events: [],
-      addressone: '',
-      addresstwo: '',
-      city: '',
-      state: '',
-      zipcode: '',
-      mileage: '',
-      notes: "",
       band: this.props.band,
-      mileage: '',
-      destinationname: '',
       newevent: {
         id: uuid.v4(),
-        event: '',
-        starttime: '',
-        endtime: '',
-        duration: ''
       }
     })
   },
@@ -84,15 +69,15 @@ const AddEvent = React.createClass({
     }
   },
   handleDateChange(date){
-    let data = {
+    let qData = {
       artistId: this.state.band,
       enddate: date.format(),
       startdate: date.format()
     }
-    this.props.getArtistEvents(data)
-      .then(res => {
+    this.props.getArtistEvents(qData)
+      .then(({data}) => {
         this.setState({
-          events: pluck('doc',res.data),
+          events: pluck('doc',data),
           date: date
         })
       })
@@ -165,20 +150,8 @@ const AddEvent = React.createClass({
       notes,
     } = this.state
 
-    const showEvents = (item,i) => {
-      return <FormControl.Static className="form-item-container">
-              <span className="form-item-title">
-                {`${item.event}`}
-              </span>
-                <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
-              </FormControl.Static>
-    }
-    const listEvents = (item,i) => {
-      let checkBox = item.status === 'confirmed'
-                      ? <Checkbox key={i} checked onChange={this.eventToggle(item.id)}>{item.name}</Checkbox>
-                      : <Checkbox key={i} onChange={this.eventToggle(item.id)}>{item.name}</Checkbox>
-      return checkBox
-    }
+    const listSchedule = map(showEvents(this.removeEvent),schedule)
+    const daySheetEvents = map(listEvents(this.eventToggle),events)
 
     return (
       <div>
@@ -238,10 +211,10 @@ const AddEvent = React.createClass({
                     </div>
                   </Form>
                   <div className="form-items-container">
-                    {schedule.map(showEvents)}
+                    {listSchedule}
                   </div>
                   <div className="form-items-container">
-                    {events.map(listEvents)}
+                    {daySheetEvents}
                   </div>
                   <ControlLabel>After Show Destination Address:</ControlLabel>
                   <FormControl type="text"

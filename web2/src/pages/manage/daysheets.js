@@ -49,7 +49,9 @@ const DaySheets = React.createClass({
       enddate: this.state.endDate.format()
     }
     this.props.getArtistDaySheets(searchData)
-      .then(({data}) => this.setState({results: pluck('doc', data)}))
+      .then(({data}) => {
+        this.setState({results: pluck('doc', data)})
+      })
       .catch(err => console.log(err.message))
   },
   toggleSort(){

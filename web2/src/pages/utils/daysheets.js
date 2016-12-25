@@ -1,7 +1,7 @@
 const moment = require('moment')
-const {sort, compose, map} = require('ramda')
+const {sort, compose, map, curry} = require('ramda')
 const {Link} = require('react-router')
-import {Panel} from 'react-bootstrap'
+import {Panel,Checkbox,FormControl,Button} from 'react-bootstrap'
 var FontAwesome = require('react-fontawesome')
 import React from 'react'
 
@@ -47,8 +47,26 @@ function sortIcon(order){
           : <FontAwesome className="sort-icon daysheet-icon" name='sort-desc' />
 }
 
+//// daysheet form
+
+const listEvents = curry(function(fn,item){
+  return item.status === 'confirmed'
+          ? <Checkbox key={item.id} checked onChange={fn(item.id)}>{item.name}</Checkbox>
+          : <Checkbox key={item.id} onChange={fn(item.id)}>{item.name}</Checkbox>
+})
+
+const showEvents = curry(function(fn,item){
+  return <FormControl.Static className="form-item-container">
+          <span className="form-item-title">
+            {`${item.event}`}
+          </span>
+            <Button className="pull-right remove-btn" onClick={fn(item.id)}>remove</Button>
+          </FormControl.Static>
+})
 
  module.exports = {
   sortBy,
-  sortIcon
+  sortIcon,
+  listEvents,
+  showEvents
  }
