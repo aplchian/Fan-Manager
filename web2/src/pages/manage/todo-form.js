@@ -11,6 +11,7 @@ const db = new PouchDB('slo-dev')
 import TimePicker from 'rc-time-picker'
 import {Redirect} from 'react-router'
 import 'rc-time-picker/assets/index.css'
+import {buildPromises,formatUsers} from '../utils/todos'
 require('react-datepicker/dist/react-datepicker.css');
 
 
@@ -28,33 +29,23 @@ const AddTodo = React.createClass({
     })
   },
   componentDidMount(){
-
-    const buildPromises = item => {
-      return this.props.getUser(item)
-    }
-
-    const formatUsers = compose(
-      map(item => ({user: item.nickname, id: item._id})),
-      pluck('data')
-    )
-
+    const {getTodo,getUser,params: {id}} = this.props
     this.props.getBand(this.state.band)
-      .then(res => {
-        Promise.all(map(buildPromises,res.data.users))
+      .then(({data: {users}}) => {
+        Promise.all(map(buildPromises(getUser),users))
           .then(res => this.setState({
             members: formatUsers(res)
           }))
       })
     // if editing
-    if(this.props.params.id){
-      this.props.getTodo(this.props.params.id)
-        .then(res => this.setState({
-          ...res.data,
-          duedate: moment(res.data.duedate)
+    if(id){
+      getTodo(id)
+        .then(({data}) => this.setState({
+          ...data,
+          duedate: moment(data.duedate)
         }))
         .catch(err => console.log(err.message))
     }
-
   },
   handleDateChange(date){
     this.setState({
