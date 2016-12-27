@@ -4,13 +4,13 @@ dotenv.load()
 const {curry} =  require('ramda')
 const db = new PouchDB(process.env.DB_URL)
 
-const getDoc = curry((db,doc) => db.get(doc))
+const f = curry((db,doc) => db.get(doc))
 
 module.exports = {
-  fan: getDoc(db),
-  event: getDoc(db),
-  daysheet: getDoc(db),
-  todo: getDoc(db),
-  band: getDoc(db),
-  user: getDoc(db),
+  fan: f(db),
+  event: f(db),
+  daysheet: f(db),
+  todo: f(db),
+  band: f(db),
+  user: f(db),
 }

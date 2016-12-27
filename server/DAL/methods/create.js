@@ -4,12 +4,13 @@ dotenv.load();
 const db = new PouchDB(process.env.DB_URL)
 const {
     prop,
-    forEach
+    forEach,
+    assoc
 } = require('ramda')
 const buildFan = require('../helpers/buildFan.js')
 
 
-function createFan(doc, cb) {
+function fan(doc, cb) {
     var hasKeys = true
     var status = ''
     const keys = ['email']
@@ -68,7 +69,7 @@ function createFan(doc, cb) {
     })
 }
 
-function createEvent(doc, cb) {
+function event(doc, cb) {
     var hasKeys = true
     var status = ''
     const keys = ['name','type']
@@ -94,18 +95,35 @@ function createEvent(doc, cb) {
         return cb(new Error('400 _id not allowed'))
     }
 
-    let date = doc.date.split('T')[0]
-    doc._id = `event_${date}_${doc.type}_${doc.name}`.split(' ').join('_')
-    console.log('id',doc._id)
-    delete doc.newevent
-    delete doc.newcontact
-    db.put(doc, (err,res) => {
+    const id = (date,{type,name}) =>
+      compose(
+        join('_'),
+        split(' ')
+      )(`event_${date}_${type}_${name}`)
+
+
+    const buildEvent = (date,doc) =>
+      compose(
+        omit(['newevent','newcontact']),
+        assoc('_id',id(date,doc))
+      )(doc)
+
+    var x = buildEvent(doc.date.split('T')[0],doc)
+
+    // let date = doc.date.split('T')[0]
+    // doc._id = `event_${date}_${doc.type}_${doc.name}`.split(' ').join('_')
+    //
+    // delete doc.newevent
+    // delete doc.newcontact
+
+
+    db.put(x, (err,res) => {
       if(err) return cb(err)
       return cb(null,res)
     })
 }
 
-function createDaysheet(doc, cb) {
+function daysheet(doc, cb) {
     console.log('doc',doc)
 
     if (prop('_rev')(doc)) {
@@ -126,7 +144,7 @@ function createDaysheet(doc, cb) {
     })
 }
 
-function createTodo(doc, cb) {
+function todo(doc, cb) {
     console.log('doc',doc)
 
     if (prop('_rev')(doc)) {
@@ -146,7 +164,7 @@ function createTodo(doc, cb) {
     })
 }
 
-function createUser(doc, cb) {
+function user(doc, cb) {
 
     if (prop('_rev')(doc)) {
         return cb(new Error('400 _rev not allowed'))
@@ -155,6 +173,7 @@ function createUser(doc, cb) {
     if (prop('_id')(doc)) {
         return cb(new Error('400 _id not allowed'))
     }
+
 
     doc._id = `user_${doc.user_id}`.split(' ').join('_')
     doc.type = "user"
@@ -170,9 +189,9 @@ function createUser(doc, cb) {
 }
 
 module.exports = {
-  fan: createFan,
-  daysheet: createDaysheet,
-  event: createEvent,
-  todo: createTodo,
-  user: createUser
+  fan,
+  daysheet,
+  event,
+  todo,
+  user
 }
