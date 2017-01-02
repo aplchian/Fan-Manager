@@ -2,7 +2,7 @@ const React = require('react')
 const fetch = require('isomorphic-fetch')
 const axios = require('axios')
 const url = process.env.REACT_APP_XHR
-const {pluck,map} = require('ramda')
+const {pluck,map,curry: C} = require('ramda')
 const auth = require('../utils/auth')(
   process.env.REACT_APP_ID,
   process.env.REACT_APP_DOMAIN
@@ -14,10 +14,6 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
       loggedIn: true
     })
   },
-  tap(item){
-    console.log(item)
-    return item
-  },
   fansByState({bandID,sorttoken,limit,state}){
     return axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`)
   },
@@ -27,78 +23,27 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
   streetTeam(artist,cb){
     return axios.get(`${url}fans?artist=${artist}&streetteam=true`)
   },
-  addFan(doc,cb){
-    return axios.post(`${url}fans`,doc)
-  },
-  getFan(fanId,cb){
-    return axios.get(`${url}fans/${fanId}`)
-  },
-  editFan(doc,cb){
-    return axios.put(`${url}fans`,doc)
-  },
-  updateEvent(doc){
-    return axios.put(`${url}events`,doc)
-  },
-  updateDaySheet(doc){
-    return axios.put(`${url}daysheets`,doc)
-  },
-  updateTodo(doc){
-    return axios.put(`${url}todos`,doc)
-  },
   syncMailChimp(doc){
     return axios.post(`${url}mailchimp`,doc)
   },
-  addEvent(doc){
-    return axios.post(`${url}events`,doc)
-  },
-  addDaySheet(doc){
-    return axios.post(`${url}daysheets`,doc)
-  },
-  addTodo(doc){
-    return axios.post(`${url}todos`,doc)
-  },
-  getEvent(eventId){
-    return axios.get(`${url}events/${eventId}`)
-  },
-  getUser(id){
-    return axios.get(`${url}events/${id}`)
-  },
-  getBand(id){
-    return axios.get(`${url}bands/${id}`)
-  },
-  getDaySheet(id){
-    return axios.get(`${url}daysheets/${id}`)
-  },
-  getTodo(id){
-    return axios.get(`${url}todos/${id}`)
-  },
-  getEvents(){
-    return axios.get(`${url}events`)
-  },
-  getDaySheets(){
-    return axios.get(`${url}daysheetsdsd`)
-  },
-  removeFan(id){
-    return axios.delete(`${url}fans/${id}`)
-  },
-  removeEvent(id){
-    return axios.delete(`${url}events/${id}`)
-  },
-  removeDaySheet(id){
-    return axios.delete(`${url}daysheets/${id}`)
-  },
-  removeTodo(id){
-    return axios.delete(`${url}todos/${id}`)
-  },
-  getArtistEvents({artistId,startdate,enddate}){
-    return axios.get(`${url}events/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
-  },
-  getArtistDaySheets({artistId,startdate,enddate}){
-    return axios.get(`${url}daysheets/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
-  },
-  getArtistTodos({artistId,startdate,enddate}){
-    return axios.get(`${url}todos/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
-  },
+  listDateRange: C((type,{artistId,startdate,enddate}) => {
+    return axios.get(`${url}${type}/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)
+  }),
+  add: C((type,doc) => {
+    return axios.post(`${url}${type}`,doc)
+  }),
+  list: C((type,id) => {
+    return axios.get(`${url}${type}`)
+  }),
+  get: C((type,id) => {
+    return axios.get(`${url}${type}/${id}`)
+  }),
+  update: C((type,doc) => {
+    return axios.put(`${url}${type}`,doc)
+  }),
+  destroy: C((type,id) => {
+      return axios.delete(`${url}${type}/${id}`)
+  }),
   logOut(){
     auth.logout()
     logOutUp()
@@ -109,30 +54,30 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
       fansByState={this.fansByState}
       allFans={this.allFans}
       streetTeam={this.streetTeam}
-      addFan={this.addFan}
-      addEvent={this.addEvent}
-      addTodo={this.addTodo}
-      getFan={this.getFan}
-      getEvent={this.getEvent}
-      getTodo={this.getTodo}
-      getBand={this.getBand}
-      getUser={this.getUser}
-      editFan={this.editFan}
-      updateEvent={this.updateEvent}
-      updateDaySheet={this.updateDaySheet}
-      updateTodo={this.updateTodo}
-      getEvents={this.getEvents}
-      getDaySheets={this.getDaySheets}
-      getDaySheet={this.getDaySheet}
+      addFan={this.add('fans')}
+      addEvent={this.add('events')}
+      addTodo={this.add('todos')}
+      addDaySheet={this.add('daysheets')}
+      getFan={this.get('fans')}
+      getEvent={this.get('events')}
+      getTodo={this.get('todos')}
+      getBand={this.get('bands')}
+      getDaySheet={this.get('daysheets')}
+      getUser={this.get('events')}
+      editFan={this.edit('fans')}
+      updateEvent={this.edit('events')}
+      updateDaySheet={this.edit('events')}
+      updateTodo={this.edit('todos')}
+      getEvents={this.list('events')}
+      getDaySheets={this.list('daysheets')}
+      removeFan={this.destroy('fans')}
+      removeEvent={this.destroy('events')}
+      removeDaySheet={this.destroy('daysheets')}
+      removeTodo={this.destroy('todos')}
+      getArtistEvents={this.listDateRange('events')}
+      getArtistDaySheets={this.listDateRange('daysheets')}
+      getArtistTodos={this.listDateRange('todos')}
       syncMailChimp={this.syncMailChimp}
-      addDaySheet={this.addDaySheet}
-      removeFan={this.removeFan}
-      removeEvent={this.removeEvent}
-      removeDaySheet={this.removeDaySheet}
-      removeTodo={this.removeTodo}
-      getArtistEvents={this.getArtistEvents}
-      getArtistDaySheets={this.getArtistDaySheets}
-      getArtistTodos={this.getArtistTodos}
       logOut={this.logOut}
       setBand={setBand}
       user={parentState.user}
@@ -140,5 +85,6 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
     />
   }
 })
+
 
 module.exports = Service
