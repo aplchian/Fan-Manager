@@ -12,23 +12,24 @@ const {
     split,
     head,
 } = require('ramda')
+const {Maybe} = require('ramda-fantasy')
 const buildFan = require('../helpers/buildFan.js')
 const buildEvent = require('../helpers/create')
 
 
 function fan(doc, cb) {
-    var hasKeys = true
-    var status = ''
-    const keys = ['email']
-
-    function missingKey(item) {
-        if (prop(item)(doc) === undefined) {
-            hasKeys = false
-            status = item
-        }
-    }
-
-    forEach(missingKey, keys)
+    // var hasKeys = true
+    // var status = ''
+    // const keys = ['email']
+    //
+    // function missingKey(item) {
+    //     if (prop(item)(doc) === undefined) {
+    //         hasKeys = false
+    //         status = item
+    //     }
+    // }
+    //
+    // forEach(missingKey, keys)
 
     if (!hasKeys) {
         return cb(new Error(`400Missing ${status} property within data`))
@@ -42,8 +43,9 @@ function fan(doc, cb) {
         return cb(new Error('400 _id not allowed'))
     }
 
-    doc = buildFan(doc)
-    db.put(doc, function(err, res) {
+    const newDoc = buildFan(doc)
+
+    db.put(newDoc, function(err, res) {
         if (err) {
             console.log(err.message)
             //checks to see if that ID exist in db

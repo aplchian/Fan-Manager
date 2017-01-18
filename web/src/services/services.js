@@ -1,5 +1,4 @@
 const React = require('react')
-const fetch = require('isomorphic-fetch')
 const axios = require('axios')
 const url = process.env.REACT_APP_XHR
 const {pluck,map,curry: C} = require('ramda')
@@ -14,11 +13,14 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
       loggedIn: true
     })
   },
-  fansByState: ({bandID,sorttoken,limit,state}) => axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`),
-  allFans: (artist,cb) => axios.get(`${url}fans?artist=${artist}`),
+  fansByState: ({bandID,sorttoken,limit,state}) =>
+    axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`),
+  allFans: (artist,cb) =>
+    axios.get(`${url}fans?artist=${artist}`),
   streetTeam : (artist,cb) => axios.get(`${url}fans?artist=${artist}&streetteam=true`),
   syncMailChimp: (doc) => axios.post(`${url}mailchimp`,doc),
-  listDateRange: C((type,{artistId,startdate,enddate}) => axios.get(`${url}${type}/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)),
+  listDateRange: C((type,{artistId,startdate,enddate}) =>
+    axios.get(`${url}${type}/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)),
   add: C((type,doc) => axios.post(`${url}${type}`,doc)),
   list: C((type,id) => axios.get(`${url}${type}`)),
   get: C((type,id) => axios.get(`${url}${type}/${id}`)),
