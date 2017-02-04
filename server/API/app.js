@@ -43,11 +43,15 @@ app.get('/fans/state/:bandId',function(req,res){
 })
 
 app.get('/fans/:fan',function(req,res){
-  var fan = req.params.fan
-  dal.getFan(fan,(err,body) => {
-    if(err) return console.log(err.message)
-    return res.send(body)
-  })
+  const fan = req.params.fan
+  console.log('fan',fan);
+  dal.getFan(fan)
+    .then(body => {
+      res.send(body)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 })
 
 app.get('/fans',function(req,res){
