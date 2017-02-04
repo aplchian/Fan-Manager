@@ -5,11 +5,12 @@ import {style} from 'glamor'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
-import {append,reject} from 'ramda'
+import {append,reject,concat,map,assocPath,mapObjIndexed,keys} from 'ramda'
 import TimePicker from 'rc-time-picker'
 import PouchDB from 'pouchdb'
 import 'rc-time-picker/assets/index.css'
 import {Redirect} from 'react-router'
+import Dropzone from 'react-dropzone'
 const db = new PouchDB('slo-dev')
 
 
@@ -48,6 +49,9 @@ const AddEvent = React.createClass({
           starttime: '',
           endtime: '',
           duration: ''
+        },
+        _attachments: {
+
         }
     })
   },
@@ -169,7 +173,16 @@ const AddEvent = React.createClass({
       this.setState({newevent})
     }
   },
+  onDrop([file,]) {
+      const newFiles = assocPath(['_attachments',file.name],{
+        type: file.type,
+        data: file
+      },this.state)
+
+      this.setState(newFiles)
+  },
   render(){
+    console.log('state',this.state);
     const contacts = (item,i) => {
       return <FormControl.Static className="form-item-container">
                 <span className="form-item-title">{`(${item.type}) ${item.name}`}</span>
@@ -329,6 +342,10 @@ const AddEvent = React.createClass({
                     placeholder="Notes"
                     onChange={this.handleChange('notes')}
                   />
+                  <Dropzone onDrop={this.onDrop}>
+                    <div>Try dropping some files here, or click to select files to upload.</div>
+                  </Dropzone>
+                  {map(key => <div>{key}</div>,keys(this.state._attachments))}
                   <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>

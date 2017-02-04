@@ -57,6 +57,16 @@ const getUserBands = curry((query,userID,cb) => {
 })
 
 
+const addAttachment = (id,attachments) => {
+  const obj = {
+    _id: id,
+    _attachments: attachments
+  }
+  console.log('OBJ',obj);
+  return db.put(obj)
+}
+
+
 module.exports = {
     fansByState: listFansByState,
     getFan: getThe.fan,
@@ -83,5 +93,6 @@ module.exports = {
     createEvent: create.event,
     createDaySheet: create.daysheet,
     createTodo: create.todo,
-    createUser: create.user
+    createUser: create.user,
+    addAttachment
 }

@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 const axios = require('axios')
 const jwt = require('express-jwt')
 const syncFans = require('../helpers/updateAllFansFromSpreadSheets.js')
+const {omit,prop} = require('ramda')
 require('dotenv').config()
 
 app.use(cors())
@@ -134,12 +135,22 @@ app.post('/mailchimp',function(req,res){
 
 app.post('/events',function(req,res){
   var doc = req.body
-  dal.createEvent(doc,function(err,body){
+  const attachments = prop('_attachments',req.body)
+  const event = omit(['_attachments'],req.body)
+  dal.createEvent(event,function(err,body){
     if(err){
+      console.log('err',err);
       res.status(400)
       return res.send({ok: false, err: err.message})
     }
-    return res.send({ok: true})
+    console.log('body',body);
+    dal.addAttachment(body.id,attachments)
+      .then(response => {
+        res.send({ok: true})
+      })
+      .catch(error => {
+        console.log('ERROR',error)
+      })
   })
 })
 

@@ -103,6 +103,8 @@ function event(doc, cb) {
         return cb(new Error('400 _id not allowed'))
     }
 
+    console.log('buildDoc',buildEvent(doc));
+
     db.put(buildEvent(doc), (err,res) => {
       if(err) return cb(err)
       return cb(null,res)
