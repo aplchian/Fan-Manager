@@ -5,6 +5,7 @@ const cors = require('cors')
 var bodyParser = require('body-parser')
 const axios = require('axios')
 const jwt = require('express-jwt')
+const syncFans = require('../helpers/updateAllFansFromSpreadSheets.js')
 require('dotenv').config()
 
 app.use(cors())
@@ -335,6 +336,17 @@ app.get('/bands',function(req,res){
   dal.getUserBands(userId,function(err,body){
     if(err) return console.log(err.message)
       return res.send(body)
+  })
+})
+
+app.put('/syncFans',(req, res) => {
+  syncFans((err,body) => {
+    if(err){
+      res.status(400)
+      return res.send(err.message)
+    }else{
+      return res.send('success!')
+    }
   })
 })
 

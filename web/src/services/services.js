@@ -15,9 +15,8 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
   },
   fansByState: ({bandID,sorttoken,limit,state}) =>
     axios.get(`${url}fans/state/${bandID}?state=${state}&limit=${limit}&sorttoken=${sorttoken}`),
-  allFans: (artist,cb) =>
-    axios.get(`${url}fans?artist=${artist}`),
-  streetTeam : (artist,cb) => axios.get(`${url}fans?artist=${artist}&streetteam=true`),
+  allFans: (artist,cb) => axios.get(`${url}fans?artist=${artist}`),
+  streetTeam: (artist,cb) => axios.get(`${url}fans?artist=${artist}&streetteam=true`),
   syncMailChimp: (doc) => axios.post(`${url}mailchimp`,doc),
   listDateRange: C((type,{artistId,startdate,enddate}) =>
     axios.get(`${url}${type}/artists/${artistId}?startdate=${startdate}&enddate=${enddate}`)),
@@ -26,6 +25,7 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
   get: C((type,id) => axios.get(`${url}${type}/${id}`)),
   update: C((type,doc) => axios.put(`${url}${type}`,doc)),
   destroy: C((type,id) => axios.delete(`${url}${type}/${id}`)),
+  syncFans: () => axios.put(`${url}syncFans`),
   logOut(){
     auth.logout()
     logOutUp()
@@ -64,6 +64,7 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
       setBand={setBand}
       user={parentState.user}
       band={parentState.band}
+      syncFans={this.syncFans}
     />
   }
 })
