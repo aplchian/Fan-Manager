@@ -35,7 +35,7 @@ const ListEvents = React.createClass({
       filterkey: 0,
       data: [],
       results: [],
-      endDate: moment().add(1, 'months'),
+      endDate: moment().add(1, 'years'),
       startDate: moment(),
       band: this.props.band,
       display: "active"

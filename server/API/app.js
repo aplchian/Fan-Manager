@@ -134,23 +134,14 @@ app.post('/mailchimp',function(req,res){
 })
 
 app.post('/events',function(req,res){
-  var doc = req.body
-  const attachments = prop('_attachments',req.body)
-  const event = omit(['_attachments'],req.body)
+  var event = req.body
   dal.createEvent(event,function(err,body){
     if(err){
       console.log('err',err);
       res.status(400)
       return res.send({ok: false, err: err.message})
     }
-    console.log('body',body);
-    dal.addAttachment(body.id,attachments)
-      .then(response => {
-        res.send({ok: true})
-      })
-      .catch(error => {
-        console.log('ERROR',error)
-      })
+    return res.send({ok: true})
   })
 })
 

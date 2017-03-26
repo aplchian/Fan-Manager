@@ -76,9 +76,9 @@ const AddEvent = React.createClass({
         .catch(err => console.log(err.message))
     }else {
       this.props.addEvent(this.state)
-        .then(res => this.setState({
-          success: true
-        }))
+        .then(res => {
+          this.setState({success: true})
+        })
         .catch(err => console.log(err.message))
     }
 
@@ -342,10 +342,13 @@ const AddEvent = React.createClass({
                     placeholder="Notes"
                     onChange={this.handleChange('notes')}
                   />
-                  <Dropzone onDrop={this.onDrop}>
+
+                  {/*<Dropzone onDrop={this.onDrop}>
                     <div>Try dropping some files here, or click to select files to upload.</div>
                   </Dropzone>
-                  {map(key => <div>{key}</div>,keys(this.state._attachments))}
+                  {map(key => <div>{key}</div>,keys(this.state._attachments))}*/}
+
+                  
                   <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>

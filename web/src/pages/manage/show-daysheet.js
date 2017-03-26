@@ -83,7 +83,7 @@ const DaySheet = React.createClass({
 
     let date = this.state.daysheet.date === 'T'
       ? null
-      : moment(this.state.daysheet.date).format('MMM DD YYYY')
+      : moment(this.state.daysheet.date).format('L')
 
     const todaysSchedule = this.state.schedule.length > 0
       ? (
