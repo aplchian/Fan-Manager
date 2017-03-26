@@ -35,7 +35,7 @@ const ListEvents = React.createClass({
       filterkey: 0,
       data: [],
       results: [],
-      endDate: moment().add(1, 'months'),
+      endDate: moment().add(1, 'years'),
       startDate: moment(),
       band: this.props.band,
       order: 'asc'
@@ -95,6 +95,8 @@ const ListEvents = React.createClass({
         currentState['endDate'] = moment().add(7, 'days')
       }else if(e.target.value === 'thirty'){
         currentState['endDate'] = moment().add(1, 'months')
+      }else if(e.target.value === 'year'){
+        currentState['endDate'] = moment().add(1, 'years')
       }
       this.setState(currentState, () => {this.handleSearch()})
 
@@ -160,6 +162,7 @@ const ListEvents = React.createClass({
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('endDate')} />
                   <FormControl className="sidebar-select" value={this.state.display} onChange={this.handleChange('display')} componentClass="select" placeholder="type">
+                    <option value="year">1 year</option>
                     <option value="thirty">30 days</option>
                     <option value="seven">7 days</option>
                     <option value="custom">custom</option>
