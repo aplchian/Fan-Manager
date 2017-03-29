@@ -257,6 +257,10 @@ div.panel.panel-default {
   background-color: white;
 }
 
+.show-daysheet-text-wrap {
+    white-space: pre-wrap;
+}
+
 .btn-default {
    border-radius: 0;
    background-color: white;;
@@ -686,6 +690,7 @@ div.panel.panel-default {
     span {
       font-family: AvenirNext-Bold;
     }
+    margin-bottom: 5px;
  }
 
 
@@ -694,6 +699,7 @@ div.panel.panel-default {
   font-size: 14px;
   color: #000000;
   letter-spacing: 1.1px;
+  white-space: pre-wrap;
  }
 
  .show-footer{
@@ -760,10 +766,16 @@ div.panel.panel-default {
 
  .search-sidebar, .search-results {
    .search-result-header {
-      font-family: AvenirNext-Bold;
-      font-size: 13px;
-      color: #000000;
-      letter-spacing: 0.4px;
+      h3 {
+         font-family: AvenirNext-Bold;
+         font-size: 13px;
+         color: #000000;
+         letter-spacing: 0.4px;
+      }
+      h3.selected {
+          border: 2px solid black;
+          padding: 10px;
+         }
       border-bottom: 1px solid black;
    }
    .date-picker {
@@ -1213,4 +1225,28 @@ thead {
    }
 
 
+}
+
+.contact-btn {
+  padding: 6px;
+  margin: 5px 0 10px 0;
+  color: black;
+  font-weight: bold;
+  border: 2px solid black
+}
+
+.db {
+  display: block;
+}
+
+.dib { 
+  display: inline-block;
+}
+
+.mr3 {
+  margin-right: 3em;
+}
+
+.pr3 {
+  padding-right: 3em;
 }

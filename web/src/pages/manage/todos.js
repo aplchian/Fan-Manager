@@ -5,7 +5,7 @@ import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
 const db = new PouchDB('slo-dev')
-import {filter,pluck,reject,tail} from 'ramda'
+import {filter,pluck,reject,tail,length} from 'ramda'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 const FontAwesome = require('react-fontawesome')
@@ -92,7 +92,7 @@ const ListEvents = React.createClass({
   handleChange(path){
     return e => {
       let currentState = this.state
-      currentState[path] = e.target.value
+      currentState[path] = e
       this.setState(currentState)
     }
   },
@@ -120,13 +120,27 @@ const ListEvents = React.createClass({
         <Panel className={`${panelClass} panel-todo-body`} header={title} eventKey={i}>
           <div className="todo-content-container">
             <div className="todo-description-container">
-              <div className="todo-label">description:</div>
+              <div className="todo-label">notes / updates:</div>
               <div className="todo-notes">{item.notes}</div>
             </div>
             <div className="todo-edit-btn"><Link to={`/manage/todos/${item._id}/edit`}>Edit</Link></div>
             <div className="remove-todo-btn" onClick={this.removeTodo(item._id)}>delete</div>
-            <div className="todo-label">assigned to:</div>
-            <div className="todo-assignedto">{item.assignedto.map(assignedTo)}</div>
+            <div className="todo-label">
+              {
+                length(item.assignedto) > 0
+                  ? 'assigned to:'
+                  : 'not assigned'
+              }
+            </div>
+            {
+              length(item.assignedto) > 0
+                ? (
+                  <div>
+                    <div className="todo-assignedto">{item.assignedto.map(assignedTo)}</div>
+                  </div>
+                )
+                : null
+            }
           </div>
          </Panel>
       )
@@ -142,9 +156,18 @@ const ListEvents = React.createClass({
       todos = this.state.results
     }
 
+    const renderFilter = (filter) => {
+      const classes = this.state.display === filter
+                        ? "dib mr3 selected"
+                        : "dib mr3"
+      return (
+        <h3 onClick={() => this.handleChange('display')(filter)}  className={classes}>{filter}</h3>
+      )
+    }
+
     return(
       <div>
-        <PageWrapper logout={this.props.logOut} title="Todos">
+        <PageWrapper logout={this.props.logOut} title="Tasks">
           <div {...style({color: 'white'})} >fix this</div>
           <Row className="show-grid">
             <Col className="search-sidebar" xs={12} md={2}>
@@ -152,7 +175,7 @@ const ListEvents = React.createClass({
                 <DatePicker
                   className="date-picker"
                   selected={this.state.startDate}
-                  selectsStart  startDate={this.state.startDate}
+                  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('startDate')} />
                   <p className="sidebar-to">to</p>
@@ -162,18 +185,17 @@ const ListEvents = React.createClass({
                   selectsEnd  startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleDateChange('endDate')} />
-                  <FormControl className="sidebar-select" value={this.state.display} onChange={this.handleChange('display')} componentClass="select" placeholder="type">
-                    <option value="all">All</option>
-                    <option value="active">Not Completed</option>
-                    <option value="completed">Completed</option>
-                  </FormControl>
                   <Button className="sidebar-btn" onClick={this.handleSearch}>Search</Button>
               <Nav {...style({marginTop:'50px'})} bsStyle="pills" stacked>
-                <div className="add-link"><Link to="/manage/todos/add"> + add todo</Link></div>
+                <div className="add-link"><Link to="/manage/todos/add"> + add task</Link></div>
               </Nav>
             </Col>
             <Col className="search-results" xs={12} md={10}>
-              <h3 className="search-result-header">Results</h3>
+              <div className="search-result-header" >
+                {renderFilter('active')}
+                {renderFilter('completed')}
+                {renderFilter('all')}
+              </div>
               <Accordion>
                 {todos.map(results)}
               </Accordion>

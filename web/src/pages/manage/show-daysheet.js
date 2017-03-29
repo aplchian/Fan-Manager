@@ -74,7 +74,7 @@ const DaySheet = React.createClass({
   render(){
 
     const listSchedule = (item,i) => (
-      <ScheduleItem key={i} title={item.event} duration={item.duration} start={item.starttime} />
+      <ScheduleItem key={i} title={item.event} duration={item.duration} start={moment(item.starttime, 'HH:mm').format('h:mm A')} />
     )
     const listEvents = (item,i) => {
       let eventLink = <Link to={`/manage/events/${item._id}/show`}>{item.name}</Link>
@@ -137,6 +137,36 @@ const DaySheet = React.createClass({
             )
             : null
 
+    const  ToAndFrom = (props) => {
+      const { daysheet } = this.state
+      const hasFrom = !!daysheet.currentcity
+      const hasTo = !!daysheet.destinationcity
+
+      return (
+        <div className="daysheet-city-contain">
+        {
+          hasFrom
+            ? (
+              <div>
+                Current: {daysheet.currentcity}, {daysheet.currentstate}
+              </div>
+            )
+            : null
+        }
+        {
+          hasTo
+            ? (
+              <div>
+                Destination: {daysheet.destinationcity}, {daysheet.destinationstate}
+              </div>
+            )
+            : null
+        }
+        
+        </div>
+      )
+    }
+
 
     return(
       <PageWrapper logout={this.props.logOut}>
@@ -144,21 +174,19 @@ const DaySheet = React.createClass({
         <Row {...s_bg} className="daysheet-hero">
               <h1 className="daysheet-date">{date}</h1>
               <Link to={`/manage/daysheets/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
-              <div className="daysheet-city-contain">{this.state.daysheet.currentcity}, {this.state.daysheet.currentstate}   ->   {this.state.daysheet.destinationcity}, {this.state.daysheet.destinationstate}</div>
+              {ToAndFrom()}
         </Row>
         {todaysSchedule}
-        {todaysEvents}
-        {eodAddress}
-        {notes}
+        <div className="show-daysheet-text-wrap"> 
+          {todaysEvents}
+          {eodAddress}
+          {notes}
+        </div>
         <Row className="show-footer">
           <Col xs={12} md={12}>
             <div className="delete-link" onClick={this.removeDaySheet}>delete daysheet</div>
           </Col>
         </Row>
-
-        {/* <pre>
-          {JSON.stringify(this.state,null,2)}
-        </pre> */}
       </PageWrapper>
     )
   }

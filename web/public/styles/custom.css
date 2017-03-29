@@ -201,6 +201,9 @@ div.panel.panel-default {
   color: black;
   background-color: white; }
 
+.show-daysheet-text-wrap {
+  white-space: pre-wrap; }
+
 .btn-default {
   border-radius: 0;
   background-color: white;
@@ -531,7 +534,8 @@ form label {
   color: rgba(64, 64, 64, 0.86);
   letter-spacing: 1.1px;
   float: left;
-  margin: 0 21px 0 0; }
+  margin: 0 21px 0 0;
+  margin-bottom: 5px; }
   .contact-container span, .eod-address span, .list-content span {
     font-family: AvenirNext-Bold; }
 
@@ -539,7 +543,8 @@ form label {
   font-family: AvenirNext-Regular;
   font-size: 14px;
   color: #000000;
-  letter-spacing: 1.1px; }
+  letter-spacing: 1.1px;
+  white-space: pre-wrap; }
 
 .show-footer {
   height: 100px; }
@@ -593,11 +598,15 @@ form label {
         text-decoration: none; }
 
 .search-sidebar .search-result-header, .search-results .search-result-header {
-  font-family: AvenirNext-Bold;
-  font-size: 13px;
-  color: #000000;
-  letter-spacing: 0.4px;
   border-bottom: 1px solid black; }
+  .search-sidebar .search-result-header h3, .search-results .search-result-header h3 {
+    font-family: AvenirNext-Bold;
+    font-size: 13px;
+    color: #000000;
+    letter-spacing: 0.4px; }
+  .search-sidebar .search-result-header h3.selected, .search-results .search-result-header h3.selected {
+    border: 2px solid black;
+    padding: 10px; }
 
 .search-sidebar .date-picker, .search-results .date-picker {
   width: 100%;
@@ -948,3 +957,22 @@ thead {
     left: 0px;
     margin-top: 6px;
     margin: 6px 0 0 14px; } }
+
+.contact-btn {
+  padding: 6px;
+  margin: 5px 0 10px 0;
+  color: black;
+  font-weight: bold;
+  border: 2px solid black; }
+
+.db {
+  display: block; }
+
+.dib {
+  display: inline-block; }
+
+.mr3 {
+  margin-right: 3em; }
+
+.pr3 {
+  padding-right: 3em; }

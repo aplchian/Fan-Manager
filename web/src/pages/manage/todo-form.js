@@ -116,7 +116,7 @@ const AddTodo = React.createClass({
                     onChange={this.handleChange('notes')}
                   />
                   <FormGroup controlId="formControlsSelectMultiple">
-                    <ControlLabel>Assigned To:</ControlLabel>
+                    <ControlLabel>Assigned To: (drag or cmd + select for multi select)</ControlLabel>
                     <FormControl onChange={this.handleMultiSelect} componentClass="select" multiple>
                       {map(listAssignments,this.state.members)}
                     </FormControl>

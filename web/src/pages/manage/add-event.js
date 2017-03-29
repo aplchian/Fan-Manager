@@ -273,9 +273,9 @@ const AddEvent = React.createClass({
                         placeholder="Sound Check"
                         onChange={this.handleAddEvent('event')}
                       />
-                      <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                      <TimePicker defaultValue={moment("12:00","h:mm")} format={'h:mm A'} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
                       <span className="to-input">to</span>
-                      <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
+                      <TimePicker placeholder="optional" format={'h:mm A'} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
                       <FormControl type="text"
                         value={this.state.newevent.duration}
                         placeholder="duration"
@@ -315,7 +315,7 @@ const AddEvent = React.createClass({
                     placeholder="Zipcode"
                     onChange={this.handleChange('zipcode')}
                   />
-                  <ControlLabel>Parking</ControlLabel>
+                  <ControlLabel>Parking / Load-In</ControlLabel>
                   <FormControl
                     componentClass="textarea"
                     value={this.state.parking}
@@ -354,9 +354,7 @@ const AddEvent = React.createClass({
               </form>
            </Col>
           </Row>
-          {/* <pre>
-            {JSON.stringify(this.state,null,2)}
-          </pre> */}
+
         </PageWrapper>
       </div>
     )

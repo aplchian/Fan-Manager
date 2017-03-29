@@ -4,6 +4,9 @@ import PageWrapper from './components/page-wrapper'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link,Redirect} from 'react-router'
+import { concat, compose, length, join, split, prepend } from 'ramda'
+import moment from 'moment'
+
 const db = new PouchDB('slo-dev')
 
 
@@ -45,8 +48,6 @@ const Event = React.createClass({
   },
   render(){
 
-    console.log(this.state)
-
     const LabelHeader = ({title}) => <div className="show-label-container">{title}</div>
 
     const ScheduleItem = ({title, duration, start}) => (
@@ -62,13 +63,19 @@ const Event = React.createClass({
         <div><span>{title}</span></div>
         <div>{name}</div>
         <div>{email}</div>
-        <div>{phone}</div>
+        {
+          !!phone
+            ? <a href={`tel:${phone}`}><div className="contact-btn">{phone}</div></a>
+            : null
+        }
       </div>
     )
 
-    const listSchedule = (item,i) => (
-      <ScheduleItem key={i} title={item.event} duration={item.duration} start={item.starttime}></ScheduleItem>
-    )
+    const listSchedule = (item,i) => {
+      return (
+        <ScheduleItem key={i} title={item.event} duration={item.duration} start={moment(item.starttime, 'HH:mm').format('h:mm A')}></ScheduleItem>
+      )
+    } 
 
     const listContacts = (item,i) => (
       <ContactItem
@@ -147,6 +154,21 @@ const Event = React.createClass({
       ? <div className="event-status confirmed">Confirmed</div>
       : <div className="event-status not-confirmed">Not Confirmed</div>
 
+    const { event } = this.state
+
+    const checkAddressString = (str) => length(str) > 0
+                                          ? `+${join('+',split(' ',str))}`
+                                          : ''
+    const addressLink = compose(
+      concat('http://maps.google.com/maps?q='),
+      concat(checkAddressString(this.state.event.zipcode)),      
+      concat(checkAddressString(this.state.event.state)),      
+      concat(checkAddressString(this.state.event.city)),      
+      concat(checkAddressString(event.addresstwo)),      
+      concat(checkAddressString(event.addressone))
+    )('')
+
+
     return(
       <PageWrapper logout={this.props.logOut}>
         {this.state.deleted ? <Redirect to="/manage/events" /> : null}
@@ -159,14 +181,16 @@ const Event = React.createClass({
               </div>
               <Link to={`/manage/events/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
           </Col>
-          <div className="event-address-container">
-            <h5><span>{this.state.event.venue}</span></h5>
-            <h5>{this.state.event.addressone}</h5>
-            <h5>{this.state.event.addresstwo}</h5>
-            <h5>{this.state.event.city}</h5>
-            <h5>{this.state.event.state}</h5>
-            <h5>{this.state.event.zipcode}</h5>
-          </div>
+          <a target="_blank" href={addressLink} >
+            <div className="event-address-container">
+              <h5><span>{this.state.event.venue}</span></h5>
+              <h5>{this.state.event.addressone}</h5>
+              <h5>{this.state.event.addresstwo}</h5>
+              <h5>{this.state.event.city}</h5>
+              <h5>{this.state.event.state}</h5>
+              <h5>{this.state.event.zipcode}</h5>
+            </div>
+          </a>
           {confirmedLabel}
         </Row>
         {scheduleRow}
@@ -179,9 +203,6 @@ const Event = React.createClass({
             <div className="delete-link" onClick={this.removeEvent}>delete event</div>
           </Col>
         </Row>
-        {/* <pre>
-          {JSON.stringify(this.state,null,2)}
-        </pre> */}
       </PageWrapper>
     )
   }

@@ -26,7 +26,7 @@ const SubNav = React.createClass({
   getInitialState(){
     return {
       links: [
-        {to: '/manage/todos', name: 'Todos'},
+        {to: '/manage/todos', name: 'Tasks'},
         {to: '/manage/events', name: 'Events'},
         {to: '/manage/daysheets', name: 'Day Sheets'}
       ]

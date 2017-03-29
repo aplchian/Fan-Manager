@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "node ./API/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "now ."
   },
   "keywords": [],
   "author": "",
