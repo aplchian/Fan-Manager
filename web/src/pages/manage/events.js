@@ -1,31 +1,13 @@
 import React from 'react'
 import PageWrapper from './components/page-wrapper'
-import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox,Nav,NavItem,Panel} from 'react-bootstrap'
+import {Row, Col, FormControl, Button, Nav, Panel} from 'react-bootstrap'
 import {style} from 'glamor'
 import PouchDB from 'pouchdb'
 import {Link} from 'react-router'
-const db = new PouchDB('slo-dev')
-import {filter,pluck,sort,map} from 'ramda'
+import {filter, pluck, sort, map} from 'ramda'
 import moment from 'moment'
 var FontAwesome = require('react-fontawesome')
 import DatePicker from 'react-datepicker'
-
-
-const container = style({
-  display: 'block',
-  margin: "0 auto"
-})
-
-const sideBarStyle = style({
-  borderRadius: '4px',
-  textAlign: 'center',
-  paddingBottom: '40px'
-})
-
-const mainSectionStyle = style({
-  paddingLeft: 30,
-  padding: '0 0 40px 0'
-})
 
 
 const ListEvents = React.createClass({
@@ -177,9 +159,6 @@ const ListEvents = React.createClass({
               {resultsList}
             </Col>
           </Row>
-          {/* <pre>
-            {JSON.stringify({endDate: this.state.endDate.format('YYYY DD MM '),startDate: this.state.startDate.format('YYYY DD MM ')},null,2)}
-          </pre> */}
         </PageWrapper>
       </div>
     )
