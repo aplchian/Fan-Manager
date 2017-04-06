@@ -142,13 +142,10 @@ h3 {
 
 .panel-date {
   display: inline-block;
-  color: black; }
+  color: black;
+  width: 70px; }
 
 .panel-event-name {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   color: black; }
 
 .panel-event-location {
