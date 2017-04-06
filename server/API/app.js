@@ -6,7 +6,6 @@ var bodyParser = require('body-parser')
 const axios = require('axios')
 const jwt = require('express-jwt')
 const syncFans = require('../helpers/updateAllFansFromSpreadSheets.js')
-const {omit,prop} = require('ramda')
 require('dotenv').config()
 
 app.use(cors())
@@ -354,5 +353,5 @@ app.put('/syncFans',(req, res) => {
 
 
 app.listen(3046,function(){
-  console.log('listening on port 3039')
+  console.log('listening on port 3046')
 })

@@ -1,17 +1,14 @@
 import React from 'react'
 import PageWrapper from './components/page-wrapper'
-import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form} from 'react-bootstrap'
-import {style} from 'glamor'
+import { Row, Col, FormGroup, ControlLabel, FormControl, Button, Form } from 'react-bootstrap'
+import { style } from 'glamor'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
-import {append,reject,concat,map,assocPath,mapObjIndexed,keys} from 'ramda'
+import { append, reject, assocPath, compose, assoc, map } from 'ramda'
 import TimePicker from 'rc-time-picker'
-import PouchDB from 'pouchdb'
 import 'rc-time-picker/assets/index.css'
-import {Redirect} from 'react-router'
-import Dropzone from 'react-dropzone'
-const db = new PouchDB('slo-dev')
+import { Redirect } from 'react-router'
 
 
 require('react-datepicker/dist/react-datepicker.css');
@@ -21,42 +18,38 @@ const container = style({
   margin: "0 auto"
 })
 
-const inputStyle = style({
-  width: '100%'
-})
 
 const AddEvent = React.createClass({
-  getInitialState(){
-    return({
-        type: "event",
-        eventtype: "show",
-        schedule: [],
-        date: moment(),
-        schedule: [],
-        contact: [],
-        band: this.props.band,
-        status: "confirmed",
-        newcontact: {
-          id: uuid.v4(),
-          type: '',
-          email: '',
-          phone: '',
-          name: ''
-        },
-        newevent: {
-          id: uuid.v4(),
-          event: '',
-          starttime: '',
-          endtime: '',
-          duration: ''
-        },
-        _attachments: {
+  getInitialState() {
+    return ({
+      type: "event",
+      eventtype: "show",
+      schedule: [],
+      date: moment(),
+      contact: [],
+      band: this.props.band,
+      status: "confirmed",
+      newcontact: {
+        id: uuid.v4(),
+        type: '',
+        email: '',
+        phone: '',
+        name: ''
+      },
+      newevent: {
+        id: uuid.v4(),
+        event: '',
+        starttime: moment("12", "hh"),
+        endtime: '',
+        duration: ''
+      },
+      _attachments: {
 
-        }
+      }
     })
   },
-  componentDidMount(){
-    if(this.props.params.id){
+  componentDidMount() {
+    if (this.props.params.id) {
       this.props.getEvent(this.props.params.id)
         .then(res => this.setState({
           ...res.data,
@@ -65,47 +58,47 @@ const AddEvent = React.createClass({
     }
   },
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault()
     // if editing PUT
-    if(this.props.params.id){
+    if (this.props.params.id) {
       this.props.updateEvent(this.state)
         .then(res => this.setState({
           success: true
         }))
         .catch(err => console.log(err.message))
-    }else {
+    } else {
       this.props.addEvent(this.state)
         .then(res => {
-          this.setState({success: true})
+          this.setState({ success: true })
         })
         .catch(err => console.log(err.message))
     }
 
   },
-  handleChange(path){
+  handleChange(path) {
     return e => {
       let currentState = this.state
       currentState[path] = e.target.value
       this.setState(currentState)
     }
   },
-  handleDateChange(date){
+  handleDateChange(date) {
     this.setState({
       date: date
     })
   },
-  handleAddContactChange(path){
+  handleAddContactChange(path) {
     return e => {
       let newcontact = this.state.newcontact
       newcontact[path] = e.target.value
-      this.setState({newcontact})
+      this.setState({ newcontact })
     }
   },
-  addContact(e){
+  addContact(e) {
     e.preventDefault()
     let currentContacts = this.state.contact
-    let updated = append(this.state.newcontact,currentContacts)
+    let updated = append(this.state.newcontact, currentContacts)
     this.setState({
       contact: updated,
       newcontact: {
@@ -117,91 +110,93 @@ const AddEvent = React.createClass({
       }
     })
   },
-  removeContact(id){
+  removeContact(id) {
     return e => {
       let currentContacts = this.state.contact
-      let contact = reject(item => item.id === id,currentContacts)
-      this.setState({contact})
+      let contact = reject(item => item.id === id, currentContacts)
+      this.setState({ contact })
     }
   },
-  addEvent(e){
-    e.preventDefault()
-    let currentContacts = this.state.schedule
-    let updated = append(this.state.newevent,currentContacts)
-    this.setState({
-      schedule: updated,
-      newevent: {
-        id: uuid.v4(),
-        event: '',
-        timestart: '',
-        timeend: ''
-      }
-    })
-  },
-  handleAddEvent(path){
+  handleAddEvent(path) {
     return e => {
       let newevent = this.state.newevent
       newevent[path] = e.target.value
-      this.setState({newevent})
+      this.setState({ newevent })
     }
   },
-  addEvent(e){
+  addEvent(e) {
     e.preventDefault()
-    let currentContacts = this.state.schedule
-    let updated = append(this.state.newevent,currentContacts)
+    const { newevent } = this.state
+
+    const unixStart = newevent.starttime ? moment(newevent.starttime).unix() : null
+    const unixEnd = newevent.endtime ? moment(newevent.endtime).unix() : null
+
+    const updatedTime = compose(
+      assoc('starttime', unixStart),
+      assoc('endtime', unixEnd)
+    )(newevent)
+
+    const updatedSchedule = append(updatedTime, this.state.schedule)
+
     this.setState({
-      schedule: updated,
+      schedule: updatedSchedule,
       newevent: {
         id: uuid.v4(),
         event: '',
-        timestart: '',
-        timeend: ''
+        starttime: moment("12", "hh"),
+        endtime: null,
+        duration: ''
       }
     })
   },
-  removeEvent(id){
+  removeEvent(id) {
     return e => {
       let currentEvents = this.state.schedule
-      let schedule = reject(item => item.id === id,currentEvents)
-      this.setState({schedule})
+      let schedule = reject(item => item.id === id, currentEvents)
+      this.setState({ schedule })
     }
   },
-  handleTimeChange(path){
+  handleTimeChange(path) {
     return value => {
       let newevent = this.state.newevent
-      newevent[path] = value.format('HH:mm')
-      this.setState({newevent})
+      newevent[path] = value
+      this.setState({ newevent })
     }
   },
   onDrop([file,]) {
-      const newFiles = assocPath(['_attachments',file.name],{
-        type: file.type,
-        data: file
-      },this.state)
+    const newFiles = assocPath(['_attachments', file.name], {
+      type: file.type,
+      data: file
+    }, this.state)
 
-      this.setState(newFiles)
+    this.setState(newFiles)
   },
-  render(){
-    console.log('state',this.state);
-    const contacts = (item,i) => {
+  render() {
+    const contacts = (item, i) => {
       return <FormControl.Static className="form-item-container">
-                <span className="form-item-title">{`(${item.type}) ${item.name}`}</span>
-                <Button className="pull-right remove-btn" onClick={this.removeContact(item.id)}>remove</Button>
-              </FormControl.Static>
+        <span className="form-item-title">{`(${item.type}) ${item.name}`}</span>
+        <Button className="pull-right remove-btn" onClick={this.removeContact(item.id)}>remove</Button>
+      </FormControl.Static>
     }
-    const events = (item,i) => {
-      return <FormControl.Static className="form-item-container">
-                <span className="form-item-title">{`${item.event}`}</span>
-                <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
-              </FormControl.Static>
-            }
+
+    const renderEvents = (item) => {
+      return (
+        <FormControl.Static key={item.event} className="form-item-container">
+          <span>{`${moment.unix(item.starttime).format('h:mm a')}`} - </span>
+          <span className="form-item-title">{`${item.event}`}</span>
+          <Button className="pull-right remove-btn" onClick={this.removeEvent(item.id)}>remove</Button>
+        </FormControl.Static>
+      )
+    }
+
+
     return (
       <div>
         {this.state.success ? <Redirect to="/manage/events" /> : null}
         <PageWrapper logout={this.props.logOut} title="Add Event">
           <Row {...container} className="show-grid">
-           <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form className="half-width main-form clearfix" onSubmit={this.handleSubmit}>
+            <Col xs={12} md={12} {...style({ width: '100%' }) }>
+              <form className="half-width main-form clearfix" onSubmit={this.handleSubmit}>
                 <FormGroup
                   controlId="formBasicText"
                 >
@@ -211,7 +206,7 @@ const AddEvent = React.createClass({
                     placeholder="Enter text"
                     onChange={this.handleChange('name')}
                   />
-                  <ControlLabel {...style({display: 'block'})} >Date</ControlLabel>
+                  <ControlLabel {...style({ display: 'block' }) } >Date</ControlLabel>
                   <DatePicker
                     selected={this.state.date}
                     onChange={this.handleDateChange} />
@@ -259,7 +254,7 @@ const AddEvent = React.createClass({
                       />
                     </Form>
                     <div className="add-btn-container clearfix">
-                      <Button {...style({display: 'block'})} className="pull-right form-btn" onClick={this.addContact}>Add</Button>
+                      <Button {...style({ display: 'block' }) } className="pull-right form-btn" onClick={this.addContact}>Add</Button>
                     </div>
                     <div className="form-items-container">
                       {this.state.contact.map(contacts)}
@@ -268,14 +263,14 @@ const AddEvent = React.createClass({
                   <div className="form-container">
                     <Form>
                       <ControlLabel>Schedule</ControlLabel>
-                      <FormControl type="text"
+                      <FormControl type="text" x
                         value={this.state.newevent.event}
                         placeholder="Sound Check"
                         onChange={this.handleAddEvent('event')}
                       />
-                      <TimePicker defaultValue={moment("12:00","h:mm")} format={'h:mm A'} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                      <TimePicker value={this.state.newevent.starttime} format={'h:mm A'} onChange={this.handleTimeChange('starttime')} showSecond={false} />
                       <span className="to-input">to</span>
-                      <TimePicker placeholder="optional" format={'h:mm A'} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
+                      <TimePicker placeholder="optional" format={'h:mm A'} onChange={this.handleTimeChange('endtime')} showSecond={false} />
                       <FormControl type="text"
                         value={this.state.newevent.duration}
                         placeholder="duration"
@@ -283,12 +278,12 @@ const AddEvent = React.createClass({
                       />
                     </Form>
                     <div className="add-btn-container clearfix ">
-                      <Button {...style({display: 'block'})} className="pull-right form-btn" onClick={this.addEvent}>Add</Button>
+                      <Button {...style({ display: 'block' }) } className="pull-right form-btn" onClick={this.addEvent}>Add</Button>
                     </div>
                     <div className="form-items-container">
-                      {this.state.schedule.map(events)}
+                      {map(renderEvents, this.state.schedule)}
                     </div>
-                </div>
+                  </div>
                   <ControlLabel>Address</ControlLabel>
                   <FormControl type="text"
                     value={this.state.addressone}
@@ -348,11 +343,11 @@ const AddEvent = React.createClass({
                   </Dropzone>
                   {map(key => <div>{key}</div>,keys(this.state._attachments))}*/}
 
-                  
+
                   <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>
-           </Col>
+            </Col>
           </Row>
 
         </PageWrapper>
