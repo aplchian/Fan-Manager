@@ -1,13 +1,11 @@
 import React from 'react'
-import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox,Nav,NavItem,Panel,PageHeader,ListGroup,ListGroupItem} from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import PageWrapper from './components/page-wrapper'
-import {style} from 'glamor'
+import { style } from 'glamor'
 import PouchDB from 'pouchdb'
-import {Link,Redirect} from 'react-router'
-import { concat, compose, length, join, split, prepend } from 'ramda'
+import { Link, Redirect } from 'react-router'
+import { concat, compose, length, join, split, type, tap, assoc, sort, map } from 'ramda'
 import moment from 'moment'
-
-const db = new PouchDB('slo-dev')
 
 
 const container = style({
@@ -21,8 +19,8 @@ const s_bg = style({
 })
 
 const Event = React.createClass({
-  getInitialState(){
-    return({
+  getInitialState() {
+    return ({
       event: {
         name: '',
         date: 'T',
@@ -31,26 +29,26 @@ const Event = React.createClass({
       }
     })
   },
-  componentDidMount(){
+  componentDidMount() {
     this.props.getEvent(this.props.params.id)
-      .then(res => this.setState({event: res.data}))
+      .then(res => this.setState({ event: res.data }))
       .catch(err => console.log(err.message))
   },
-  removeEvent(e){
+  removeEvent(e) {
     e.preventDefault()
-    if(confirm('Are you sure you want to delete?')){
+    if (confirm('Are you sure you want to delete?')) {
       this.props.removeEvent(this.state.event._id)
         .then(res => this.setState({
           deleted: true
         }))
-        .catch(err => console.log('error',err.message))
+        .catch(err => console.log('error', err.message))
     }
   },
-  render(){
+  render() {
 
-    const LabelHeader = ({title}) => <div className="show-label-container">{title}</div>
+    const LabelHeader = ({ title }) => <div className="show-label-container">{title}</div>
 
-    const ScheduleItem = ({title, duration, start}) => (
+    const ScheduleItem = ({ title, duration, start }) => (
       <div className="schedule-item">
         <div className="event-title">{title}</div>
         <div className="event-duration">{duration}</div>
@@ -58,7 +56,7 @@ const Event = React.createClass({
       </div>
     )
 
-    const ContactItem = ({title,name,email,phone}) => (
+    const ContactItem = ({ title, name, email, phone }) => (
       <div className="contact-container">
         <div><span>{title}</span></div>
         <div>{name}</div>
@@ -71,13 +69,24 @@ const Event = React.createClass({
       </div>
     )
 
-    const listSchedule = (item,i) => {
-      return (
-        <ScheduleItem key={i} title={item.event} duration={item.duration} start={moment(item.starttime, 'HH:mm').format('h:mm A')}></ScheduleItem>
-      )
-    } 
+    const listSchedule = (item, i) => {
 
-    const listContacts = (item,i) => (
+      const startTime = type(item.starttime) === 'String'
+        ? moment(item.starttime, 'HH:mm').format('h:mm A')
+        : moment.unix(item.starttime).format('h:mm A')
+
+      return (
+       <ScheduleItem
+          key={i}
+          title={item.event}
+          duration={item.duration}
+          start={startTime}
+        />
+
+      )
+    }
+
+    const listContacts = (item, i) => (
       <ContactItem
         key={i}
         title={item.type}
@@ -111,7 +120,7 @@ const Event = React.createClass({
           </Col>
         </Row>
       )
-      :null
+      : null
 
     const notesRow = (this.state.event.notes !== '' && this.state.event.notes)
       ? (
@@ -138,48 +147,64 @@ const Event = React.createClass({
         </Row>
       )
       : null
+    
+    const sortScheduleTimes = (a,b) => a.starttime - b.starttime
+
+    const toUnix = (node) => type(node.starttime) === 'String'
+                              ? assoc('starttime',moment(node.starttime, 'HH:mm').unix(),node)
+                              : node
+
+    const formatScheduleTimes = compose(
+      sort(sortScheduleTimes),
+      map(toUnix)
+    )
+    
+    const sortedSchedule = (this.state.event.schedule.length > 0 && this.state.event.schedule)
+                            ? formatScheduleTimes(this.state.event.schedule)
+                            : this.state.event.schedule
 
     const scheduleRow = (this.state.event.schedule.length > 0 && this.state.event.schedule)
       ? (
         <Row>
           <Col xs={12} md={12}>
             <LabelHeader title="schedule" />
-            {this.state.event.schedule.map(listSchedule)}
+            {sortedSchedule.map(listSchedule)}
           </Col>
         </Row>
       )
       : null
 
-   const confirmedLabel = this.state.event.status === "confirmed"
+    const confirmedLabel = this.state.event.status === "confirmed"
       ? <div className="event-status confirmed">Confirmed</div>
       : <div className="event-status not-confirmed">Not Confirmed</div>
 
     const { event } = this.state
 
     const checkAddressString = (str) => length(str) > 0
-                                          ? `+${join('+',split(' ',str))}`
-                                          : ''
+      ? `+${join('+', split(' ', str))}`
+      : ''
     const addressLink = compose(
       concat('http://maps.google.com/maps?q='),
-      concat(checkAddressString(this.state.event.zipcode)),      
-      concat(checkAddressString(this.state.event.state)),      
-      concat(checkAddressString(this.state.event.city)),      
-      concat(checkAddressString(event.addresstwo)),      
+      concat(checkAddressString(this.state.event.zipcode)),
+      concat(checkAddressString(this.state.event.state)),
+      concat(checkAddressString(this.state.event.city)),
+      concat(checkAddressString(event.addresstwo)),
       concat(checkAddressString(event.addressone))
     )('')
 
 
-    return(
+    return (
+
       <PageWrapper logout={this.props.logOut}>
         {this.state.deleted ? <Redirect to="/manage/events" /> : null}
         <Row {...s_bg} className="event-hero">
           <Col xs={12} md={12}>
-              <div className="event-title-container">
-                <h1 className="page-jumbo-title">{this.state.event.name}</h1>
-                <h2 className="event-date">{this.state.event.date.split('T')[0]}</h2>
-                <h3 className="capacity">{this.state.event.capacity}</h3>
-              </div>
-              <Link to={`/manage/events/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
+            <div className="event-title-container">
+              <h1 className="page-jumbo-title">{this.state.event.name}</h1>
+              <h2 className="event-date">{this.state.event.date.split('T')[0]}</h2>
+              <h3 className="capacity">{this.state.event.capacity}</h3>
+            </div>
+            <Link to={`/manage/events/${this.props.params.id}/edit`}><div className="event-edit-btn">Edit</div></Link>
           </Col>
           <a target="_blank" href={addressLink} >
             <div className="event-address-container">
