@@ -29,7 +29,8 @@ const auth = require('./utils/auth')(
 const App = React.createClass({
   getInitialState(){
     return ({
-      user: null
+      user: null,
+      band: 'band_Stop_Light_Observations'
     })
   },
   logOut(){
