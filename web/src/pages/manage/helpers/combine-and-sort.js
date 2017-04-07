@@ -1,16 +1,21 @@
-import {isEmpty,filter,map,compose,reject,concat,tap,flatten,sort,pluck,split,join} from 'ramda'
+import { isEmpty, map, compose, reject,
+         concat, flatten, sort, pluck, type, assoc } from 'ramda'
+import moment from 'moment'
 
-module.exports = (data,schedule) => {
-  const removeColon = compose(
-    join(''),
-    split(':')
-  )
+module.exports = (data, schedule) => {
+  const formatStartTime = (time) => {
+    return type(time.starttime) === 'Number'
+            ? time
+            : assoc('starttime', moment(time.starttime, 'HH:mm').unix(), time)
+  }
+
   return compose(
-    sort((a,b) => removeColon(a.starttime) - removeColon(b.starttime)),
+    sort((a, b) => a.starttime - b.starttime),
+    map(formatStartTime),
     concat(schedule),
     flatten,
     reject(isEmpty),
-    map(item => item.schedule),
+    pluck('schedule'),
     pluck('doc')
   )(data)
 
