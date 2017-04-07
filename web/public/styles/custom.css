@@ -492,18 +492,22 @@ form label {
 
 .schedule-item {
   border-bottom: 1px solid #D8D8D8;
-  height: 31px;
+  height: 51px;
   position: relative; }
   .schedule-item:hover {
     background-color: #e6e6e6; }
   .schedule-item .event-title {
-    line-height: 31px;
+    line-height: 15px;
     font-family: AvenirNext-Bold;
     font-size: 14px;
     color: #000000;
     letter-spacing: 1.1px;
     padding-left: 1px;
-    display: inline-block; }
+    display: inline-block;
+    max-width: 75%;
+    text-overflow: ellipsis;
+    max-height: 31px;
+    margin-top: 8px; }
   .schedule-item .event-duration {
     display: inline-block;
     font-family: AvenirNext-Italic;
