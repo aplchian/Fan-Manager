@@ -3,7 +3,7 @@ const PouchDB = require('pouchdb')
 var dotenv = require('dotenv');
 dotenv.load();
 const db = new PouchDB(process.env.DB_URL)
-const {prop,forEach,inc,tail,pluck,curry} = require('ramda')
+const {prop, forEach, inc, tail, pluck, curry} = require('ramda')
 const create = require('./methods/create.js')
 const update = require('./methods/update.js')
 const remove = require('./methods/remove.js')
@@ -66,6 +66,10 @@ const addAttachment = (id,attachments) => {
   return db.put(obj)
 }
 
+function getUsers(users){
+  return db.allDocs({'include_docs': true, keys: users})
+}
+
 
 module.exports = {
     fansByState: listFansByState,
@@ -94,5 +98,6 @@ module.exports = {
     createDaySheet: create.daysheet,
     createTodo: create.todo,
     createUser: create.user,
-    addAttachment
+    addAttachment,
+    getUsers
 }

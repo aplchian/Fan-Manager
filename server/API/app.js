@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 const axios = require('axios')
 const jwt = require('express-jwt')
 const syncFans = require('../helpers/updateAllFansFromSpreadSheets.js')
+const { newEvent: smsNewEvent } = require('./helpers/sms')
 require('dotenv').config()
 
 app.use(cors())
@@ -140,6 +141,7 @@ app.post('/events',function(req,res){
       res.status(400)
       return res.send({ok: false, err: err.message})
     }
+    smsNewEvent(event)
     return res.send({ok: true})
   })
 })
