@@ -80,12 +80,27 @@ const DaySheet = React.createClass({
       ? null
       : moment(this.state.daysheet.date).format('L')
 
+    const sortSchedule = (a, b) => {
+      const aHour = moment.unix(a.starttime).get('hour')
+      const aMinute = moment.unix(a.starttime).get('minute')
+      const aTime = moment(`${aHour}:${aMinute}`, 'hh:mm').unix()
+      const bHour = moment.unix(b.starttime).get('hour')
+      const bMinute = moment.unix(b.starttime).get('minute')
+      const bTime = moment(`${bHour}:${bMinute}`, 'hh:mm').unix()
+      return aTime - bTime
+    }
+
+  
+    const listScheduleSorted = sort(sortSchedule, this.state.schedule)
+
+    console.log('LIS', listScheduleSorted)
+
     const todaysSchedule = this.state.schedule.length > 0
       ? (
         <Row>
           <Col xs={12} md={12}>
             <LabelHeader title="Today's Schedule" />
-            {this.state.schedule.map(listSchedule)}
+            {listScheduleSorted.map(listSchedule)}
           </Col>
         </Row>
       )

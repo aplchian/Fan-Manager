@@ -22,6 +22,7 @@
     "pouchdb": "^6.0.7",
     "ramda": "^0.22.1",
     "ramda-fantasy": "^0.7.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "twilio": "^2.11.1"
   }
 }

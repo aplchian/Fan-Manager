@@ -28,6 +28,19 @@ h3 {
   padding: 0;
   border: none; }
 
+.navbar-toggle {
+  border: none; }
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white; }
+
+.search-sidebar .date-picker, .search-results .date-picker {
+  width: 100%;
+  padding: 10px; }
+
+.react-datepicker__input-container {
+  width: 100%; }
+
 .nav li a {
   padding: 10px 15px 10px 0; }
 
