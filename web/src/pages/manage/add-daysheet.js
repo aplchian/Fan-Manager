@@ -14,7 +14,7 @@ import {Redirect} from 'react-router'
 import {listEvents,showEvents} from '../utils/daysheets'
 
 
-require('react-datepicker/dist/react-datepicker.css');
+require('react-datepicker/dist/react-datepicker.css')
 
 const container = style({
   display: 'block',
@@ -86,7 +86,7 @@ const AddEvent = React.createClass({
     return e => {
       let newevent = this.state.newevent
       newevent[path] = e.target.value
-      this.setState({newevent})
+      this.setState({ newevent })
     }
   },
   addEvent(e){
