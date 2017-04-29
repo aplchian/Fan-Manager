@@ -268,7 +268,7 @@ const AddEvent = React.createClass({
                         placeholder="Sound Check"
                         onChange={this.handleAddEvent('event')}
                       />
-                      <TimePicker value={this.state.newevent.starttime} format={'h:mm A'} onChange={this.handleTimeChange('starttime')} showSecond={false} />
+                      <TimePicker value={moment(this.state.newevent.starttime)} format={'h:mm A'} onChange={this.handleTimeChange('starttime')} showSecond={false} />
                       <span className="to-input">to</span>
                       <TimePicker placeholder="optional" format={'h:mm A'} onChange={this.handleTimeChange('endtime')} showSecond={false} />
                       <FormControl type="text"
