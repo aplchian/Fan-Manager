@@ -67,7 +67,11 @@ const addAttachment = (id,attachments) => {
 }
 
 function getUsers(users){
-  return db.allDocs({'include_docs': true, keys: users})
+  if(!!users){
+    return db.allDocs({'include_docs': true, keys: users})
+  }else{
+    return null
+  }
 }
 
 
