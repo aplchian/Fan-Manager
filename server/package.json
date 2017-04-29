@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./API/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "now ."
+    "deploy": "now .",
+    "dev": "nodemon --inspect ./API/app.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "jquery": "^3.1.1",
+    "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "pouchdb": "^6.0.7",
     "ramda": "^0.22.1",
