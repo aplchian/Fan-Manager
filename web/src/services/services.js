@@ -1,7 +1,7 @@
 const React = require('react')
 const axios = require('axios')
 const url = process.env.REACT_APP_XHR
-const {pluck,map,curry: C} = require('ramda')
+const { pluck, map, curry: C } = require('ramda')
 const auth = require('../utils/auth')(
   process.env.REACT_APP_ID,
   process.env.REACT_APP_DOMAIN
@@ -31,6 +31,7 @@ const Service = (Component,logOutUp,parentState,setBand) => React.createClass({
     logOutUp()
   },
   render(){
+    console.log('PRops',this.props)
     return <Component
       {...this.props}
       fansByState={this.fansByState}

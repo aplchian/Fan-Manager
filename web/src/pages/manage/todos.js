@@ -201,9 +201,6 @@ const ListEvents = React.createClass({
               </Accordion>
             </Col>
           </Row>
-          {/* <pre>
-            {JSON.stringify(this.state,null,2)}
-          </pre> */}
         </PageWrapper>
       </div>
     )
