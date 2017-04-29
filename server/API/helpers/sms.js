@@ -39,7 +39,7 @@ function newEvent(event) {
       const withNumbers = reject((x) => x === undefined, numbers)
 
 
-      const message = `Hello Moto, a new event has been added to inTouch!
+      const message = `w00t! A new event has been added to intouch! 🍾🎉
 Event Name: ${event.name}
 Event Date: ${moment(event.date).format('MMMM Do, YYYY')}
 Venue: ${event.venue}
