@@ -5,7 +5,7 @@ import { style } from 'glamor'
 import PouchDB from 'pouchdb'
 import { Link, Redirect } from 'react-router'
 import { concat, compose, length, join, split, type, tap, assoc, sort, map } from 'ramda'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 
 const container = style({
@@ -48,13 +48,16 @@ const Event = React.createClass({
 
     const LabelHeader = ({ title }) => <div className="show-label-container">{title}</div>
 
-    const ScheduleItem = ({ title, duration, start }) => (
-      <div className="schedule-item">
-        <div className="event-title">{title}</div>
-        <div className="event-duration">{duration}</div>
-        <div className="start-time">{start}</div>
-      </div>
-    )
+    const ScheduleItem = ({ title, duration, start }) => {
+      console.log('start', start)
+      return (
+                <div className="schedule-item">
+                  <div className="event-title">{title}</div>
+                  <div className="event-duration">{duration}</div>
+                  <div className="start-time">{start}</div>
+                </div>
+              )
+    } 
 
     const ContactItem = ({ title, name, email, phone }) => (
       <div className="contact-container">
@@ -73,7 +76,7 @@ const Event = React.createClass({
 
       const startTime = type(item.starttime) === 'String'
         ? moment(item.starttime, 'HH:mm').format('h:mm A')
-        : moment.unix(item.starttime).format('h:mm A')
+        : moment.unix(item.starttime).tz('America/New_York').format('h:mm A')
 
       return (
        <ScheduleItem
