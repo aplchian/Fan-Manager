@@ -7,7 +7,7 @@ import { Link, Redirect } from 'react-router'
 import { isEmpty, filter, map, compose, reject, concat, tap, flatten, sort, pluck, split, join } from 'ramda'
 import LabelHeader from './components/label-header'
 import ScheduleItem from './components/schedule-item'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import combineAndSort from './helpers/combine-and-sort'
 
 
@@ -69,7 +69,7 @@ const DaySheet = React.createClass({
   render() {
 
     const listSchedule = (item, i) => (
-      <ScheduleItem key={i} title={item.event} duration={item.duration} start={moment.unix(item.starttime).format('h:mm A')} />
+      <ScheduleItem key={i} title={item.event} duration={item.duration} start={moment.unix(item.starttime).tz('America/New_York').format('h:mm A')} />
     )
     const listEvents = (item, i) => {
       let eventLink = <Link to={`/manage/events/${item._id}/show`}>{item.name}</Link>
