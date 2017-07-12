@@ -1,17 +1,18 @@
 import React from 'react'
 import PageWrapper from './components/page-wrapper'
-import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox} from 'react-bootstrap'
-import {style} from 'glamor'
+import { Row, Col, FormGroup, ControlLabel, HelpBlock, FormControl, Button, Form, Checkbox } from 'react-bootstrap'
+import { style } from 'glamor'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import uuid from 'node-uuid'
-import {append,reject,filter,compose,head,path,map,equals,forEach,pluck} from 'ramda'
+import { append, reject, filter, compose, head, path, map, equals, forEach, pluck } from 'ramda'
 import PouchDB from 'pouchdb'
 const db = new PouchDB('slo-dev')
-import TimePicker from 'rc-time-picker'
+// import TimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
-import {Redirect} from 'react-router'
-import {listEvents,showEvents} from '../utils/daysheets'
+import { Redirect } from 'react-router'
+import { listEvents, showEvents } from '../utils/daysheets'
+import TimePicker from 'material-ui/TimePicker'
 
 
 require('react-datepicker/dist/react-datepicker.css')
@@ -26,20 +27,22 @@ const inputStyle = style({
 })
 
 const AddEvent = React.createClass({
-  getInitialState(){
-    return({
+  getInitialState() {
+    return ({
       type: 'daysheet',
       schedule: [],
       date: moment(),
       events: [],
       band: this.props.band,
       newevent: {
+        starttime: '12:00',
         id: uuid.v4(),
+        endtime: ''
       }
     })
   },
-  componentDidMount(){
-    if(this.props.params.id){
+  componentDidMount() {
+    if (this.props.params.id) {
       this.props.getDaySheet(this.props.params.id)
         .then(res => this.setState({
           ...res.data,
@@ -48,89 +51,88 @@ const AddEvent = React.createClass({
     }
     this.handleDateChange()
   },
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault()
-    if(this.props.params.id){
+    if (this.props.params.id) {
       let doc = this.state
       this.props.updateDaySheet(doc)
-      .then(res => {this.setState({success: true,})})
-      .catch(err => {this.setState({success: true})})
-    }else{
+        .then(res => { this.setState({ success: true, }) })
+        .catch(err => { this.setState({ success: true }) })
+    } else {
       this.props.addDaySheet(this.state)
-        .then(res => this.setState({success: true}))
-        .catch(err => this.setState({success: true}))
-     }
+        .then(res => this.setState({ success: true }))
+        .catch(err => this.setState({ success: true }))
+    }
   },
-  handleChange(path){
+  handleChange(path) {
     return e => {
       let currentState = this.state
       currentState[path] = e.target.value
       this.setState(currentState)
     }
   },
-  handleDateChange(date){
+  handleDateChange(date) {
     let qData = {
       artistId: this.state.band,
       enddate: date.format(),
       startdate: date.format()
     }
     this.props.getArtistEvents(qData)
-      .then(({data}) => {
+      .then(({ data }) => {
         this.setState({
-          events: pluck('doc',data),
+          events: pluck('doc', data),
           date: date
         })
       })
   },
-  handleAddEvent(path){
+  handleAddEvent(path) {
     return e => {
       let newevent = this.state.newevent
       newevent[path] = e.target.value
       this.setState({ newevent })
     }
   },
-  addEvent(e){
+  addEvent(e) {
     e.preventDefault()
     let currentContacts = this.state.schedule
-    let updated = append(this.state.newevent,currentContacts)
+    let updated = append(this.state.newevent, currentContacts)
     this.setState({
       schedule: updated,
       newevent: {
         id: uuid.v4(),
-        event: '',
-        starttime: '',
+        starttime: '12:00',
         endtime: ''
       }
     })
   },
-  removeEvent(id){
+  removeEvent(id) {
     return e => {
       let currentEvents = this.state.schedule
-      let schedule = reject(item => item.id === id,currentEvents)
-      this.setState({schedule})
+      let schedule = reject(item => item.id === id, currentEvents)
+      this.setState({ schedule })
     }
   },
-  eventToggle(id){
+  eventToggle(id) {
     const toggle = item => {
-      if(item.id === id){
+      if (item.id === id) {
         item.status = item.status === 'confirmed' ? 'notconfirmed' : 'confirmed'
         return item
       }
       return item
     }
     return e => {
-      let events = map(toggle,this.state.events)
-      this.setState({events})
+      let events = map(toggle, this.state.events)
+      this.setState({ events })
     }
   },
-  handleTimeChange(path){
-    return value => {
-      let newevent = this.state.newevent
-      newevent[path] = value.format('HH:mm')
-      this.setState({newevent})
+  handleTimeChange(path) {
+    return (x, value) => {
+      const newevent = this.state.newevent
+      newevent[path] = moment(value).format('HH:mm')
+      this.setState({ newevent })
     }
   },
-  render(){
+  render() {
     const {
       success,
       date,
@@ -150,23 +152,25 @@ const AddEvent = React.createClass({
       notes,
     } = this.state
 
-    const listSchedule = map(showEvents(this.removeEvent),schedule)
-    const daySheetEvents = map(listEvents(this.eventToggle),events)
+    const listSchedule = map(showEvents(this.removeEvent), schedule)
+    const daySheetEvents = map(listEvents(this.eventToggle), events)
+
+    console.log('state', this.state)
 
     return (
       <div>
         {success ? <Redirect to="/manage/daysheets" /> : null}
         <PageWrapper logout={this.props.logOut} title="Add Daysheet">
           <Row {...container} className="show-grid">
-           <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form className="half-width clearfix" onSubmit={this.handleSubmit}>
+            <Col xs={12} md={12} {...style({ width: '100%' }) }>
+              <form className="half-width clearfix" onSubmit={this.handleSubmit}>
                 <FormGroup className="clearfix main-form" controlId="formBasicText">
                   <ControlLabel >Date</ControlLabel>
                   <DatePicker
-                    {...style({display: 'block'})}
+                    {...style({ display: 'block' }) }
                     selected={date}
                     onChange={this.handleDateChange} />
-                  <ControlLabel {...style({display: 'block'})}>Current City</ControlLabel>
+                  <ControlLabel {...style({ display: 'block' }) }>Current City</ControlLabel>
                   <FormControl type="text"
                     value={currentcity}
                     placeholder="Current City"
@@ -198,20 +202,27 @@ const AddEvent = React.createClass({
                       onChange={this.handleAddEvent('event')}
                     />
 
-                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
-                    <span className="to">to</span>
-                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
+                    <TimePicker 
+                      autoOk 
+                      pedantic 
+                      floatingLabelFixed
+                      floatingLabelText="Start Time"
+                      value={moment(this.state.newevent.starttime, 'HH:mm').toDate()} 
+                      onChange={this.handleTimeChange('starttime')} 
+                      hintText="Start Time" 
+                    />
+
                     <FormControl type="text"
                       value={this.state.newevent.duration}
                       placeholder="duration"
                       onChange={this.handleAddEvent('duration')}
                     />
                     <div className="add-btn-container clearfix">
-                      <Button className="form-btn pull-right" {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
+                      <Button className="form-btn pull-right" {...style({ display: 'block' }) } onClick={this.addEvent}>Add</Button>
                     </div>
                   </Form>
                   <div className="form-items-container">
-                    {listSchedule}
+                    { listSchedule }
                   </div>
                   <div className="form-items-container">
                     {daySheetEvents}
@@ -263,7 +274,7 @@ const AddEvent = React.createClass({
                   <Button className="form-btn pull-right" type="submit">Submit</Button>
                 </FormGroup>
               </form>
-           </Col>
+            </Col>
           </Row>
           {/* <pre>
             {JSON.stringify(this.state,null,2)}
