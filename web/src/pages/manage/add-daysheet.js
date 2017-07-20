@@ -1,136 +1,163 @@
-import React from 'react'
-import PageWrapper from './components/page-wrapper'
-import {Row, Col,FormGroup,ControlLabel,HelpBlock,FormControl,Button, Form,Checkbox} from 'react-bootstrap'
-import {style} from 'glamor'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
-import uuid from 'node-uuid'
-import {append,reject,filter,compose,head,path,map,equals,forEach,pluck} from 'ramda'
-import PouchDB from 'pouchdb'
-const db = new PouchDB('slo-dev')
-import TimePicker from 'rc-time-picker'
-import 'rc-time-picker/assets/index.css'
-import {Redirect} from 'react-router'
-import {listEvents,showEvents} from '../utils/daysheets'
-
-
-require('react-datepicker/dist/react-datepicker.css')
+import React from "react"
+import PageWrapper from "./components/page-wrapper"
+import {
+  Row,
+  Col,
+  FormGroup,
+  ControlLabel,
+  HelpBlock,
+  FormControl,
+  Button,
+  Form,
+  Checkbox
+} from "react-bootstrap"
+import { style } from "glamor"
+import DatePicker from "react-datepicker"
+import moment from "moment"
+import uuid from "node-uuid"
+import {
+  append,
+  reject,
+  filter,
+  compose,
+  head,
+  path,
+  map,
+  equals,
+  forEach,
+  pluck
+} from "ramda"
+import PouchDB from "pouchdb"
+const db = new PouchDB("slo-dev")
+import TimePicker from "rc-time-picker"
+import "rc-time-picker/assets/index.css"
+import { Redirect } from "react-router"
+import { listEvents, showEvents } from "../utils/daysheets"
+import { timeZones } from "./timeZones"
+require("react-datepicker/dist/react-datepicker.css")
 
 const container = style({
-  display: 'block',
+  display: "block",
   margin: "0 auto"
 })
 
 const inputStyle = style({
-  width: '100%'
+  width: "100%"
 })
 
 const AddEvent = React.createClass({
-  getInitialState(){
-    return({
-      type: 'daysheet',
+  getInitialState() {
+    return {
+      type: "daysheet",
       schedule: [],
       date: moment(),
       events: [],
       band: this.props.band,
+      scheduleTimeZone: "US/Eastern",
       newevent: {
-        id: uuid.v4(),
+        id: uuid.v4()
       }
-    })
+    }
   },
-  componentDidMount(){
-    if(this.props.params.id){
-      this.props.getDaySheet(this.props.params.id)
-        .then(res => this.setState({
+  componentDidMount() {
+    if (this.props.params.id) {
+      this.props.getDaySheet(this.props.params.id).then(res =>
+        this.setState({
           ...res.data,
-          date: moment(res.data.date.split('T')[0])
-        }))
+          date: moment(res.data.date.split("T")[0])
+        })
+      )
     }
     this.handleDateChange()
   },
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault()
-    if(this.props.params.id){
+    if (this.props.params.id) {
       let doc = this.state
-      this.props.updateDaySheet(doc)
-      .then(res => {this.setState({success: true,})})
-      .catch(err => {this.setState({success: true})})
-    }else{
-      this.props.addDaySheet(this.state)
-        .then(res => this.setState({success: true}))
-        .catch(err => this.setState({success: true}))
-     }
+      this.props
+        .updateDaySheet(doc)
+        .then(res => {
+          this.setState({ success: true })
+        })
+        .catch(err => {
+          this.setState({ success: true })
+        })
+    } else {
+      this.props
+        .addDaySheet(this.state)
+        .then(res => this.setState({ success: true }))
+        .catch(err => this.setState({ success: true }))
+    }
   },
-  handleChange(path){
+  handleChange(path) {
     return e => {
       let currentState = this.state
       currentState[path] = e.target.value
       this.setState(currentState)
     }
   },
-  handleDateChange(date){
+  handleDateChange(date) {
     let qData = {
       artistId: this.state.band,
       enddate: date.format(),
       startdate: date.format()
     }
-    this.props.getArtistEvents(qData)
-      .then(({data}) => {
-        this.setState({
-          events: pluck('doc',data),
-          date: date
-        })
+    this.props.getArtistEvents(qData).then(({ data }) => {
+      this.setState({
+        events: pluck("doc", data),
+        date: date
       })
+    })
   },
-  handleAddEvent(path){
+  handleAddEvent(path) {
     return e => {
       let newevent = this.state.newevent
       newevent[path] = e.target.value
       this.setState({ newevent })
     }
   },
-  addEvent(e){
+  addEvent(e) {
     e.preventDefault()
     let currentContacts = this.state.schedule
-    let updated = append(this.state.newevent,currentContacts)
+    let updated = append(this.state.newevent, currentContacts)
     this.setState({
       schedule: updated,
       newevent: {
         id: uuid.v4(),
-        event: '',
-        starttime: '',
-        endtime: ''
+        event: "",
+        starttime: "",
+        endtime: ""
       }
     })
   },
-  removeEvent(id){
+  removeEvent(id) {
     return e => {
       let currentEvents = this.state.schedule
-      let schedule = reject(item => item.id === id,currentEvents)
-      this.setState({schedule})
+      let schedule = reject(item => item.id === id, currentEvents)
+      this.setState({ schedule })
     }
   },
-  eventToggle(id){
+  eventToggle(id) {
     const toggle = item => {
-      if(item.id === id){
-        item.status = item.status === 'confirmed' ? 'notconfirmed' : 'confirmed'
+      if (item.id === id) {
+        item.status = item.status === "confirmed" ? "notconfirmed" : "confirmed"
         return item
       }
       return item
     }
     return e => {
-      let events = map(toggle,this.state.events)
-      this.setState({events})
+      let events = map(toggle, this.state.events)
+      this.setState({ events })
     }
   },
-  handleTimeChange(path){
+  handleTimeChange(path) {
     return value => {
       let newevent = this.state.newevent
-      newevent[path] = value.format('HH:mm')
-      this.setState({newevent})
+      newevent[path] = value.format("HH:mm")
+      this.setState({ newevent })
     }
   },
-  render(){
+  render() {
     const {
       success,
       date,
@@ -147,67 +174,112 @@ const AddEvent = React.createClass({
       state,
       zipcode,
       mileage,
-      notes,
+      notes
     } = this.state
 
-    const listSchedule = map(showEvents(this.removeEvent),schedule)
-    const daySheetEvents = map(listEvents(this.eventToggle),events)
+    const listSchedule = map(showEvents(this.removeEvent), schedule)
+    const daySheetEvents = map(listEvents(this.eventToggle), events)
+
+    const renderTimeZoneOptions = ({ label, offset }) => {
+      return (
+        <option value={label}>
+          {label} {offset}
+        </option>
+      )
+    }
 
     return (
       <div>
         {success ? <Redirect to="/manage/daysheets" /> : null}
         <PageWrapper logout={this.props.logOut} title="Add Daysheet">
           <Row {...container} className="show-grid">
-           <Col xs={12} md={12} {...style({width: '100%'})}>
-             <form className="half-width clearfix" onSubmit={this.handleSubmit}>
-                <FormGroup className="clearfix main-form" controlId="formBasicText">
-                  <ControlLabel >Date</ControlLabel>
+            <Col xs={12} md={12} {...style({ width: "100%" })}>
+              <form
+                className="half-width clearfix"
+                onSubmit={this.handleSubmit}
+              >
+                <FormGroup
+                  className="clearfix main-form"
+                  controlId="formBasicText"
+                >
+                  <ControlLabel>Date</ControlLabel>
                   <DatePicker
-                    {...style({display: 'block'})}
+                    {...style({ display: "block" })}
                     selected={date}
-                    onChange={this.handleDateChange} />
-                  <ControlLabel {...style({display: 'block'})}>Current City</ControlLabel>
-                  <FormControl type="text"
+                    onChange={this.handleDateChange}
+                  />
+                  <ControlLabel {...style({ display: "block" })}>
+                    Current City
+                  </ControlLabel>
+                  <FormControl
+                    type="text"
                     value={currentcity}
                     placeholder="Current City"
-                    onChange={this.handleChange('currentcity')}
+                    onChange={this.handleChange("currentcity")}
                   />
                   <ControlLabel>Current State</ControlLabel>
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={currentstate}
                     placeholder="Current State"
-                    onChange={this.handleChange('currentstate')}
+                    onChange={this.handleChange("currentstate")}
                   />
                   <ControlLabel>Destination City</ControlLabel>
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={destinationcity}
                     placeholder="Destination City"
-                    onChange={this.handleChange('destinationcity')}
+                    onChange={this.handleChange("destinationcity")}
                   />
                   <ControlLabel>Destination State</ControlLabel>
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={destinationstate}
                     placeholder="Destination State"
-                    onChange={this.handleChange('destinationstate')}
+                    onChange={this.handleChange("destinationstate")}
                   />
                   <Form className="form-container">
                     <ControlLabel>Event</ControlLabel>
-                    <FormControl type="text"
+                    <FormControl
+                      value={this.state.scheduleTimeZone}
+                      onChange={this.handleChange("scheduleTimeZone")}
+                      componentClass="select"
+                      placeholder="Time Zone *required"
+                    >
+                      {map(renderTimeZoneOptions, timeZones)}
+                    </FormControl>
+                    <FormControl
+                      type="text"
                       value={this.state.newevent.event}
                       placeholder="Sound check"
-                      onChange={this.handleAddEvent('event')}
+                      onChange={this.handleAddEvent("event")}
                     />
 
-                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('starttime')} showSecond={false}/>
+                    <TimePicker
+                      defaultValue={moment("2016-01-01")}
+                      onChange={this.handleTimeChange("starttime")}
+                      showSecond={false}
+                    />
                     <span className="to">to</span>
-                    <TimePicker defaultValue={moment('2016-01-01')} onChange={this.handleTimeChange('endtime')} showSecond={false}/>
-                    <FormControl type="text"
+                    <TimePicker
+                      defaultValue={moment("2016-01-01")}
+                      onChange={this.handleTimeChange("endtime")}
+                      showSecond={false}
+                    />
+                    <FormControl
+                      type="text"
                       value={this.state.newevent.duration}
                       placeholder="duration"
-                      onChange={this.handleAddEvent('duration')}
+                      onChange={this.handleAddEvent("duration")}
                     />
                     <div className="add-btn-container clearfix">
-                      <Button className="form-btn pull-right" {...style({display: 'block'})} onClick={this.addEvent}>Add</Button>
+                      <Button
+                        className="form-btn pull-right"
+                        {...style({ display: "block" })}
+                        onClick={this.addEvent}
+                      >
+                        Add
+                      </Button>
                     </div>
                   </Form>
                   <div className="form-items-container">
@@ -217,53 +289,62 @@ const AddEvent = React.createClass({
                     {daySheetEvents}
                   </div>
                   <ControlLabel>After Show Destination Address:</ControlLabel>
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={destinationname}
                     placeholder="Destination Name"
-                    onChange={this.handleChange('destinationname')}
+                    onChange={this.handleChange("destinationname")}
                   />
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={streetone}
                     placeholder="Street Address 1"
-                    onChange={this.handleChange('streetone')}
+                    onChange={this.handleChange("streetone")}
                   />
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={streettwo}
                     placeholder="Street Address 2"
-                    onChange={this.handleChange('streettwo')}
+                    onChange={this.handleChange("streettwo")}
                   />
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={city}
                     placeholder="City"
-                    onChange={this.handleChange('city')}
+                    onChange={this.handleChange("city")}
                   />
-                  <FormControl type="text"
+                  <FormControl
+                    type="text"
                     value={state}
                     placeholder="State"
-                    onChange={this.handleChange('state')}
+                    onChange={this.handleChange("state")}
                   />
-                  <FormControl type="number"
+                  <FormControl
+                    type="number"
                     value={zipcode}
                     placeholder="Zipcode"
-                    onChange={this.handleChange('zipcode')}
+                    onChange={this.handleChange("zipcode")}
                   />
                   <ControlLabel>Mileage</ControlLabel>
-                  <FormControl type="number"
+                  <FormControl
+                    type="number"
                     value={mileage}
                     placeholder="Mileage"
-                    onChange={this.handleChange('mileage')}
+                    onChange={this.handleChange("mileage")}
                   />
                   <ControlLabel>Notes</ControlLabel>
                   <FormControl
                     componentClass="textarea"
                     value={notes}
                     placeholder="Notes"
-                    onChange={this.handleChange('notes')}
+                    onChange={this.handleChange("notes")}
                   />
-                  <Button className="form-btn pull-right" type="submit">Submit</Button>
+                  <Button className="form-btn pull-right" type="submit">
+                    Submit
+                  </Button>
                 </FormGroup>
               </form>
-           </Col>
+            </Col>
           </Row>
           {/* <pre>
             {JSON.stringify(this.state,null,2)}
